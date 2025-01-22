@@ -19,7 +19,7 @@ const options = [
 
 <template>
   <div>
-    <mu-select v-model="test"  :options />
+    <mu-select v-model="test"  :options @change="" />
   </div>
 </template>
 

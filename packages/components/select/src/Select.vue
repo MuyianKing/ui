@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ElOption, ElOptionGroup, ElSelect, vLoading } from 'element-plus'
 import { computed, getCurrentInstance } from 'vue'
-import { OptionsType, OptionsValue } from "./index.ts"
+import { OptionsType, OptionsValue } from "./Select.ts"
 
 defineOptions({
   name: 'MuSelect'
@@ -12,12 +12,6 @@ const props = defineProps({
     type: Array<OptionsType>,
     default() {
       return []
-    },
-  },
-  modelValue: {
-    type: [String, Number, Array, Boolean],
-    default() {
-      return ''
     },
   },
   placeholder: {
@@ -55,7 +49,9 @@ const props = defineProps({
   },
 })
 
-const emits = defineEmits(['update:modelValue', 'blur', 'change'])
+const emits = defineEmits<{
+  (e: 'change', val: OptionsValue): void
+}>()
 
 // 提示信息
 const placeholder_comp = computed(() => {
@@ -76,14 +72,11 @@ const placeholder_comp = computed(() => {
   return '请选择'
 })
 
-function change(val: OptionsValue) {
-  emits('update:modelValue', val)
-  emits('change', val)
-}
 
-// 失焦
-function blur() {
-  emits('blur')
+const modelValue = defineModel<OptionsValue>()
+
+function change(val: OptionsValue) {
+  emits('change', val)
 }
 
 // 禁用选项
@@ -96,7 +89,7 @@ const _d_p = computed(() => {
 </script>
 
 <template>
-  <el-select :model-value="modelValue" :disabled="readonly || disabled" :placeholder="placeholder_comp" :clearable="clearable" filterable :class="{ 'hl-select-readonly-item': readonly }" @change="change" @blur="blur">
+  <el-select v-model="modelValue" :disabled="readonly || disabled" :placeholder="placeholder_comp" :clearable="clearable" filterable :class="{ 'hl-select-readonly-item': readonly }" @change="change">
     <div class="relative">
       <el-option v-if="all" value="">
         全部

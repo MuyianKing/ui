@@ -5,10 +5,3 @@ export interface OptionsType {
   value: OptionsValue
   children?: OptionsType[]
 }
-
-
-type MyFunc = (txt: string) => void;
-
-export const selectEmits = {
-  change: MyFunc
-}
