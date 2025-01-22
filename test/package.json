@@ -1,0 +1,6 @@
+{
+  "name": "@muyianking/ui-test",
+  "scripts": {
+    "dev": "vite --host"
+  }
+}
