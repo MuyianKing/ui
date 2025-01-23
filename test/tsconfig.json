@@ -8,6 +8,20 @@
     "module": "ESNext",
     /* Bundler mode */
     "moduleResolution": "bundler",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@layout/*": [
+        "./src/layout/*"
+      ],
+      "@views/*": [
+        "./src/views/*"
+      ],
+      "@pinia/*": [
+        "./src/pinia/modules/*"
+      ]
+    },
     "allowImportingTsExtensions": true,
     /* Linting */
     "strict": true,
@@ -18,11 +32,5 @@
     "isolatedModules": true,
     "skipLibCheck": true,
     "noUncheckedSideEffectImports": true
-  },
-  "include": [
-    "packages/components/**/*.ts",
-    "packages/components/**/*.tsx",
-    "packages/components/**/*.vue"
-  ]
-
+  }
 }

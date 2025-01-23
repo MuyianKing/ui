@@ -1,7 +1,5 @@
-export type OptionsValue = string | number
-
 export interface OptionsType {
   label: string
-  value: OptionsValue
+  value: string | number
   children?: OptionsType[]
 }

@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import type { OptionsType } from './Select.ts'
 import { ElOption, ElOptionGroup, ElSelect, vLoading } from 'element-plus'
 import { computed, getCurrentInstance } from 'vue'
-import { OptionsType, OptionsValue } from "./Select.ts"
 
 defineOptions({
-  name: 'MuSelect'
+  name: 'MuSelect',
 })
 
 const props = defineProps({
@@ -50,7 +50,7 @@ const props = defineProps({
 })
 
 const emits = defineEmits<{
-  (e: 'change', val: OptionsValue): void
+  (e: 'change', val: string | number | string[] | number[]): void
 }>()
 
 // 提示信息
@@ -72,10 +72,9 @@ const placeholder_comp = computed(() => {
   return '请选择'
 })
 
+const modelValue = defineModel<string | number | string[] | number[]>()
 
-const modelValue = defineModel<OptionsValue>()
-
-function change(val: OptionsValue) {
+function change(val: string | number | string[] | number[]) {
   emits('change', val)
 }
 
@@ -89,8 +88,8 @@ const _d_p = computed(() => {
 </script>
 
 <template>
-  <el-select v-model="modelValue" :disabled="readonly || disabled" :placeholder="placeholder_comp" :clearable="clearable" filterable :class="{ 'hl-select-readonly-item': readonly }" @change="change">
-    <div class="relative">
+  <el-select v-model="modelValue" :disabled="readonly || disabled" :loading :placeholder="placeholder_comp" :clearable="clearable" filterable :class="{ 'hl-select-readonly-item': readonly }" @change="change">
+    <div class="hl-select-options">
       <el-option v-if="all" value="">
         全部
       </el-option>
@@ -106,6 +105,9 @@ const _d_p = computed(() => {
         <el-option v-else :label="item.label" :value="item.value" :disabled="_d_p.includes(item.value)" />
       </template>
     </div>
-    <div v-loading="loading" class="hl-select-loading-item" />
+
+    <template #loading>
+      <div v-loading="loading" element-loading-text="加载中..." class="hl-select-loading-item" />
+    </template>
   </el-select>
 </template>
