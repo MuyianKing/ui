@@ -27,6 +27,9 @@ importers:
       '@muyianking/config':
         specifier: ^0.0.8
         version: 0.0.8(@types/node@22.10.7)(@typescript-eslint/utils@8.21.0(eslint@9.18.0(jiti@2.4.2))(typescript@5.7.3))(@vue/compiler-sfc@3.5.13)(jiti@2.4.2)(typescript@5.7.3)
+      '@muyianking/plugins':
+        specifier: workspace:*
+        version: link:packages/plugins
       '@muyianking/theme-chalk':
         specifier: workspace:*
         version: link:packages/theme-chalk
@@ -71,6 +74,8 @@ importers:
         version: 2.2.0(typescript@5.7.3)
 
   packages/components: {}
+
+  packages/plugins: {}
 
   packages/theme-chalk: {}
 

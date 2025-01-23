@@ -8,6 +8,12 @@
     "module": "ESNext",
     /* Bundler mode */
     "moduleResolution": "bundler",
+    "paths": {
+      "@muyianking/*": [
+        "./packages/*"
+      ]
+    },
+    "types": ["vite/client", "element-plus/global"],
     "allowImportingTsExtensions": true,
     /* Linting */
     "strict": true,
@@ -24,5 +30,4 @@
     "packages/components/**/*.tsx",
     "packages/components/**/*.vue"
   ]
-
 }

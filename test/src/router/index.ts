@@ -6,21 +6,15 @@ const router = createRouter({
   history: createWebHashHistory(),
   strict: true,
   routes,
-  scrollBehavior(to, from, savedPosition) {
-    if (savedPosition) {
-      return savedPosition
-    }
-    return { top: 0 }
-  },
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to) => {
   const title = useTitle()
   if (to.meta.title) {
     title.value = `@muyianking/ui - ${to.meta.title || ''}`
   }
 
-  next()
+  return true
 })
 
 export default router

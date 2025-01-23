@@ -1,12 +1,13 @@
 import path from 'node:path'
-import { clearFolder, copy, exec, getDir, getObjectFromJson, objectToJson } from '@muyianking/build'
-import { build } from "vite"
-import config from "./vite.config.js"
+import process from 'node:process'
+import { clearFolder, copy, getDir, getObjectFromJson, objectToJson } from '@muyianking/build'
+import { build } from 'vite'
+import config from './vite.config.js'
 
 const __dirname = getDir(import.meta.url)
 
 // 打包输出路径
-const outputDir = process.cwd() + '/dist'
+const outputDir = `${process.cwd()}/dist`
 
 function _copy(source, target) {
   copy(path.resolve(__dirname, source), path.resolve(outputDir, target))
@@ -27,23 +28,24 @@ async function buildLib() {
 
   // 生成package.json
   const package_json = getObjectFromJson(path.resolve(__dirname, `../../package.json`))
-  const new_package = {}
+  const new_package = {
+    module: 'es/index.js',
+    types: 'es/index.d.ts',
+    type: 'module',
+  }
     ;[
-      'name',
-      'type',
-      'version',
-      'exports',
-      'main',
-      'module',
-      'types',
-      'dependencies',
-      'publishConfig',
-      'repository',
-      'keywords',
-      'homepage',
-    ].forEach((key) => {
-      new_package[key] = package_json[key]
-    })
+    'name',
+    'type',
+    'version',
+    'exports',
+    'dependencies',
+    'publishConfig',
+    'repository',
+    'keywords',
+    'homepage',
+  ].forEach((key) => {
+    new_package[key] = package_json[key]
+  })
 
   objectToJson(path.resolve(outputDir, `package.json`), new_package)
 }

@@ -22,6 +22,10 @@
         "./src/pinia/modules/*"
       ]
     },
+    "types": [
+      "vite/client",
+      "element-plus/global"
+    ],
     "allowImportingTsExtensions": true,
     /* Linting */
     "strict": true,

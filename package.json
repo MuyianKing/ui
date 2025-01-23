@@ -31,6 +31,7 @@
     "@muyianking/build": "^0.0.2",
     "@muyianking/components": "workspace:*",
     "@muyianking/config": "^0.0.8",
+    "@muyianking/plugins": "workspace:*",
     "@muyianking/theme-chalk": "workspace:*",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vitejs/plugin-vue-jsx": "^4.1.1",

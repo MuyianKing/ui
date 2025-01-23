@@ -1,18 +1,19 @@
-import vue from '@vitejs/plugin-vue'
 import process from 'node:process'
+import vue from '@vitejs/plugin-vue'
 import dts from 'vite-plugin-dts'
 
 const root = process.cwd()
 
 export default {
-  root: root + "/packages/components",
-  
+  root: `${root}/packages/components`,
+
   build: {
-    outDir: root + "/dist",
+    outDir: `${root}/dist`,
     rollupOptions: {
       preserveEntrySignatures: 'strict',
       external: [
         /^@muyianking\//,
+        /^@theme-chalk\//,
         'vue',
         /^element-plus/,
         '@vueuse/core',
@@ -30,7 +31,7 @@ export default {
           format: 'es',
           exports: 'named',
           preserveModules: true,
-          dir: './dist',
+          dir: './dist/es',
           entryFileNames: '[name].js',
         },
       ],
@@ -38,12 +39,14 @@ export default {
     },
     lib: {
       entry: [
-        root + '/packages/components/index.ts',
+        `${root}/packages/components/index.ts`,
       ],
     },
   },
   plugins: [
     vue(),
-    dts(),
+    dts({
+      outDir: `${root}/dist/es`,
+    }),
   ],
 }
