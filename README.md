@@ -54,7 +54,7 @@ export default defineConfig({
 ## 贡献
 
 <!-- readme: collaborators,contributors -start -->
-<ui>
+<table>
 	<tbody>
 		<tr>
             <td align="center">
@@ -66,5 +66,5 @@ export default defineConfig({
             </td>
 		</tr>
 	<tbody>
-</ui>
+</table>
 <!-- readme: collaborators,contributors -end -->
