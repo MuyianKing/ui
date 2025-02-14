@@ -1,6 +1,7 @@
 import path from 'node:path'
 import process from 'node:process'
-import { clearFolder, copy, getDir, getObjectFromJson, objectToJson } from '@muyianking/build'
+import { getDir } from '@muyianking/build'
+import { copySync, readJsonSync, removeSync, writeJsonSync } from 'fs-extra/esm'
 import { build } from 'vite'
 import config from './vite.config.js'
 
@@ -10,12 +11,12 @@ const __dirname = getDir(import.meta.url)
 const outputDir = `${process.cwd()}/dist`
 
 function _copy(source, target) {
-  copy(path.resolve(__dirname, source), path.resolve(outputDir, target))
+  copySync(path.resolve(__dirname, source), path.resolve(outputDir, target))
 }
 
 async function buildLib() {
-  // 清楚以前的打包文件
-  clearFolder(outputDir)
+  // 清除以前的打包文件
+  removeSync(outputDir)
 
   // rslib打包
   await build(config)
@@ -27,7 +28,7 @@ async function buildLib() {
   _copy(`../../LICENSE`, `LICENSE`)
 
   // 生成package.json
-  const package_json = getObjectFromJson(path.resolve(__dirname, `../../package.json`))
+  const package_json = readJsonSync(path.resolve(__dirname, `../../package.json`))
   const new_package = {
     module: 'es/index.js',
     types: 'es/index.d.ts',
@@ -47,7 +48,9 @@ async function buildLib() {
     new_package[key] = package_json[key]
   })
 
-  objectToJson(path.resolve(outputDir, `package.json`), new_package)
+  writeJsonSync(path.resolve(outputDir, `package.json`), new_package, {
+    space: 2,
+  })
 }
 
 buildLib()

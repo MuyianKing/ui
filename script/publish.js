@@ -1,6 +1,8 @@
 import path from 'node:path'
-import { exec, getDir, getObjectFromJson, getParams, objectToJson, showLog } from '@muyianking/build'
+import { exec, getDir, getParams, showLog } from '@muyianking/build'
+import { readJsonSync, writeJsonSync } from 'fs-extra/esm'
 import inquirer from 'inquirer'
+
 import ora from 'ora'
 
 const __dirname = getDir(import.meta.url)
@@ -8,7 +10,7 @@ const __dirname = getDir(import.meta.url)
 async function build() {
   const spinner = ora(`update package.json`).start()
   const package_path = path.resolve(__dirname, '../../package.json')
-  const _config = getObjectFromJson(package_path)
+  const _config = readJsonSync(package_path)
 
   let version = `v${_config.version}`
   const params = getParams()
@@ -17,7 +19,9 @@ async function build() {
   if (params.v) {
     version = `v${params.v}`
     _config.version = params.v
-    objectToJson(package_path, _config)
+    writeJsonSync(package_path, _config, {
+      spaces: 2,
+    })
   }
   spinner.succeed('update package.json successfully')
 
