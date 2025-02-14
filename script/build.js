@@ -27,6 +27,9 @@ async function buildLib() {
   // 拷贝LICENSE
   _copy(`../../LICENSE`, `LICENSE`)
 
+  // 拷贝LICENSE
+  _copy(`../../packages/theme-chalk/scss`, "theme-chalk")
+
   // 生成package.json
   const package_json = readJsonSync(path.resolve(__dirname, `../../package.json`))
   const new_package = {
@@ -35,18 +38,18 @@ async function buildLib() {
     type: 'module',
   }
     ;[
-    'name',
-    'type',
-    'version',
-    'exports',
-    'dependencies',
-    'publishConfig',
-    'repository',
-    'keywords',
-    'homepage',
-  ].forEach((key) => {
-    new_package[key] = package_json[key]
-  })
+      'name',
+      'type',
+      'version',
+      'exports',
+      'dependencies',
+      'publishConfig',
+      'repository',
+      'keywords',
+      'homepage',
+    ].forEach((key) => {
+      new_package[key] = package_json[key]
+    })
 
   writeJsonSync(path.resolve(outputDir, `package.json`), new_package, {
     space: 2,

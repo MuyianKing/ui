@@ -1,3 +1,12 @@
+## [0.0.1-beta.2](https://github.com/MuyianKing/ui/compare/v0.0.1-beta.1...v0.0.1-beta.2) (2025-02-14)
+
+
+### Features
+
+* :sparkles: 增加自动打包发布的github actions ([c0c8394](https://github.com/MuyianKing/ui/commit/c0c8394c085aafb389db614d95b2d4ce94336c15))
+
+
+
 ## 0.0.1-beta.1 (2025-02-14)
 
 

@@ -1,11 +1,10 @@
 {
   "name": "@muyianking/ui",
   "type": "module",
-  "version": "0.0.1-beta.1",
-  "homepage": "https://muyianking.github.io/blog/docs/table/home.html",
+  "version": "0.0.1-beta.2",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MuyianKing/mu-table.git"
+    "url": "git+https://github.com/MuyianKing/ui.git"
   },
   "keywords": [
     "MIT",

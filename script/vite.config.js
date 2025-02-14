@@ -1,6 +1,7 @@
 import process from 'node:process'
 import vue from '@vitejs/plugin-vue'
 import dts from 'vite-plugin-dts'
+import StylePathAlias from './vite-plugins/style.path.alias.js'
 
 const root = process.cwd()
 
@@ -31,8 +32,10 @@ export default {
           format: 'es',
           exports: 'named',
           preserveModules: true,
-          dir: './dist/es',
-          entryFileNames: '[name].js',
+          dir: './dist',
+          entryFileNames(chunkInfo){
+            return chunkInfo.name === 'resolver' ?'[name].js': 'es/[name].js'
+          },
         },
       ],
       treeshake: false,
@@ -40,10 +43,12 @@ export default {
     lib: {
       entry: [
         `${root}/packages/components/index.ts`,
+        `${root}/packages/components/resolver.ts`,
       ],
     },
   },
   plugins: [
+    StylePathAlias(),
     vue(),
     dts({
       outDir: `${root}/dist/es`,
