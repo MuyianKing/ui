@@ -19,8 +19,7 @@
     "preview": "vite preview",
     "update-dep": "npm-check-updates & ncu -u & pnpm i",
     "log": "conventional-changelog -p angular -i CHANGELOG.md -s",
-    "build": "node ./script/build.js",
-    "test": "vite build"
+    "build": "node ./script/build.js"
   },
   "dependencies": {
     "element-plus": "^2.9.3",
@@ -32,6 +31,7 @@
     "@muyianking/components": "workspace:*",
     "@muyianking/config": "^0.0.8",
     "@muyianking/theme-chalk": "workspace:*",
+    "@muyianking/utils": "workspace:*",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vitejs/plugin-vue-jsx": "^4.1.1",
     "cz-git": "^1.11.0",

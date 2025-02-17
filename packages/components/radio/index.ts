@@ -1,6 +1,6 @@
-import Radio from './Index.vue'
+import Radio from './src/Index.vue'
 import './style/index'
 
-export const HlRadio = Radio
+export const MuRadio = Radio
 
-export default HlRadio
+export default MuRadio

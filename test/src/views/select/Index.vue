@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import CompLineWrapper from '@comp/common/CompLineWrapper.vue'
+import CompPageWrapper from '@comp/common/CompPageWrapper.vue'
 import { MuSelect } from '@muyianking/components'
 import { reactive } from 'vue'
 
@@ -41,91 +43,48 @@ const model = reactive({
 </script>
 
 <template>
-  <div class="p-[10px] h-full w-full">
-    <div class="bg-white w-full p-4 rounded-lg shadow-lg ">
-      <div class="wrapper">
-        <div class="block-title">
-          单选
-        </div>
-        <mu-select v-model="model.test" :options />
-      </div>
+  <comp-page-wrapper>
+    <comp-line-wrapper label="单选">
+      <mu-select v-model="model.test" :options />
+    </comp-line-wrapper>
 
-      <div class="wrapper">
-        <div class="block-title">
-          多选
-        </div>
-        <mu-select v-model="model.test2" :options multiple />
-      </div>
+    <comp-line-wrapper label="多选">
+      <mu-select v-model="model.test2" :options multiple />
+    </comp-line-wrapper>
 
-      <div class="wrapper">
-        <div class="block-title">
-          提示信息
-        </div>
-        <mu-select v-model="model.test2" :options multiple placeholder="请选择测试" />
-      </div>
+    <comp-line-wrapper label="提示信息">
+      <mu-select v-model="model.test2" :options multiple placeholder="请选择测试" />
+    </comp-line-wrapper>
 
-      <div class="wrapper">
-        <div class="block-title">
-          全部
-        </div>
-        <mu-select v-model="model.test" :options all />
-      </div>
+    <comp-line-wrapper label="全部">
+      <mu-select v-model="model.test" :options all />
+    </comp-line-wrapper>
 
-      <div class="wrapper">
-        <div class="block-title">
-          loading
-        </div>
-        <mu-select v-model="model.test" :options="[]" loading />
-      </div>
+    <comp-line-wrapper label="loading">
+      <mu-select v-model="model.test" :options="[]" loading />
+    </comp-line-wrapper>
 
-      <div class="wrapper">
-        <div class="block-title">
-          禁用选项
-        </div>
-        <mu-select v-model="model.test" :options :disabled-options="[1]" />
-      </div>
+    <comp-line-wrapper label="禁用选项">
+      <mu-select v-model="model.test" :options :disabled-options="[1]" />
+    </comp-line-wrapper>
 
-      <div class="wrapper">
-        <div class="block-title">
-          只读
-        </div>
-        <mu-select :model-value="1" :options readonly />
-      </div>
+    <comp-line-wrapper label="只读">
+      <mu-select :model-value="1" :options readonly />
+    </comp-line-wrapper>
 
-      <div class="wrapper">
-        <div class="block-title">
-          多选只读
-        </div>
-        <mu-select :model-value="[1, 2]" multiple :options readonly />
-      </div>
+    <comp-line-wrapper label="多选只读">
+      <mu-select :model-value="[1, 2]" multiple :options readonly />
+    </comp-line-wrapper>
 
-      <div class="wrapper">
-        <div class="block-title">
-          禁用
-        </div>
-        <mu-select :options disabled />
-      </div>
+    <comp-line-wrapper label="禁用">
+      <mu-select :options disabled />
+    </comp-line-wrapper>
 
-      <div class="wrapper">
-        <div class="block-title">
-          选项分组
-        </div>
-        <mu-select :options="group_options" />
-      </div>
-    </div>
-  </div>
+    <comp-line-wrapper label="选项分组">
+      <mu-select :options="group_options" />
+    </comp-line-wrapper>
+  </comp-page-wrapper>
 </template>
 
 <style lang='scss' scoped>
-.wrapper {
-  @apply flex items-center mt-4;
-
-  &:first-child {
-    @apply mt-0;
-  }
-}
-
-.block-title {
-  @apply mb-1 text-lg flex-shrink-0 mr-2 w-[90px];
-}
 </style>

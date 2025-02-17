@@ -14,7 +14,7 @@ export const menuList = [
     component: () => import('@views/radio/Index.vue'),
     meta: {
       title: '单选框',
-      icon: 'iconoir:list-select',
+      icon: 'ri:list-radio',
     },
   },
 ]

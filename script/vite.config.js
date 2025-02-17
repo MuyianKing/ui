@@ -33,8 +33,8 @@ export default {
           exports: 'named',
           preserveModules: true,
           dir: './dist',
-          entryFileNames(chunkInfo){
-            return chunkInfo.name === 'resolver' ?'[name].js': 'es/[name].js'
+          entryFileNames(chunkInfo) {
+            return chunkInfo.name === 'resolver' ? '[name].js' : 'es/[name].js'
           },
         },
       ],
@@ -51,7 +51,8 @@ export default {
     StylePathAlias(),
     vue(),
     dts({
-      outDir: `${root}/dist/es`,
+      outDir: `${root}/dist`,
+      rollupTypes: true,
     }),
   ],
 }

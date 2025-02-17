@@ -28,31 +28,31 @@ async function buildLib() {
   _copy(`../../LICENSE`, `LICENSE`)
 
   // 拷贝LICENSE
-  _copy(`../../packages/theme-chalk/scss`, "theme-chalk")
+  _copy(`../../packages/theme-chalk/scss`, 'theme-chalk')
 
   // 生成package.json
   const package_json = readJsonSync(path.resolve(__dirname, `../../package.json`))
   const new_package = {
     module: 'es/index.js',
-    types: 'es/index.d.ts',
+    types: 'index.d.ts',
     type: 'module',
   }
     ;[
-      'name',
-      'type',
-      'version',
-      'exports',
-      'dependencies',
-      'publishConfig',
-      'repository',
-      'keywords',
-      'homepage',
-    ].forEach((key) => {
-      new_package[key] = package_json[key]
-    })
+    'name',
+    'type',
+    'version',
+    'exports',
+    'dependencies',
+    'publishConfig',
+    'repository',
+    'keywords',
+    'homepage',
+  ].forEach((key) => {
+    new_package[key] = package_json[key]
+  })
 
   writeJsonSync(path.resolve(outputDir, `package.json`), new_package, {
-    space: 2,
+    spaces: 2,
   })
 }
 

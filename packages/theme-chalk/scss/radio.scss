@@ -30,6 +30,13 @@
     .el-radio__label {
       color: inherit !important;
       cursor: inherit !important;
+      padding-left: 0;
+    }
+
+    &:first-child {
+      .el-radio__label {
+        padding-left: 0;
+      }
     }
   }
 }
