@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { OptionsType } from '../../types/common.ts'
-import { transformBooleanToNum } from '@ui/utils/types'
 import { ElRadio, ElRadioGroup } from 'element-plus'
 import { computed } from 'vue'
 
@@ -77,7 +76,7 @@ const _options = computed(() => {
 
 <template>
   <el-radio-group v-model="model" class="mu-radio" :class="{ 'mu-radio-line-item': line, 'mu-radio-readonly-group': readonly }" :disabled="disabled || readonly">
-    <el-radio v-for="item in _options" :key="transformBooleanToNum(item.value)" :value="item.value" @click="handleClick">
+    <el-radio v-for="item in _options" :key="typeof item.value === 'boolean' ? +item.value : item.value" :value="item.value" @click="handleClick">
       {{ item.label }}
     </el-radio>
   </el-radio-group>

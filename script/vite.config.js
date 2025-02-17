@@ -30,8 +30,13 @@ export default {
           format: 'es',
           exports: 'named',
           preserveModules: true,
-          dir: './dist/es',
-          entryFileNames: '[name].js',
+          dir: './dist',
+          entryFileNames(file) {
+            if (file.name !== 'resolver') {
+              return `es/[name].js`
+            }
+            return 'resolver.js'
+          },
         },
       ],
       treeshake: true,
@@ -39,6 +44,7 @@ export default {
     lib: {
       entry: [
         `${root}/packages/components/index.ts`,
+        `${root}/packages/components/resolver.ts`,
       ],
     },
   },

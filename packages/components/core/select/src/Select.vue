@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { OptionsType } from '../../types/common.ts'
-import { transformBooleanToNum } from '@ui/utils/types'
 import { ElOption, ElOptionGroup, ElSelect, vLoading } from 'element-plus'
 import { computed, getCurrentInstance } from 'vue'
 
@@ -99,7 +98,7 @@ const _d_p = computed(() => {
       <template v-for="item in options" :key="item.value">
         <template v-if="item.children">
           <el-option-group :label="item.label">
-            <el-option v-for="child in item.children" :key="transformBooleanToNum(child.value)" :label="child.label" :value="child.value" :disabled="_d_p.includes(item.value)" />
+            <el-option v-for="child in item.children" :key="typeof child.value === 'boolean' ? +child.value : child.value" :label="child.label" :value="child.value" :disabled="_d_p.includes(item.value)" />
           </el-option-group>
         </template>
 

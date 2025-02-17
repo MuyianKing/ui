@@ -33,7 +33,7 @@ async function buildLib() {
   // 生成package.json
   const package_json = readJsonSync(path.resolve(__dirname, `../../package.json`))
   const new_package = {
-    module: 'es/components/index.js',
+    module: 'es/index.js',
     types: 'index.d.ts',
     type: 'module',
   }

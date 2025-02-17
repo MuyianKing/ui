@@ -1,3 +1,7 @@
+## [0.0.1-beta.6](https://github.com/MuyianKing/ui/compare/v0.0.1-beta.5...v0.0.1-beta.6) (2025-02-17)
+
+
+
 ## [0.0.1-beta.5](https://github.com/MuyianKing/ui/compare/v0.0.1-beta.4...v0.0.1-beta.5) (2025-02-17)
 
 
