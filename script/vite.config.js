@@ -32,18 +32,15 @@ export default {
           format: 'es',
           exports: 'named',
           preserveModules: true,
-          dir: './dist',
-          entryFileNames(chunkInfo) {
-            return chunkInfo.name === 'resolver' ? '[name].js' : 'es/[name].js'
-          },
+          dir: './dist/es',
+          entryFileNames: '[name].js',
         },
       ],
       treeshake: false,
     },
     lib: {
       entry: [
-        `${root}/packages/components/index.ts`,
-        `${root}/packages/components/resolver.ts`,
+        `${root}/packages/index.ts`,
       ],
     },
   },
@@ -51,8 +48,7 @@ export default {
     StylePathAlias(),
     vue(),
     dts({
-      outDir: `${root}/dist`,
-      rollupTypes: true,
+      outDir: `${root}/dist/es`,
     }),
   ],
 }

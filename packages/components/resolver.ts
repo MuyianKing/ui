@@ -1,6 +1,6 @@
 import type { ComponentResolver } from 'unplugin-vue-components'
 
-export default function MuUiResolver(): ComponentResolver[] {
+export function MuUiResolver(): ComponentResolver[] {
   return [
     {
       type: 'component',
@@ -17,3 +17,5 @@ export default function MuUiResolver(): ComponentResolver[] {
     },
   ]
 }
+
+export default MuUiResolver
