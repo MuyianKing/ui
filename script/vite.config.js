@@ -6,15 +6,13 @@ import StylePathAlias from './vite-plugins/style.path.alias.js'
 const root = process.cwd()
 
 export default {
-  root: `${root}/packages/components`,
-
   build: {
     outDir: `${root}/dist`,
     rollupOptions: {
       preserveEntrySignatures: 'strict',
       external: [
         /^@muyianking\//,
-        /^@theme-chalk\//,
+        /^@ui\/theme-chalk\//,
         'vue',
         /^element-plus/,
         '@vueuse/core',
@@ -36,11 +34,11 @@ export default {
           entryFileNames: '[name].js',
         },
       ],
-      treeshake: false,
+      treeshake: true,
     },
     lib: {
       entry: [
-        `${root}/packages/index.ts`,
+        `${root}/packages/components/index.ts`,
       ],
     },
   },
@@ -48,7 +46,8 @@ export default {
     StylePathAlias(),
     vue(),
     dts({
-      outDir: `${root}/dist/es`,
+      outDir: `${root}/dist`,
+      rollupTypes: true,
     }),
   ],
 }

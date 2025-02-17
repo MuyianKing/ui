@@ -28,13 +28,13 @@ async function buildLib() {
   _copy(`../../LICENSE`, `LICENSE`)
 
   // 拷贝LICENSE
-  _copy(`../../packages/theme-chalk/scss`, 'theme-chalk')
+  _copy(`../../packages/theme-chalk/scss`, 'theme-chalk/scss')
 
   // 生成package.json
   const package_json = readJsonSync(path.resolve(__dirname, `../../package.json`))
   const new_package = {
-    module: 'es/index.js',
-    types: 'es/index.d.ts',
+    module: 'es/components/index.js',
+    types: 'index.d.ts',
     type: 'module',
   }
     ;[

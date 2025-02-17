@@ -50,7 +50,6 @@ export default defineConfig({
 })
 ```
 
-
 ## 贡献
 
 <!-- readme: collaborators,contributors -start -->
