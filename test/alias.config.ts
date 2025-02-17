@@ -5,6 +5,7 @@ const alias_path = [
   ['@layout', './src/layout'],
   ['@views', './src/views'],
   ['@pinia', './src/pinia/modules'],
+  ['@comp', './src/components'],
 ]
 
 export default function useAlias() {

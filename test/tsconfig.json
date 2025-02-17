@@ -20,6 +20,9 @@
       ],
       "@pinia/*": [
         "./src/pinia/modules/*"
+      ],
+      "@comp/*": [
+        "./src/components/*"
       ]
     },
     "types": [

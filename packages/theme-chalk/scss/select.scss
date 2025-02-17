@@ -1,14 +1,14 @@
-.hl-select-options{
+.mu-select-options{
   position: relative;
 }
 
-.hl-select-loading-item {
+.mu-select-loading-item {
   width: 100%;
   height: 100px;
   pointer-events: none;
 }
 
-.hl-select-readonly-item {
+.mu-select-readonly-item {
   .el-select__wrapper {
     background-color: #fff;
     box-shadow: none !important;

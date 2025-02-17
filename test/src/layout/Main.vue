@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import HlHeader from '@layout/Header.vue'
-import HlSidebar from '@layout/side-bar/Index.vue'
+import HeaderComp from '@layout/Header.vue'
+import SidebarComp from '@layout/side-bar/Index.vue'
 import useTagsStore from '@pinia/useTagsStore'
 import { computed, h } from 'vue'
 import { onBeforeRouteUpdate, useRoute } from 'vue-router'
@@ -68,9 +68,9 @@ function formatComponentInstance(component: any, route: any) {
 
 <template>
   <div v-if="show" class="main-body-wrapper">
-    <hl-sidebar />
+    <sidebar-comp />
     <div class="bottom-wrapper">
-      <hl-header />
+      <header-comp />
       <div class="content-box">
         <router-view v-slot="{ Component, route }">
           <transition name="fade">

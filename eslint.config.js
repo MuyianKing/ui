@@ -6,5 +6,5 @@ export default antfu({
   ignores: ['**/public/**'],
 }, {
   rules: eslint,
-  files: ['**/src/**', '**/script/**', '**/packages/**'],
+  files: ['**/src/**', '**/script/**', '**/packages/**',"**/test/**"],
 })

@@ -126,6 +126,6 @@ const model = reactive({
 }
 
 .block-title {
-  @apply mb-1 text-lg flex-shrink-0 mr-2 w-[70px];
+  @apply mb-1 text-lg flex-shrink-0 mr-2 w-[90px];
 }
 </style>

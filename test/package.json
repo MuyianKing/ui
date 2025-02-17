@@ -1,5 +1,5 @@
 {
-  "name": "@muyianking/ui-test",
+  "name": "ui-test",
   "type": "module",
   "scripts": {
     "dev": "vite --host"

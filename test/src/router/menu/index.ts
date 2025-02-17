@@ -6,7 +6,15 @@ export const menuList = [
     component: () => import('@views/select/Index.vue'),
     meta: {
       title: '下拉框',
-      icon: 'gg:view-list',
+      icon: 'iconoir:list-select',
+    },
+  },
+  {
+    path: '/radio',
+    component: () => import('@views/radio/Index.vue'),
+    meta: {
+      title: '单选框',
+      icon: 'iconoir:list-select',
     },
   },
 ]

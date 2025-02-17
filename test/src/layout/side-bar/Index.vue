@@ -26,7 +26,7 @@ const sideMenu = computed(() => {
       <div class="web-name-wrapper">
         <div class="web-name">
           <span class="logo" href="/">
-            @muyianking/ui
+            ui-test
           </span>
         </div>
       </div>

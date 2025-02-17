@@ -88,8 +88,8 @@ const _d_p = computed(() => {
 </script>
 
 <template>
-  <el-select v-model="modelValue" :disabled="readonly || disabled" :loading :placeholder="placeholder_comp" :clearable="clearable" filterable :class="{ 'hl-select-readonly-item': readonly }" @change="change">
-    <div class="hl-select-options">
+  <el-select v-model="modelValue" class="mu-select" :disabled="readonly || disabled" :loading :placeholder="placeholder_comp" :clearable="clearable" filterable :class="{ 'mu-select-readonly-item': readonly }" @change="change">
+    <div class="mu-select-options">
       <el-option v-if="all" value="">
         全部
       </el-option>
@@ -107,7 +107,7 @@ const _d_p = computed(() => {
     </div>
 
     <template #loading>
-      <div v-loading="loading" element-loading-text="加载中..." class="hl-select-loading-item" />
+      <div v-loading="loading" element-loading-text="加载中..." class="mu-select-loading-item" />
     </template>
   </el-select>
 </template>
