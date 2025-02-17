@@ -17,6 +17,14 @@ export const menuList = [
       icon: 'ri:list-radio',
     },
   },
+  {
+    path: '/icon',
+    component: () => import('@views/icon/Index.vue'),
+    meta: {
+      title: '图标',
+      icon: 'mdi:emoticon-kiss-outline',
+    },
+  },
 ]
 
 export default [

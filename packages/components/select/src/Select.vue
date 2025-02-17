@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { OptionsType } from '../../types/common.ts'
-import { transformBooleanToNum } from '@muyianking/utils/types'
+import { transformBooleanToNum } from '@ui/utils/types'
 import { ElOption, ElOptionGroup, ElSelect, vLoading } from 'element-plus'
 import { computed, getCurrentInstance } from 'vue'
 

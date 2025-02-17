@@ -7,7 +7,7 @@ export default function StylePathAlias() {
         return
       }
 
-      return code.replace(/@muyianking\/theme-chalk/g, '@muyianking/ui/theme-chalk')
+      return code.replace(/@ui\/theme-chalk/g, '@muyianking/ui/theme-chalk')
     },
   }
 }

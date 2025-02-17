@@ -23,9 +23,9 @@ export default {
         'validator',
         'js-cookie',
         'nanoid',
-        '@iconify/vue',
         /^@multiavatar\/multiavatar/,
         /^wavesurfer/,
+        '@iconify/vue',
       ],
       output: [
         {

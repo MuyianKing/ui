@@ -22,6 +22,8 @@
     "build": "node ./script/build.js"
   },
   "dependencies": {
+    "@iconify/vue": "^4.3.0",
+    "@muyianking/utils": "^0.1.1",
     "element-plus": "^2.9.3",
     "vue": "^3.5.13"
   },
@@ -30,8 +32,8 @@
     "@muyianking/build": "^0.0.2",
     "@muyianking/components": "workspace:*",
     "@muyianking/config": "^0.0.8",
-    "@muyianking/theme-chalk": "workspace:*",
-    "@muyianking/utils": "workspace:*",
+    "@ui/theme-chalk": "workspace:*",
+    "@ui/utils": "workspace:*",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vitejs/plugin-vue-jsx": "^4.1.1",
     "cz-git": "^1.11.0",

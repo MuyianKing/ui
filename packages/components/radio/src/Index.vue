@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import type { OptionsType } from '../../types/common.ts'
-import { transformBooleanToNum } from '@muyianking/utils/types'
+import { transformBooleanToNum } from '@ui/utils/types'
 import { ElRadio, ElRadioGroup } from 'element-plus'
 import { computed } from 'vue'
+
+defineOptions({
+  name: 'MuRadio',
+})
 
 const props = defineProps({
   options: {
