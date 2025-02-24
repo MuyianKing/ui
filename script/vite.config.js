@@ -1,5 +1,6 @@
 import process from 'node:process'
 import vue from '@vitejs/plugin-vue'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 import dts from 'vite-plugin-dts'
 import StylePathAlias from './vite-plugins/style.path.alias.js'
 
@@ -51,6 +52,7 @@ export default {
   plugins: [
     StylePathAlias(),
     vue(),
+    vueJsx(),
     dts({
       outDir: `${root}/dist`,
       rollupTypes: true,

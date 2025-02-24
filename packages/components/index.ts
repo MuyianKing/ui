@@ -1,3 +1,5 @@
+export { MuContextMenu } from './core/context-menu'
+export { MuContextMenuItem } from './core/context-menu-item'
 export { MuIcon } from './core/icon'
 export { MuRadio } from './core/radio'
 export { MuSelect } from './core/select'

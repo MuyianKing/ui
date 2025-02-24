@@ -35,5 +35,5 @@ const _style = computed(() => {
 </script>
 
 <template>
-  <icon-comp :icon class="hl-icon" aria-hidden="false" :style="_style" />
+  <icon-comp :icon class="mu-icon" aria-hidden="false" :style="_style" />
 </template>

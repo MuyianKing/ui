@@ -1,0 +1,18 @@
+.mu-context-menu-item {
+  padding: 9px 15px;
+  text-align: center;
+  min-width: max-content;
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  .mu-context-menu-content-text {
+    margin-left: 0.25em;
+  }
+}
+
+.mu-context-menu-item:hover {
+  background-color: var(--el-color-primary-light-9);
+  cursor: pointer;
+  color: var(--color-primary) !important;
+}

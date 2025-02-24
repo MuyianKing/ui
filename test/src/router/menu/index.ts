@@ -18,6 +18,14 @@ export const menuList = [
     },
   },
   {
+    path: '/content-menu',
+    component: () => import('@views/context-menu/Index.vue'),
+    meta: {
+      title: '右击菜单',
+      icon: 'ri:list-radio',
+    },
+  },
+  {
     path: '/icon',
     component: () => import('@views/icon/Index.vue'),
     meta: {
