@@ -1,0 +1,36 @@
+.mu-radio-line-item {
+  width: 100%;
+}
+
+.mu-radio-line-item .el-radio {
+  width: 100%;
+  margin-right: 0;
+}
+
+.mu-radio-line-item .el-radio .el-radio__label {
+  white-space: break-spaces;
+  line-height: 20px;
+}
+
+.mu-radio-readonly-group .el-radio {
+  display: none;
+  cursor: inherit;
+}
+
+.mu-radio-readonly-group .el-radio.is-checked {
+  display: inline-flex;
+}
+
+.mu-radio-readonly-group .el-radio .el-radio__input {
+  display: none;
+}
+
+.mu-radio-readonly-group .el-radio .el-radio__label {
+  color: inherit !important;
+  cursor: inherit !important;
+  padding-left: 0;
+}
+
+.mu-radio-readonly-group .el-radio:first-child .el-radio__label {
+  padding-left: 0;
+}

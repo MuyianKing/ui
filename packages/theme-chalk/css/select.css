@@ -1,0 +1,23 @@
+.mu-select-options {
+  position: relative;
+}
+
+.mu-select-loading-item {
+  width: 100%;
+  height: 100px;
+  pointer-events: none;
+}
+
+.mu-select-readonly-item .el-select__wrapper {
+  background-color: #fff;
+  box-shadow: none !important;
+  color: inherit !important;
+}
+
+.mu-select-readonly-item .el-select__wrapper .el-select__selected-item {
+  color: inherit !important;
+}
+
+.mu-select-readonly-item .el-select__wrapper .el-select__suffix {
+  display: none;
+}
