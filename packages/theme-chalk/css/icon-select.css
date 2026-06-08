@@ -1,0 +1,51 @@
+.mu-icon-select .placholder-item {
+  color: gray;
+}
+
+/* 滚动条整体样�?*/
+/* 高宽分别对应横竖滚动条的尺寸 */
+.mu-icon-select .icon-content::-webkit-scrollbar {
+  height: 10px;
+  width: 2px;
+}
+
+/* 滚动条里面小方块 */
+.mu-icon-select .icon-content::-webkit-scrollbar-thumb {
+  border-radius: 2px;
+}
+
+/* 滚动条里面轨�?*/
+.mu-icon-select .icon-content::-webkit-scrollbar-track {
+  border-radius: 2px;
+}
+
+.mu-icons-wrapper {
+  font-size: 24px;
+  max-height: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.mu-icons-wrapper .icon-content {
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+.mu-icons-wrapper .icon-item {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mu-icons-wrapper svg {
+  margin: 8px;
+  cursor: pointer;
+}
+
+.mu-icons-wrapper .btn-wrapper {
+  text-align: right;
+  border-top: 1px solid #eee;
+}

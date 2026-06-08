@@ -1,0 +1,16 @@
+.mu-pagination-wrapper {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.mu-pagination-wrapper .info {
+  font-size: 14px;
+  color: #666;
+}
+
+.mu-pagination-wrapper .info .num {
+  margin: 0 3px;
+}

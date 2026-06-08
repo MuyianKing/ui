@@ -1,0 +1,25 @@
+.mu-descriptions-item {
+  display: flex;
+  border-bottom: 1px solid var(--el-border-color-lighter);
+  border-right: 1px solid var(--el-border-color-lighter);
+  width: 25%;
+}
+
+.mu-descriptions-item > div {
+  padding: 8px 11px;
+}
+
+.mu-descriptions-item .mu-descriptions-item-label {
+  border-right: 1px solid var(--el-border-color-lighter);
+  width: 80px;
+  flex-shrink: 0;
+  background-color: #f5f7fa;
+  color: #606266;
+  font-weight: bold;
+}
+
+.mu-descriptions-item .mu-descriptions-item-content {
+  flex: 1;
+  min-width: 0;
+  color: var(--el-text-color-primary);
+}

@@ -5,6 +5,9 @@ export default antfu({
   formatters: true,
   ignores: ['**/public/**'],
 }, {
-  rules: eslint,
-  files: ['**/src/**', '**/script/**', '**/packages/**', "**/test/**", '**/*.config.*'],
+  rules: {
+    ...eslint,
+    'vue/custom-event-name-casing': 0,
+  },
+  files: ['**/src/**', '**/script/**', '**/packages/**', '**/test/**', '**/*.config.*'],
 })

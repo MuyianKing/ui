@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { ElRadio, ElRadioGroup } from 'element-plus'
 import { computed, nextTick } from 'vue'
-import { ElRadioGroup, ElRadio } from 'element-plus'
 
 const props = withDefaults(defineProps<{
   options?: any[]
@@ -17,10 +17,6 @@ const props = withDefaults(defineProps<{
   disabled: false,
   modelValue: '',
 })
-
-const emit = defineEmits<{
-  (e: 'update:modelValue', val: string | number | boolean): void
-}>()
 
 const model = defineModel<string | number | boolean>()
 
@@ -43,21 +39,19 @@ const filteredOptions = computed(() =>
 </script>
 
 <template>
-  <ElRadioGroup
-    v-model="model"
-    :class="['mu-radio', {
-      'mu-radio-line-item': line,
-      'mu-radio-readonly-group': readonly,
-    }]"
-    :disabled="disabled || readonly"
+  <el-radio-group v-model="model"
+                  class="mu-radio" :class="[{
+                    'mu-radio-line-item': line,
+                    'mu-radio-readonly-group': readonly,
+                  }]"
+                  :disabled="disabled || readonly"
   >
-    <ElRadio
-      v-for="item in filteredOptions"
-      :key="typeof item.value === 'boolean' ? +item.value : item.value"
-      :value="item.value"
-      @click="handleClick"
+    <el-radio v-for="item in filteredOptions"
+              :key="typeof item.value === 'boolean' ? +item.value : item.value"
+              :value="item.value"
+              @click="handleClick"
     >
       {{ item.label }}
-    </ElRadio>
-  </ElRadioGroup>
+    </el-radio>
+  </el-radio-group>
 </template>

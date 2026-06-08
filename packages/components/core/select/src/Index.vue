@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { ElOption, ElOptionGroup, ElSelect, vLoading } from 'element-plus'
 import { computed, getCurrentInstance } from 'vue'
-import { ElSelect, ElOption, ElOptionGroup, vLoading } from 'element-plus'
 
 const props = withDefaults(defineProps<{
   options?: any[]
@@ -56,48 +56,23 @@ const disabledOptionsList = computed(() =>
 </script>
 
 <template>
-  <ElSelect
-    v-model="model"
-    :class="['mu-select', { 'mu-select-readonly-item': readonly }]"
-    :disabled="readonly || disabled"
-    :loading="loading"
-    :placeholder="placeholderText"
-    :clearable="clearable"
-    filterable=""
-    @change="handleChange"
-  >
+  <el-select v-model="model" class="mu-select" :class="[{ 'mu-select-readonly-item': readonly }]" :disabled="readonly || disabled" :loading :placeholder="placeholderText" :clearable filterable @change="handleChange">
     <template #loading>
-      <div
-        v-loading="loading"
-        element-loading-text="加载中..."
-        class="mu-select-loading-item"
-      />
+      <div v-loading="loading" element-loading-text="加载中..." class="mu-select-loading-item" />
     </template>
     <template #default>
       <div class="mu-select-options">
-        <ElOption v-if="all" value="">
+        <el-option v-if="all" value="">
           全部
-        </ElOption>
+        </el-option>
         <!-- 分组 -->
         <template v-for="item in options" :key="item.value">
-          <ElOptionGroup v-if="item.children" :label="item.label">
-            <ElOption
-              v-for="child in item.children"
-              :key="typeof child.value === 'boolean' ? +child.value : child.value"
-              :label="child.label"
-              :value="child.value"
-              :disabled="disabledOptionsList.includes(item.value)"
-            />
-          </ElOptionGroup>
-          <ElOption
-            v-else
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-            :disabled="disabledOptionsList.includes(item.value)"
-          />
+          <el-option-group v-if="item.children" :label="item.label">
+            <el-option v-for="child in item.children" :key="typeof child.value === 'boolean' ? +child.value : child.value" :label="child.label" :value="child.value" :disabled="disabledOptionsList.includes(item.value)" />
+          </el-option-group>
+          <el-option v-else :key="item.value" :label="item.label" :value="item.value" :disabled="disabledOptionsList.includes(item.value)" />
         </template>
       </div>
     </template>
-  </ElSelect>
+  </el-select>
 </template>

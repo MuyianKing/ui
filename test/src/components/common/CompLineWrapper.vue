@@ -12,8 +12,8 @@ defineProps({
 </script>
 
 <template>
-  <div class="wrapper">
-    <div class="block-title">
+  <div class="wrapper flex items-center mt-4">
+    <div class="block-title mb-1 flex-shrink-0 mr-2">
       {{ label }}
     </div>
     <slot />
@@ -22,15 +22,12 @@ defineProps({
 
 <style scoped>
 .wrapper {
-  @apply flex items-center mt-4;
-
   &:first-child {
-    @apply mt-0;
+    margin-top: 0 !important;
   }
 }
 
 .block-title {
-  @apply mb-1 flex-shrink-0 mr-2;
   width: v-bind(labelWidth);
 }
 </style>

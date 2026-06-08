@@ -1,0 +1,8 @@
+.mu-form-dialog-inline-form {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.mu-form-dialog-inline-form .el-form-item {
+  width: 50%;
+}

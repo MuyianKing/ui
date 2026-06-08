@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { Icon } from '@iconify/vue'
 import { getCanUseValue } from '@muyianking/utils'
+import { computed } from 'vue'
 
 const props = withDefaults(defineProps<{
   icon: string
@@ -16,15 +16,14 @@ const props = withDefaults(defineProps<{
 
 const style = computed(() => ({
   'font-size': getCanUseValue(props.size),
-  color: props.color || (props.type ? `var(--el-color-${props.type})` : ''),
+  'color': props.color || (props.type ? `var(--el-color-${props.type})` : ''),
 }))
 </script>
 
 <template>
-  <Icon
-    :icon="props.icon"
-    class="mu-icon"
-    aria-hidden="false"
-    :style="style"
+  <icon :icon="props.icon"
+        class="mu-icon"
+        aria-hidden="false"
+        :style
   />
 </template>

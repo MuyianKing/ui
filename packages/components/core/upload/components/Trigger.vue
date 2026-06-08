@@ -1,0 +1,123 @@
+<script setup lang="ts">
+import { getMimeType, getSuffix } from '@muyianking/utils'
+import { computed, ref, useSlots } from 'vue'
+import { confirm } from '../../../utils/message'
+import IconComp from '../../icon'
+import { getAcceptType } from '../hooks/index'
+
+interface UploadConfig {
+  multiple: boolean
+  files: any
+  maxCount: number
+  type: string | string[]
+  suffix: string | string[]
+  disabled: boolean
+  noPreview: boolean
+}
+
+const props = defineProps({
+  config: {
+    type: Object as () => UploadConfig,
+    default() {
+      return {}
+    },
+  },
+  triggerType: {
+    type: String,
+    default: 'card',
+  },
+})
+
+const emits = defineEmits<{
+  'select-file': [file: File]
+}>()
+
+const slots = useSlots()
+
+// 已选文件数组
+const files_comp = computed<any[]>(() => {
+  const files = props.config.files
+  if (files)
+    return Array.isArray(files) ? files : [files]
+
+  return []
+})
+
+// 是否显示添加按钮
+const show_add = computed(() => {
+  const config = props.config
+
+  if (config.noPreview) {
+    return true
+  }
+
+  // 单选已选
+  if ((!config.multiple && files_comp.value.length > 0)) {
+    return false
+  }
+
+  // 多选超过范围
+  return files_comp.value.length < config.maxCount
+})
+
+// 触发上传
+const file_input_ref = ref<HTMLInputElement>()
+
+function triggerAdd() {
+  if (props.config.disabled)
+    return
+
+  file_input_ref.value?.click()
+}
+
+// 选择文件
+function selectMedia(e: Event) {
+  const input = e.target as HTMLInputElement
+  const file = input.files?.[0]
+  if (!file)
+    return
+
+  input.value = ''
+
+  if (accept_type.value !== '*/*' && !accept_type.value.includes(getMimeType(getSuffix(file.name))?.[0] || '')) {
+    confirm('请不要自行选择【所有文件】，上传指定类型外的文件', '', {
+      type: 'warning',
+      buttonSize: 'large',
+      confirmButtonText: '我已知晓',
+      center: true,
+      showCancelButton: false,
+      showClose: false,
+      closeOnClickModal: false,
+      closeOnPressEscape: false,
+      closeOnHashChange: false,
+    })
+    return
+  }
+
+  emits('select-file', file)
+}
+
+// 文件类型
+const accept_type = computed(() => getAcceptType(props.config.type, props.config.suffix))
+
+defineExpose({
+  triggerAdd,
+})
+</script>
+
+<template>
+  <div v-if="show_add" v-bind="$attrs" class="cursor-pointer normal-trigger mu-upload-trigger-comp" :class="{ 'trigger-item': triggerType === 'card' && !slots.trigger, 'w-full': triggerType === 'line' }" @click="triggerAdd">
+    <slot name="trigger" />
+
+    <template v-if="!slots.trigger">
+      <div v-if="triggerType === 'card'">
+        <icon-comp icon="bitcoin-icons:plus-outline" style="font-size: 28px;" />
+      </div>
+      <div v-else class="upload-icon">
+        <icon-comp icon="ic:round-cloud-upload" style="font-size: 20px;" />
+        <span class="ml-1 ">点击上传附件</span>
+      </div>
+    </template>
+  </div>
+  <input ref="file_input_ref" type="file" :accept="accept_type" style="display:none" @change="selectMedia">
+</template>

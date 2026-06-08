@@ -1,3 +1,4 @@
+import { resolve } from 'node:path'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import tailwindcss from 'tailwindcss'
@@ -15,10 +16,13 @@ export default defineConfig({
     },
   },
   resolve: {
-    alias: alias_map,
+    alias: {
+      ...alias_map,
+      '@muyianking/ui': resolve(__dirname, '../packages/components/index.ts'),
+    },
   },
   optimizeDeps: {
-    include: ['@muyianking/components'],
+    include: ['@muyianking/components', '@muyianking/ui'],
     force: true,
   },
   plugins: [

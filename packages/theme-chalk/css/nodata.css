@@ -1,0 +1,11 @@
+.mu-no-data {
+  text-align: center;
+}
+
+.mu-no-data .no-data-img {
+  display: inline-table;
+}
+
+.mu-no-data .no-data-text {
+  color: #aaa;
+}

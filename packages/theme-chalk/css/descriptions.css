@@ -1,0 +1,7 @@
+.mu-descriptions {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  border-top: 1px solid var(--el-border-color-lighter);
+  border-left: 1px solid var(--el-border-color-lighter);
+}

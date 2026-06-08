@@ -1,0 +1,126 @@
+.mu-upload-wrapper {
+  color: #555;
+}
+
+/* -------------触发组件----------- */
+.mu-upload-trigger-comp.trigger-item {
+  width: 100px !important;
+  height: 100px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+}
+
+.mu-upload-trigger-comp.normal-trigger {
+  width: fit-content;
+}
+
+.mu-upload-trigger-comp .upload-icon {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.mu-upload-trigger-comp .upload-icon:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+/* -------------预览----------------- */
+.mu-upload-preview-wrapper {
+  position: relative;
+  border-radius: 5px;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+}
+
+.mu-upload-preview-wrapper .file-list-wrapper {
+  padding: 5px 0;
+}
+
+.mu-upload-preview-wrapper .file-list-wrapper:hover {
+  padding: 10px;
+}
+
+.mu-upload-preview-wrapper .delete-wrapper {
+  display: none;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 0;
+  right: 0;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  user-select: none;
+  border-radius: 5px;
+}
+
+.mu-upload-preview-wrapper .delete-wrapper > svg:hover {
+  cursor: pointer;
+  color: var(--color-primary);
+}
+
+.mu-upload-preview-wrapper:hover .delete-wrapper {
+  display: flex;
+}
+
+.mu-upload-preview-wrapper img {
+  border-radius: 5px;
+}
+
+.mu-upload-preview-wrapper .mu-preview-video {
+  border-radius: 5px;
+}
+
+/* --------------------- */
+.mu-upload-flex-style {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.mu-upload-flex-style .mu-upload-preview-wrapper {
+  margin: 0;
+}
+
+.mu-upload-flex-style .trigger-item {
+  margin: 0;
+}
+
+.mu-upload-multiple-margin .mu-upload-preview-wrapper {
+  margin: 0 5px 5px 0;
+}
+
+.mu-upload-multiple-margin .trigger-item {
+  margin: 0 5px 5px 0;
+}
+
+.mu-ui-progress-shadow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999999;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.mu-ui-progress-shadow .progress-body {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  width: 50%;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+.mu-ui-progress-shadow .progress {
+  width: 100%;
+}

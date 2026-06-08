@@ -1,0 +1,45 @@
+.mu-checkbox .el-checkbox {
+  margin-right: 10px;
+}
+
+.mu-checkbox .el-checkbox:last-child {
+  margin-right: 0;
+}
+
+.mu-checkbox-line-item {
+  width: 100%;
+}
+
+.mu-checkbox-line-item .el-checkbox {
+  width: 100%;
+  margin-right: 0;
+}
+
+.mu-checkbox-line-item .el-checkbox .el-checkbox__label {
+  white-space: break-spaces;
+  line-height: 20px;
+}
+
+.mu-checkbox-readonly-group {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.mu-checkbox-readonly-group .el-checkbox {
+  display: none;
+  cursor: inherit;
+}
+
+.mu-checkbox-readonly-group .el-checkbox.is-checked {
+  display: inline-flex;
+}
+
+.mu-checkbox-readonly-group .el-checkbox .el-checkbox__input {
+  display: none;
+}
+
+.mu-checkbox-readonly-group .el-checkbox .el-checkbox__label {
+  color: inherit !important;
+  cursor: inherit !important;
+}

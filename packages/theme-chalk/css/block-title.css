@@ -1,0 +1,54 @@
+.mu-block-title {
+  display: flex;
+}
+
+.mu-block-title .block {
+  border-radius: 5px;
+  width: 5px;
+  height: auto;
+  margin-right: 8px;
+  padding: 5px 0;
+}
+
+.mu-block-title .title {
+  font-weight: bold;
+}
+
+.mu-block-title .primary {
+  background-image: linear-gradient(to bottom, #78c6ff, #1c82f1);
+}
+
+.mu-block-title .success {
+  background-image: linear-gradient(#dbe89b, #81c69e);
+}
+
+.mu-block-title .danger {
+  background-image: linear-gradient(#f08c85, #d8353a);
+}
+
+.mu-flat-block-title {
+  display: flex;
+}
+
+.mu-flat-block-title .block {
+  width: 5px;
+  height: auto;
+  margin-right: 8px;
+  padding: 5px 0;
+}
+
+.mu-flat-block-title .title {
+  font-weight: bold;
+}
+
+.mu-flat-block-title .primary {
+  background-color: var(--color-primary);
+}
+
+.mu-flat-block-title .success {
+  background-color: var(--color-success);
+}
+
+.mu-flat-block-title .danger {
+  background-color: var(--color-danger);
+}

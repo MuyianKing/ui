@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import { MuConfigProvider } from '@muyianking/components'
 </script>
 
 <template>
-  <router-view />
+  <mu-config-provider :custom-config="{}">
+    <router-view />
+  </mu-config-provider>
 </template>
 
 <style>
