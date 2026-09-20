@@ -12,7 +12,7 @@ withDefaults(defineProps<{
   title?: string
   teleported?: boolean
   width?: string
-  trigger?: string
+  trigger?: 'click' | 'focus' | 'hover' | 'contextmenu'
 }>(), {
   placeholder: '请选择图标',
   title: '',
@@ -37,18 +37,25 @@ const tableData = reactive({
   hasMore: true,
 })
 
+// 连续输入或滚动时会并发多个请求，用令牌丢弃过期响应，否则旧结果会覆盖新结果
+let request_token = 0
+
 async function getData(config?: { append?: boolean }) {
   if (!globalConfig?.getIcons)
     return
   if (!config?.append)
     tableData.data = []
+  const token = ++request_token
   loading.value = true
   try {
     const result = await globalConfig.getIcons(query)
+    if (token !== request_token)
+      return
     result.data.forEach((icon: any) => tableData.data.push(icon))
     tableData.hasMore = result.count > query.page * query.limit
   } finally {
-    loading.value = false
+    if (token === request_token)
+      loading.value = false
   }
 }
 
@@ -58,7 +65,8 @@ const search = useDebounceFn(() => {
 }, 300)
 
 function handleBottom() {
-  if (!tableData.hasMore)
+  // 缺少 loading 判断时，滚动可以并发触发同一页被 push 两次
+  if (loading.value || !tableData.hasMore)
     return
   query.page++
   getData({ append: true })
@@ -90,11 +98,10 @@ onMounted(() => getData())
                 :width
                 :trigger
                 :teleported
-                @after-leave="search"
     >
       <template #reference>
         <div class="flex items-center cursor-pointer">
-          <span class="placeholder-item">{{ placeholder }}</span>
+          <span v-if="!model" class="placeholder-item">{{ placeholder }}</span>
           <mu-icon class="ml-2" :icon="model" style="font-size: 26px" />
         </div>
       </template>

@@ -13,7 +13,7 @@ export default function useAlias() {
   const alias_map: any = {}
 
   alias_path.forEach((item) => {
-    alias_map[item[0]] = item[1].startsWith('@') ? item[1] : resolve(__dirname, item[1].replace('./', ''))
+    alias_map[item[0]] = item[1].startsWith('@') ? item[1] : resolve(import.meta.dirname, item[1].replace('./', ''))
   })
 
   return {

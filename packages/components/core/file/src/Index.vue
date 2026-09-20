@@ -26,6 +26,9 @@ const globalConfig = inject<{
 
 const fileName = computed(() => props.file?.name || props.file?.fileName || '')
 
+// 上传链路里存的是 path，只读 url 会拿到 undefined
+const fileUrl = computed(() => props.file?.url || props.file?.path || '')
+
 const fileSuffix = computed(() => {
   const name = fileName.value
   return name?.split('.').pop()?.toLowerCase() || ''
@@ -49,7 +52,9 @@ const fileIcon = computed(() => {
 function handleDownload() {
   if (props.noDownload || !globalConfig?.downloadFile)
     return
-  globalConfig.downloadFile(props.file!.url, fileName.value)
+  if (!fileUrl.value)
+    return
+  globalConfig.downloadFile(fileUrl.value, fileName.value)
   success('开始下载')
 }
 </script>

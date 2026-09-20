@@ -81,7 +81,7 @@ defineExpose({
   <mu-dialog v-model="show" :title :width :top v-bind="$attrs" @close="close">
     <el-form ref="formRef"
              :class="{ 'mu-form-dialog-inline-form': inline }"
-             :model
+             :model="model ?? undefined"
              :rules
              :label-width="labelWidth"
              scroll-to-error

@@ -13,7 +13,6 @@ const props = withDefaults(defineProps<{
   format?: string
 }>(), {
   type: 'date',
-  modelValue: '',
   emptyValue: '',
   placeholder: '请选择时间',
   valueFormat: '',

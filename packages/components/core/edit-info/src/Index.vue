@@ -8,7 +8,7 @@ defineOptions({ name: 'MuEditInfo' })
 const props = withDefaults(defineProps<{
   modelValue?: string | number
   width?: string
-  align?: string
+  align?: 'left' | 'center' | 'right'
   editable?: boolean
   placeholder?: string
   triggerInfo?: string
@@ -34,7 +34,11 @@ const editValue = ref<string | number>('')
 const displayValue = computed(() => {
   if (props.zeroToEmpty && (props.modelValue === 0 || props.modelValue === '0'))
     return ''
-  return props.modelValue
+  const val = props.modelValue
+  // 模板里用 displayValue || placeholder 会把合法的 0 显示成占位文案
+  if (val === '' || val === null || val === undefined)
+    return props.placeholder
+  return val
 })
 
 function startEdit() {
@@ -64,7 +68,7 @@ const submitEdit = useDebounceFn(() => {
       />
     </template>
     <span v-else class="mu-edit-info-text" :title="triggerInfo" @dblclick="startEdit">
-      {{ displayValue || placeholder }}
+      {{ displayValue }}
     </span>
   </div>
 </template>

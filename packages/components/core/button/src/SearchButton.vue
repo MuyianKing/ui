@@ -25,7 +25,7 @@ const { buttonText, buttonType } = useButton(props as any, '查询', globalConfi
   <mu-button :button-type="buttonType"
              :icon
              :text="buttonText"
-             @click="$emit('click', $event)"
+             @click="$emit('click')"
   >
     <slot>{{ text }}</slot>
   </mu-button>

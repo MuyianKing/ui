@@ -73,32 +73,54 @@ function triggerAdd() {
 // 选择文件
 function selectMedia(e: Event) {
   const input = e.target as HTMLInputElement
-  const file = input.files?.[0]
-  if (!file)
-    return
-
+  const selected = Array.from(input.files ?? [])
   input.value = ''
-
-  if (accept_type.value !== '*/*' && !accept_type.value.includes(getMimeType(getSuffix(file.name))?.[0] || '')) {
-    confirm('请不要自行选择【所有文件】，上传指定类型外的文件', '', {
-      type: 'warning',
-      buttonSize: 'large',
-      confirmButtonText: '我已知晓',
-      center: true,
-      showCancelButton: false,
-      showClose: false,
-      closeOnClickModal: false,
-      closeOnPressEscape: false,
-      closeOnHashChange: false,
-    })
+  if (selected.length === 0)
     return
-  }
 
-  emits('select-file', file)
+  // multiple 时必须整批处理，之前只取 files[0]，一次选 5 个只进 1 个
+  const files = props.config.multiple ? selected : selected.slice(0, 1)
+
+  for (const file of files) {
+    if (!isAccepted(file.name)) {
+      showTypeWarning()
+      // 类型不符时整批中止，避免混入越权文件后继续上传
+      return
+    }
+    emits('select-file', file)
+  }
 }
 
 // 文件类型
-const accept_type = computed(() => getAcceptType(props.config.type, props.config.suffix))
+const accept_type = computed<string[]>(() => {
+  const result = getAcceptType(props.config.type, props.config.suffix)
+  return Array.isArray(result) ? result : []
+})
+
+// 供 <input accept> 使用的字符串；空数组表示不限制类型
+const accept_attr = computed(() => accept_type.value.length > 0 ? accept_type.value.join(',') : '*/*')
+
+// accept_type 是 mime 字符串数组；getMimeType 传字符串时返回的是单个 mime 字符串，
+// 旧写法多了一个 [0] 下标，取到的是首字符（'i'），比对永远失配并拦掉合法文件
+function isAccepted(fileName: string) {
+  if (accept_type.value.length === 0)
+    return true
+  return accept_type.value.includes(getMimeType(getSuffix(fileName)))
+}
+
+function showTypeWarning() {
+  confirm('请不要自行选择【所有文件】，上传指定类型外的文件', '', {
+    type: 'warning',
+    buttonSize: 'large',
+    confirmButtonText: '我已知晓',
+    center: true,
+    showCancelButton: false,
+    showClose: false,
+    closeOnClickModal: false,
+    closeOnPressEscape: false,
+    closeOnHashChange: false,
+  })
+}
 
 defineExpose({
   triggerAdd,
@@ -119,5 +141,5 @@ defineExpose({
       </div>
     </template>
   </div>
-  <input ref="file_input_ref" type="file" :accept="accept_type" style="display:none" @change="selectMedia">
+  <input ref="file_input_ref" type="file" :accept="accept_attr" :multiple="!!props.config.multiple" style="display:none" @change="selectMedia">
 </template>

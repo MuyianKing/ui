@@ -1,3 +1,6 @@
 import 'element-plus/es/components/popover/style/css'
 import 'element-plus/es/components/button/style/css'
+import 'element-plus/es/components/loading/style/css'
 import '@muyianking/theme-chalk/css/icon-select.css'
+import '../../input/style/index'
+import '../../icon/style/index'

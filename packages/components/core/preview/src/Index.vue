@@ -27,8 +27,6 @@ function getFileType(file: any): string {
   const imgTypes = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg']
   const videoTypes = ['mp4', 'webm', 'ogg', 'mov', 'avi']
 
-  console.log('url', url)
-
   const suffix = (url as string).split('.').pop()?.toLowerCase()
   if (suffix && imgTypes.includes(suffix))
     return 'image'

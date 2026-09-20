@@ -9,7 +9,7 @@ const props = withDefaults(defineProps<{
   prefix?: string
   preview?: string[]
   noPreview?: boolean
-  fit?: string
+  fit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
   height?: string
   width?: string
 }>(), {

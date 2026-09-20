@@ -41,3 +41,19 @@ export { MuUpload } from './core/upload'
 export { MuVideo } from './core/video'
 
 export { MuWatermark } from './core/watermark'
+
+// 表单校验规则。必须从公共入口导出：只放在 utils/validator 里的话，
+// 没有组件引用的 v_tel / v_latlong / v_phoneOrTel 会被构建摇掉，发布包里取不到。
+export type { RuleValidator, ValidateCallback } from './utils/validator'
+export {
+  v_carnum,
+  v_email,
+  v_id_num,
+  v_int,
+  v_ip,
+  v_latlong,
+  v_phone,
+  v_phoneOrTel,
+  v_port,
+  v_tel,
+} from './utils/validator'

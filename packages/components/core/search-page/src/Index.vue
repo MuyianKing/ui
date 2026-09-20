@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ComponentSize } from 'element-plus'
 import { ElForm, vLoading } from 'element-plus'
-import { computed, ref, useTemplateRef } from 'vue'
+import { computed, ref } from 'vue'
 import { MuButton } from '../../button'
 import { MuIcon } from '../../icon'
 
@@ -30,7 +30,6 @@ const props = withDefaults(defineProps<{
 })
 
 const showAdvanced = ref(false)
-const advanceRef = useTemplateRef<HTMLElement>('advanceRef')
 
 function toggleAdvanced() {
   showAdvanced.value = !showAdvanced.value
@@ -49,7 +48,7 @@ const bottomClasses = computed(() => {
 <template>
   <div class="flex flex-col h-full mu-search-page">
     <el-form v-if="!noSearch" :size="formSize" :label-width="labelWidth">
-      <div ref="advanceRef" class="search-area">
+      <div class="search-area">
         <slot name="header" />
         <slot v-if="showAdvanced" name="advanced" />
         <div v-if="fixedButton" class="fixed-button">

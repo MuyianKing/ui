@@ -54,14 +54,14 @@ const _files = computed<FileItem[]>(() => {
   return files.map((item: FileItem) => {
     return {
       ...item,
-      type: getType(item.path) || getType(item.name),
+      type: getType(item.path ?? '') || getType(item.name ?? ''),
     }
   })
 })
 </script>
 
 <template>
-  <div v-for="_file in _files" :key="_file.id" v-loading="_file.loading" class="mu-upload-preview-wrapper"
+  <div v-for="(_file, index) in _files" :key="_file.id ?? index" v-loading="!!_file.loading" class="mu-upload-preview-wrapper"
        @click="handleChange(_file, listType !== 'card')"
   >
     <preview-comp :files="_file" height="100px" width="100px" no-preview :card="listType === 'card'" no-download />

@@ -31,22 +31,28 @@ watch(() => props.options, () => {
 }, { immediate: true, deep: true })
 
 function handleChange(val: any[]) {
-  model.value = props.multiple ? val : val.pop() || ''
+  if (props.multiple) {
+    model.value = val
+    return
+  }
+  // 用 pop() || '' 会把 0 / false 这类合法值变成 ''
+  model.value = val.length > 0 ? val[val.length - 1] : ''
 }
 
 const value = computed(() => {
-  if (!model.value)
+  if (model.value === null || model.value === undefined || model.value === '')
     return []
   let _value: any[]
   if (Array.isArray(model.value)) {
     _value = model.value
-  } else if (typeof model.value === 'number') {
+  } else if (typeof model.value === 'number' || typeof model.value === 'boolean') {
     _value = [model.value]
   } else {
-    _value = String(model.value).split(',').filter(Boolean)
+    _value = String(model.value).split(',').filter(item => item !== '')
   }
   if (props.multiple) {
-    return _value.map(item => valueMap.value[item]).filter(Boolean)
+    // 不能用 filter(Boolean)：value 为 0 / false 的选项会被当作"未选中"丢掉
+    return _value.map(item => valueMap.value[item]).filter(item => item !== undefined)
   }
   return _value || []
 })

@@ -118,14 +118,23 @@ const files_value = defineModel<UploadFile | UploadFile[] | null>({
   default: null,
 })
 
+// 本地预览用的 blob 地址必须显式释放，否则每个选过又删掉的文件都会一直占着内存
+function revokeBlob(file?: UploadFile | null) {
+  if (file?.path?.startsWith('blob:'))
+    URL.revokeObjectURL(file.path)
+}
+
 // 删除
 function handleDel(row: UploadFile) {
   if (props.multiple) {
     const files = files_value.value as UploadFile[]
     const index = files.findIndex(item => item.id === row.id)
-    if (index > -1)
+    if (index > -1) {
+      revokeBlob(files[index])
       files.splice(index, 1)
+    }
   } else {
+    revokeBlob(files_value.value as UploadFile | null)
     files_value.value = null
   }
 }
@@ -164,6 +173,7 @@ async function handleSelect(file: File) {
 
       if (index > -1) {
         // 找到替换
+        revokeBlob(files[index])
         files.splice(index, 1, new_file)
       } else {
         // 未找到新增
@@ -177,6 +187,7 @@ async function handleSelect(file: File) {
 
     new_file = files[index]
   } else {
+    revokeBlob(files_value.value as UploadFile | null)
     files_value.value = new_file
   }
 
@@ -254,18 +265,25 @@ async function handleUploadFile(file: File): Promise<UploadResult> {
   }
 
   // 上传
-  const result = await uploadFile(file, {
-    onProgress(e: ProgressEvent) {
-      const cur_progress = Number.parseInt(`${(e.loaded / e.total) * 100}`, 10)
-      progress_percent.value = Number.parseInt(`${cur_progress}`, 10)
-    },
-  })
-  show_progress.value = false
-  progress_percent.value = 0
+  let result
+  try {
+    result = await uploadFile(file, {
+      onProgress(e: ProgressEvent) {
+        // e.total 为 0 时算出 Infinity，parseInt 后变成 NaN
+        const percent = e.total > 0 ? Math.min(100, Math.round((e.loaded / e.total) * 100)) : 0
+        progress_percent.value = percent
+      },
+    })
+  } finally {
+    // 失败时也要收起进度条，否则会一直挂着
+    show_progress.value = false
+    progress_percent.value = 0
+  }
 
   // 上传成功
-  if (result) {
-    return result[0]
+  const uploaded = Array.isArray(result) ? result[0] : result
+  if (uploaded) {
+    return uploaded
   }
 
   throw new Error('上传失败')
@@ -305,7 +323,7 @@ defineExpose({
 <template>
   <div v-bind="$attrs" class="mu-upload-wrapper" :class="{ 'mu-upload-flex-style': _list_type === 'card', 'mu-upload-multiple-margin': multiple }">
     <template v-if="!noPreview">
-      <preview-comp v-if="!slots.preview" :file="files_value" :list-type="_list_type" @delete="handleDel" @re-upload="handleReupload" />
+      <preview-comp v-if="!slots.preview" :file="files_value ?? undefined" :list-type="_list_type" @delete="handleDel" @re-upload="handleReupload" />
       <slot v-else name="preview" :files="files_value" />
     </template>
 

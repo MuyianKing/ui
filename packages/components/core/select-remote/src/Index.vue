@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ElOption, ElSelect } from 'element-plus'
-import { ref, useAttrs, watch } from 'vue'
+import { ref, watch } from 'vue'
 
 defineOptions({ name: 'MuSelectRemote' })
 
@@ -9,7 +9,8 @@ const props = withDefaults(defineProps<{
   all?: boolean
   params?: Record<string, any>
   queryConfig?: Record<string, string>
-  dataConfig?: Record<string, string>
+  // dataConfig 里要放 extend_keys: []，收窄成 Record<string, string> 会通过不了类型检查
+  dataConfig?: Record<string, any>
 }>(), {
   server: undefined,
   all: false,
@@ -18,13 +19,10 @@ const props = withDefaults(defineProps<{
   dataConfig: () => ({ label_key: 'name', value_key: 'id', extend_keys: [] }),
 })
 
-const attrs = useAttrs() as Record<string, any>
 const model = defineModel<any>()
 
 const loading = ref(false)
 const options = ref<any[]>([])
-const searchQuery = ref('')
-const hasMore = ref(true)
 const page = ref(1)
 const pageSize = 50
 
@@ -39,28 +37,22 @@ async function loadData(query?: string) {
       pageSize,
       ...props.params,
     })
-    if (query || page.value === 1) {
-      options.value = result
-    } else {
-      options.value = [...options.value, ...result]
-    }
-    hasMore.value = result.length >= pageSize
+    options.value = (query || page.value === 1) ? result : [...options.value, ...result]
   } finally {
     loading.value = false
   }
 }
 
 function remoteMethod(query: string) {
-  searchQuery.value = query
   page.value = 1
   loadData(query)
 }
 
-// Load initial data if there's a modelValue for display
-watch(() => attrs.modelValue, (val) => {
-  if (val && options.value.length === 0) {
+// modelValue 已由 defineModel 声明成 prop，不会出现在 $attrs 里，
+// 所以原来监听 attrs.modelValue 的分支永远不触发：编辑场景首次回显拿不到 label
+watch(model, (val) => {
+  if (val && options.value.length === 0)
     loadData()
-  }
 }, { immediate: true })
 </script>
 

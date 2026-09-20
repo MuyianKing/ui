@@ -14,6 +14,11 @@ const props = withDefaults(defineProps<{
 const numFormat = ref('')
 const suffix = ref('')
 
+// 固定用 en-US 取千分位再换成 separator，否则输出会随运行环境 locale 变成 "1.234" / "1 234"
+function group(value: number | string) {
+  return `${value}`.replace(/,/g, props.separator)
+}
+
 watchEffect(() => {
   const n = props.num
   if (n >= 100000000) {
@@ -23,7 +28,7 @@ watchEffect(() => {
     numFormat.value = (n / 10000).toFixed(2)
     suffix.value = '万'
   } else {
-    numFormat.value = n.toLocaleString()
+    numFormat.value = group(n.toLocaleString('en-US'))
     suffix.value = ''
   }
 })

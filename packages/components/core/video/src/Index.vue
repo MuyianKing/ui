@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, ref, useTemplateRef } from 'vue'
+import { computed, inject, useTemplateRef } from 'vue'
 
 defineOptions({ name: 'MuVideo' })
 
@@ -9,7 +9,7 @@ const props = withDefaults(defineProps<{
   height?: string
   width?: string
   controls?: boolean
-  fit?: string
+  fit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
   noPreview?: boolean
 }>(), {
   src: '',
@@ -31,26 +31,27 @@ const videoSrc = computed(() => {
 })
 
 const videoRef = useTemplateRef<HTMLVideoElement>('videoRef')
-const isPlaying = ref(false)
 
 function togglePlay() {
-  if (!videoRef.value)
+  const video = videoRef.value
+  if (!video)
     return
-  if (isPlaying.value) {
-    videoRef.value.pause()
+  if (video.paused) {
+    // play() 可能因浏览器自动播放策略被 reject，需读 video.paused 而非自维护状态，
+    // 否则失败时记录的播放态与真实状态相反
+    video.play().catch(() => {})
   } else {
-    videoRef.value.play()
+    video.pause()
   }
-  isPlaying.value = !isPlaying.value
 }
 
 function handleDblclick() {
   if (!videoRef.value)
     return
   if (document.fullscreenElement) {
-    document.exitFullscreen()
+    document.exitFullscreen().catch(() => {})
   } else {
-    videoRef.value.requestFullscreen()
+    videoRef.value.requestFullscreen().catch(() => {})
   }
 }
 </script>
@@ -60,8 +61,8 @@ function handleDblclick() {
     <video v-if="videoSrc"
            ref="videoRef"
            :src="videoSrc"
+           :controls="controls"
            :style="{ objectFit: fit }"
-           @ended="isPlaying = false"
     />
     <div v-else class="mu-video-placeholder">
       <slot>暂无视频</slot>

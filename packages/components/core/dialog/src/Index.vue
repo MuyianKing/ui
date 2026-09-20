@@ -42,18 +42,21 @@ const dialogStyle = computed(() => ({
 
 function setMaxHeight() {
   nextTick(() => {
-    const $el = dialogRef.value.dialogContentRef.$el
-    const header = $el.querySelector('.el-dialog__header').clientHeight
-    const footer = slots.footer ? $el.querySelector('.el-dialog__footer')?.clientHeight || 72 : 0
+    // 这里伸手进了 Element Plus 的内部结构，它升级时最容易碎，
+    // 所以集中成一次取值并全部走可选链（未渲染 header 时原来会直接抛错）
+    const $el = (dialogRef.value as any)?.dialogContentRef?.$el as HTMLElement | undefined
+    const body = $el?.querySelector<HTMLElement>('.el-dialog__body')
+    if (!$el || !body)
+      return
 
+    const header = $el.querySelector('.el-dialog__header')?.clientHeight || 0
+    const footer = slots.footer ? $el.querySelector('.el-dialog__footer')?.clientHeight || 72 : 0
     const offsetTop = $el.offsetTop
 
-    console.log(header, offsetTop, footer)
-
     if (props.height) {
-      $el.querySelector('.el-dialog__body').style.height = `calc(${props.height} - ${header + footer}px)`
+      body.style.height = `calc(${props.height} - ${header + footer}px)`
     } else {
-      $el.querySelector('.el-dialog__body').style.maxHeight = `calc(100vh - ${header + 2 * offsetTop + footer + 32}px)`
+      body.style.maxHeight = `calc(100vh - ${header + 2 * offsetTop + footer + 32}px)`
     }
   })
 }

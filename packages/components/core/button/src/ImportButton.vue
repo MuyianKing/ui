@@ -19,9 +19,9 @@ const { buttonText, buttonType } = useButton(props as any, '导入')
 
 <template>
   <mu-button :button-type="buttonType"
-             icon="ph:export-bold"
+             icon="ph:import-bold"
              :text="buttonText"
-             @click="$emit('click', $event)"
+             @click="$emit('click')"
   >
     <slot>{{ text }}</slot>
   </mu-button>

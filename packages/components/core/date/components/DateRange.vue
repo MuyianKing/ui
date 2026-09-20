@@ -59,16 +59,31 @@ const startValueFormat = computed(() => props.startValueFormat || dateValueForma
 const endValueFormat = computed(() => props.endValueFormat || dateValueFormat.value)
 const dateFormat = computed(() => props.format || dateValueFormat.value)
 
+// 按「本地时区的当天零点」比较日期。
+// 直接 new Date('YYYY-MM-DD HH:mm:ss') 在 Safari 下得到 Invalid Date（比较恒为 false，
+// 禁用失效），而 new Date('YYYY-MM-DD') 又按 UTC 解析，会整体差一天。
+function toDateOnly(val: string): number | null {
+  if (!val)
+    return null
+  const [y, m, d] = val.split(/T| /)[0].split('-').map(Number)
+  if (!y || !m || !d)
+    return null
+  return new Date(y, m - 1, d).getTime()
+}
+
 function disabledStartDate(time: Date) {
-  if (props.end) {
-    return time.getTime() > new Date(props.end).getTime()
+  const end = toDateOnly(props.end)
+  if (end !== null) {
+    // 用当天零点比较，结束日当天本身仍然可选
+    return time.getTime() > end
   }
   return false
 }
 
 function disabledEndDate(time: Date) {
-  if (props.start) {
-    return time.getTime() < new Date(props.start).getTime()
+  const start = toDateOnly(props.start)
+  if (start !== null) {
+    return time.getTime() < start
   }
   return false
 }

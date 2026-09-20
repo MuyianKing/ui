@@ -1,15 +1,18 @@
 import path from 'node:path'
-import { exec, getDir, getParams, showLog } from '@muyianking/build'
+import { fileURLToPath } from 'node:url'
+import { exec, getParams, showLog } from '@muyianking/build'
 import { readJsonSync, writeJsonSync } from 'fs-extra/esm'
 import inquirer from 'inquirer'
 
 import ora from 'ora'
 
-const __dirname = getDir(import.meta.url)
+// 与 build.js 一致：不要用 getDir()，它返回文件路径而非目录
+const scriptDir = path.dirname(fileURLToPath(import.meta.url))
+const rootDir = path.resolve(scriptDir, '..')
 
 async function build() {
   const spinner = ora(`update package.json`).start()
-  const package_path = path.resolve(__dirname, '../../package.json')
+  const package_path = path.resolve(rootDir, 'package.json')
   const _config = readJsonSync(package_path)
 
   let version = `v${_config.version}`

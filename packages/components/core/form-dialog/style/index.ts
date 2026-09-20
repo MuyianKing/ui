@@ -1,1 +1,6 @@
+import 'element-plus/es/components/form/style/css'
+import 'element-plus/es/components/button/style/css'
+import 'element-plus/es/components/message/style/css'
+import 'element-plus/es/components/message-box/style/css'
 import '@muyianking/theme-chalk/css/form-dialog.css'
+import '../../dialog/style/index'

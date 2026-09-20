@@ -27,15 +27,21 @@ pnpm i @muyianking/ui
 
 ### 手动引入
 
-```js
+```vue
+<script setup lang="ts">
+import { MuButton } from '@muyianking/ui'
+</script>
 
+<template>
+  <MuButton text="提交" @click="handleSubmit" />
+</template>
 ```
 
 ### 自动引入(unplugin-vue-components)
 
 ```js
 // vite.config.js
-import { MuUiResolver } from '@muyianking/ui'
+import { MuUiResolver } from '@muyianking/ui/resolver'
 import Components from 'unplugin-vue-components/vite'
 import { defineConfig } from 'vite'
 
@@ -49,6 +55,27 @@ export default defineConfig({
   ]
 })
 ```
+
+### 样式
+
+组件样式由各组件模块自身引入，按需或全量导入时会自动带上，无需额外配置。
+
+若需要单独引用某个组件的样式文件：
+
+```js
+import '@muyianking/ui/theme-chalk/css/button.css'
+```
+
+## 全局配置
+
+上传地址、文件预览、图标库等能力由 `MuConfigProvider` 注入：
+
+```vue
+<MuConfigProvider :custom-config="{ uploadFile, previewFileUrl, downloadFile, getIcons }">
+  <App />
+</MuConfigProvider>
+```
+
 
 ## 贡献
 

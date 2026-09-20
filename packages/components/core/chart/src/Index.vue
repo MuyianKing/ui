@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { echartsUtil } from '@muyianking/utils'
-import { onActivated, onBeforeUnmount, useTemplateRef, watch } from 'vue'
+import { onActivated, onBeforeUnmount, onMounted, useTemplateRef, watch } from 'vue'
 
 defineOptions({ name: 'MuChart' })
 
@@ -53,6 +53,9 @@ watch(() => props.option, (val) => {
     }
   }
 }, { deep: true })
+
+// option 一次给定、之后不再变化时 watch 不会触发，图表会一直是空的
+onMounted(() => initChart())
 
 onActivated(() => {
   chartInstance?.resize()

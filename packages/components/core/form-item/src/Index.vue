@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ElFormItem } from 'element-plus'
 import { computed, getCurrentInstance, onMounted, ref } from 'vue'
+import { v_carnum, v_email, v_id_num, v_int, v_ip, v_phone, v_port } from '../../../utils/validator'
 
 defineOptions({ name: 'MuFormItem' })
 
@@ -66,6 +67,7 @@ function validateMaxLength(_rule: any, value: any, callback: (error?: Error) => 
   const max = Number.parseFloat(String(props.maxLength))
   if (!Number.isNaN(max) && value?.toString().length > max) {
     callback(new Error(`最大长度为${max}`))
+    return
   }
   callback()
 }
@@ -74,6 +76,7 @@ function validateMinLength(_rule: any, value: any, callback: (error?: Error) => 
   const min = Number.parseFloat(String(props.minLength))
   if (!Number.isNaN(min) && value?.toString().length < min) {
     callback(new Error(`最小长度为${min}`))
+    return
   }
   callback()
 }
@@ -81,6 +84,7 @@ function validateMinLength(_rule: any, value: any, callback: (error?: Error) => 
 function validateNumber(_rule: any, value: any, callback: (error?: Error) => void) {
   if (Number.isNaN(+value)) {
     callback(new Error('请输入数字'))
+    return
   }
   callback()
 }
@@ -90,10 +94,12 @@ function validateUploadLoading(_rule: any, value: any, callback: (error?: Error)
     for (let i = 0; i < value.length; i++) {
       if (value[i].loading) {
         callback(new Error('请等待文件上传'))
+        return
       }
     }
   } else if (value?.loading) {
     callback(new Error('请等待文件上传'))
+    return
   }
   callback()
 }
@@ -101,6 +107,7 @@ function validateUploadLoading(_rule: any, value: any, callback: (error?: Error)
 function validateMinCount(_rule: any, value: any, callback: (error?: Error) => void) {
   if (Array.isArray(value) && value.length < +props.minCount) {
     callback(new Error(props.minCountMsg || `最少${props.minCount}个`))
+    return
   }
   callback()
 }
@@ -118,17 +125,17 @@ const mergedRules = computed(() => {
   if (props.required)
     rulesList.push({ required: true, message: msg, trigger })
   if (props.idCard)
-    rulesList.push({ validator: () => { }, trigger })
+    rulesList.push({ validator: v_id_num, trigger })
   if (props.phone)
-    rulesList.push({ validator: () => { }, trigger })
+    rulesList.push({ validator: v_phone, trigger })
   if (props.carNum)
-    rulesList.push({ validator: () => { }, trigger })
+    rulesList.push({ validator: v_carnum, trigger })
   if (props.integer)
-    rulesList.push({ validator: () => { }, trigger })
+    rulesList.push({ validator: v_int, trigger })
   if (props.ip)
-    rulesList.push({ validator: () => { }, trigger })
+    rulesList.push({ validator: v_ip, trigger })
   if (props.port)
-    rulesList.push({ validator: () => { }, trigger })
+    rulesList.push({ validator: v_port, trigger })
   if (props.minLength)
     rulesList.push({ validator: validateMinLength, trigger })
   if (props.maxLength)
@@ -136,7 +143,7 @@ const mergedRules = computed(() => {
   if (props.number)
     rulesList.push({ validator: validateNumber, trigger })
   if (props.email)
-    rulesList.push({ validator: () => { }, trigger })
+    rulesList.push({ validator: v_email, trigger })
   if (props.uploadLoading)
     rulesList.push({ validator: validateUploadLoading, trigger })
   if (props.minCount > 0)

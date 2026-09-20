@@ -15,8 +15,8 @@ const emit = defineEmits<{
   (e: 'click'): void
 }>()
 
-const globalConfig = inject<{ tableIcon?: boolean }>('GLOBAL_CUSTOM_CONFIG')
-const { buttonText, buttonType } = useButton(props as any, '导出', globalConfig?.tableIcon ? undefined : undefined)
+const globalConfig = inject<{ tableIcon?: string }>('GLOBAL_CUSTOM_CONFIG')
+const { buttonText, buttonType } = useButton(props as any, '导出', globalConfig?.tableIcon)
 </script>
 
 <template>
@@ -24,7 +24,7 @@ const { buttonText, buttonType } = useButton(props as any, '导出', globalConfi
              icon="ph:export-bold"
              :text="buttonText"
              type="success"
-             @click="emit('click', $event)"
+             @click="emit('click')"
   >
     <slot>{{ text }}</slot>
   </mu-button>

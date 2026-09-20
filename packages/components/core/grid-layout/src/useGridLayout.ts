@@ -1,4 +1,5 @@
-import { isRef, watch } from 'vue'
+import type { MaybeRefOrGetter } from 'vue'
+import { onScopeDispose, toValue, watch } from 'vue'
 
 interface GridConfig {
   width: number
@@ -8,21 +9,23 @@ interface GridConfig {
 }
 
 export function useGridLayout(
-  el: HTMLElement | (() => HTMLElement) | { value?: HTMLElement },
-  config: GridConfig,
+  el: HTMLElement | (() => HTMLElement) | { value?: HTMLElement | null },
+  config: MaybeRefOrGetter<GridConfig>,
 ) {
   function initStyle(element: HTMLElement) {
+    const { rowGap, columnGap } = toValue(config)
     element.style.display = 'grid'
-    element.style.rowGap = `${config.rowGap}px`
-    element.style.columnGap = `${config.columnGap}px`
+    element.style.rowGap = `${rowGap}px`
+    element.style.columnGap = `${columnGap}px`
   }
 
   function setColumnRow(element: HTMLElement) {
+    const { width: columnWidth, minWidth } = toValue(config)
     const width = element.clientWidth
-    let column = width / config.width
+    let column = width / columnWidth
     column = column - Math.floor(column) > 0.5 ? Math.ceil(column) : Math.floor(column)
 
-    if (config.minWidth && width / column < config.minWidth) {
+    if (minWidth && width / column < minWidth) {
       column -= 1
     }
 
@@ -34,31 +37,38 @@ export function useGridLayout(
   function start(element: HTMLElement) {
     initStyle(element)
     setColumnRow(element)
-    resizeObserver?.disconnect()
     resizeObserver = new ResizeObserver(() => setColumnRow(element))
     resizeObserver.observe(element)
   }
 
   function init() {
-    let element: HTMLElement | null = null
-
-    if (isRef(el)) {
-      watch(
-        el as any,
-        (val) => {
-          if (val) {
-            element = val as HTMLElement
-            start(element)
-          }
-        },
-        { once: true },
-      )
-    } else {
-      element = el as unknown as HTMLElement
+    if (typeof el === 'function') {
+      const element = el()
       if (element)
         start(element)
+      return
     }
+
+    if ('value' in el) {
+      watch(
+        () => el.value,
+        (val) => {
+          if (val)
+            start(val)
+        },
+        { once: true, flush: 'post' },
+      )
+      return
+    }
+
+    start(el as HTMLElement)
   }
 
   init()
+
+  // 之前 ResizeObserver 从不 disconnect，组件卸载后观察器与其闭包会一直存活
+  onScopeDispose(() => {
+    resizeObserver?.disconnect()
+    resizeObserver = null
+  })
 }

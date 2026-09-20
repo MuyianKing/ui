@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { DatePickerType } from 'element-plus/es/components/date-picker-panel'
 import { ElDatePicker } from 'element-plus'
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 
 defineOptions({ name: 'MuDateElRange' })
 
@@ -36,6 +36,9 @@ const end = defineModel<string>('end', { default: '' })
 const model = defineModel<string>({ default: '' })
 
 const dateType = computed(() => {
+  // 调用方直接传 'daterange' 时不要再拼一次，否则会得出 'daterangerange'
+  if (props.type.endsWith('range'))
+    return props.type as DatePickerType
   const type = props.type === 'date' ? 'daterange' : `${props.type}range`
   return type as DatePickerType
 })
@@ -83,8 +86,6 @@ const shortcuts = [
 ]
 
 function handleChange(val: any[]) {
-  console.log('change')
-
   if (val && val.length === 2) {
     start.value = val[0]
     end.value = val[1]
@@ -97,6 +98,8 @@ function handleChange(val: any[]) {
   emit('change', model.value)
 }
 
+// v-model 已经通过 setter 调用 handleChange，模板里不要再绑一次 @change，
+// 否则每次选择都会执行两遍、并向外抛两次 change
 const value = computed({
   set: handleChange,
   get: () => [start.value, end.value],
@@ -104,5 +107,5 @@ const value = computed({
 </script>
 
 <template>
-  <el-date-picker v-model="value" :type="dateType" :value-format="dateValueFormat" :format="dateFormat" :start-placeholder="startPlaceholder" :end-placeholder="endPlaceholder" :shortcuts range-separator="~" @change="handleChange" />
+  <el-date-picker v-model="value" :type="dateType" :value-format="dateValueFormat" :format="dateFormat" :start-placeholder="startPlaceholder" :end-placeholder="endPlaceholder" :shortcuts range-separator="~" />
 </template>

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ElCascaderPanel, ElDropdown, ElInput } from 'element-plus'
-import { cloneDeep } from 'lodash-es'
 import { computed, nextTick, ref, useTemplateRef } from 'vue'
 import { MuIcon } from '../../icon'
 
@@ -34,7 +33,8 @@ const cascaderPanelRef = useTemplateRef<InstanceType<typeof ElCascaderPanel>>('c
 const arrowStatus = ref(false)
 const searchKey = ref('')
 
-const cascaderPropsConfig = {
+// 必须是 computed：写成 setup 期的一次性快照，multiple / cascaderProps 变化不会响应
+const cascaderPropsConfig = computed(() => ({
   multiple: props.multiple,
   checkStrictly: false,
   emitPath: false,
@@ -42,44 +42,59 @@ const cascaderPropsConfig = {
   value: 'value',
   children: 'children',
   ...props.cascaderProps,
-}
+}))
 
-function getFilterFlag(item: any): boolean {
-  if (item[cascaderPropsConfig.label]?.includes(searchKey.value))
-    return true
-  if (item[cascaderPropsConfig.children] && Array.isArray(item[cascaderPropsConfig.children])) {
-    item[cascaderPropsConfig.children] = item[cascaderPropsConfig.children].filter((child: any) => getFilterFlag(child))
-    return item[cascaderPropsConfig.children].some((child: any) => getFilterFlag(child))
+// 纯函数式过滤：返回新数组，不在 computed 里就地改写 props.options 的子节点
+function filterTree(list: any[], keyword: string): any[] {
+  if (!keyword)
+    return list
+
+  const { label: labelKey, children: childrenKey } = cascaderPropsConfig.value
+  const result: any[] = []
+
+  for (const item of list) {
+    if (String(item[labelKey] ?? '').includes(keyword)) {
+      // 父节点命中时保留完整子树，原实现在这里已经把 children 过滤空了
+      result.push(item)
+      continue
+    }
+
+    const children = Array.isArray(item[childrenKey]) ? item[childrenKey] : null
+    if (children) {
+      const matched = filterTree(children, keyword)
+      if (matched.length > 0)
+        result.push({ ...item, [childrenKey]: matched })
+    }
   }
-  return false
+
+  return result
 }
 
 const filteredOptions = computed(() => {
-  const list = cloneDeep(props.options)
-  if (!props.noAll) {
-    const allOption: Record<string, any> = {}
-    allOption[cascaderPropsConfig.label] = '全部'
-    allOption[cascaderPropsConfig.value] = ''
-    list.unshift(allOption)
-  }
-  return list.filter((item: any) => getFilterFlag(item))
+  const { label: labelKey, value: valueKey } = cascaderPropsConfig.value
+  const list = props.noAll
+    ? props.options
+    : [{ [labelKey]: '全部', [valueKey]: '' }, ...props.options]
+  return filterTree(list, searchKey.value)
 })
 
 async function handleChange() {
   await nextTick()
-  if (cascaderPropsConfig.multiple) {
+  if (cascaderPropsConfig.value.multiple) {
     if (Array.isArray(model.value) && (model.value as any[]).includes('')) {
       cascaderPanelRef.value?.clearCheckedNodes()
+      model.value = []
+      emit('change', [])
       return
     }
-    emit('change', cascaderPanelRef.value?.getCheckedNodes().map((node: any) => node.data))
+    emit('change', cascaderPanelRef.value?.getCheckedNodes(false).map((node: any) => node.data))
   } else {
-    emit('change', cascaderPanelRef.value?.getCheckedNodes()[0]?.data)
+    emit('change', cascaderPanelRef.value?.getCheckedNodes(false)[0]?.data)
   }
 }
 
 const activeStatus = computed(() => {
-  if (!cascaderPropsConfig.multiple) {
+  if (!cascaderPropsConfig.value.multiple) {
     return model.value !== '' && model.value !== null && typeof model.value !== 'undefined'
   }
   return Array.isArray(model.value) && model.value.length > 0
@@ -87,7 +102,8 @@ const activeStatus = computed(() => {
 
 const displayLabel = computed(() => {
   if (!props.multiple) {
-    const found = findLabel(filteredOptions.value, model.value, cascaderPropsConfig)
+    // 在完整数据源里查标签，否则搜索状态下选中项会被过滤掉而显示不回显
+    const found = findLabel(props.options, model.value, cascaderPropsConfig.value)
     return found || props.label
   }
   return props.label

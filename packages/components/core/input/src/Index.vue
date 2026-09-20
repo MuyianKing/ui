@@ -20,13 +20,13 @@ const model = defineModel<string>()
 
 const width = ref('')
 const showTips = ref(false)
-const position = ref({ top: 0, left: 0, bottom: 0, right: 0 })
+const tip_rect = ref<DOMRect>(new DOMRect())
 
-const triggerRef = ref({
+const triggerRef = {
   getBoundingClientRect() {
-    return position.value
+    return tip_rect.value
   },
-})
+}
 
 const instance = getCurrentInstance()
 
@@ -49,28 +49,27 @@ const tipsComp = computed(() => {
   return tips.join('<br/>')
 })
 
-function handleEnter(e: MouseEvent) {
-  const dom = (e.target as HTMLElement).parentNode as HTMLElement
-  if (props.tip && dom) {
-    const { top, left } = dom.getBoundingClientRect()
-    position.value = {
-      top: left + dom.clientWidth / 2,
-      left: top,
-      bottom: 0,
-      right: 0,
-    }
-    width.value = `${dom.clientWidth}px`
-    showTips.value = true
-  }
+function handleFocus(e: FocusEvent) {
+  if (!props.tip)
+    return
+  const dom = (e.target as HTMLElement)?.closest('.el-input') as HTMLElement | null
+  if (!dom)
+    return
+  // 原实现把 x/y 互换、bottom/right 写死 0，构造出的不是一个合法 DOMRect
+  tip_rect.value = dom.getBoundingClientRect()
+  width.value = `${dom.clientWidth}px`
+  showTips.value = true
 }
 
-function handleLeave() {
+function handleBlur() {
   showTips.value = false
 }
 
 function handleInput(val: string) {
   if (props.type === 'number') {
-    model.value = val === '' ? '' : String(+val)
+    // String(+val) 会把 '1.'、'-' 这类输入中间态压成 '1' / '0'，用户打不出小数；
+    // type=number 已由浏览器负责校验，这里原样透传即可
+    model.value = val
   } else {
     model.value = val.replace(/'/g, '')
   }
@@ -84,8 +83,8 @@ function handleInput(val: string) {
             clearable
             show-word-limit
             v-bind="$attrs"
-            @blur="handleLeave"
-            @focus="handleEnter"
+            @blur="handleBlur"
+            @focus="handleFocus"
             @input="handleInput"
   >
     <template v-if="$slots.prefix" #prefix>
