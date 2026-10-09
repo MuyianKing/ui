@@ -8,38 +8,38 @@
   padding: 0 !important;
 
   --padding: 10px 20px;
-}
 
-.mu-custom-dialog .el-dialog__header {
-  padding: 12px 25px !important;
-  background-color: #e8f0ff;
-  margin-right: 0 !important;
-  min-height: 48px;
-}
+  .el-dialog__header {
+    padding: 12px 25px !important;
+    background-color: var(--el-color-primary-light-9);
+    margin-right: 0 !important;
+    min-height: 48px;
 
-.mu-custom-dialog .el-dialog__header .el-dialog__title {
-  font-size: 16px !important;
-  font-weight: bold;
-}
+    .el-dialog__title {
+      font-size: var(--el-font-size-medium) !important;
+      font-weight: bold;
+    }
 
-.mu-custom-dialog .el-dialog__header .el-dialog__headerbtn {
-  top: 2px;
-  height: 48px;
-  font-size: 24px;
-}
+    .el-dialog__headerbtn {
+      top: 2px;
+      height: 48px;
+      font-size: 24px;
 
-.mu-custom-dialog .el-dialog__header .el-dialog__headerbtn .el-dialog__close {
-  color: gray;
-}
+      .el-dialog__close {
+        color: var(--el-color-info);
+      }
+    }
+  }
 
-.mu-custom-dialog .el-dialog__body {
-  overflow-y: auto;
-  padding: var(--padding) !important;
-}
+  .el-dialog__body {
+    overflow-y: auto;
+    padding: var(--padding) !important;
+  }
 
-.mu-custom-dialog .el-dialog__footer {
-  border-top: 1px solid #d2dff4;
-  padding: 20px !important;
+  .el-dialog__footer {
+    border-top: 1px solid var(--el-color-primary-light-8);
+    padding: 20px !important;
+  }
 }
 
 .el-modal-dialog,

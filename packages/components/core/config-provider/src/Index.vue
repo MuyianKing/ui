@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import type { GlobalCustomConfig } from '../../types/common'
 import { ElConfigProvider } from 'element-plus'
 import { provide } from 'vue'
 
 defineOptions({ name: 'MuConfigProvider' })
 
 const props = defineProps<{
-  customConfig: Record<string, any>
+  customConfig: GlobalCustomConfig
 }>()
 
 provide('GLOBAL_CUSTOM_CONFIG', props.customConfig)

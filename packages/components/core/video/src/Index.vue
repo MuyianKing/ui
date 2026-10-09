@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { GlobalCustomConfig } from '../../types/common'
 import { computed, inject, useTemplateRef } from 'vue'
 
 defineOptions({ name: 'MuVideo' })
@@ -21,7 +22,7 @@ const props = withDefaults(defineProps<{
   noPreview: false,
 })
 
-const globalConfig = inject<{ previewFileUrl?: (url: string, prefix: string) => string }>('GLOBAL_CUSTOM_CONFIG')
+const globalConfig = inject<GlobalCustomConfig>('GLOBAL_CUSTOM_CONFIG')
 
 const videoSrc = computed(() => {
   if (props.src) {

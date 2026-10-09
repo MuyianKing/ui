@@ -35,8 +35,15 @@ export type {
   ArrayOfFunctions,
   ContentMenuOptionsType,
   DefaultSlot,
+  GlobalCustomConfig,
+  IconQuery,
+  IconQueryResult,
   OptionsType,
   StrNumBoolean,
+  TableIcon,
+  UploadedFile,
+  UploadFileOptions,
+  UploadFileResult,
 } from './core/types/common'
 export { MuUpload } from './core/upload'
 export type { UploadFile } from './core/upload'

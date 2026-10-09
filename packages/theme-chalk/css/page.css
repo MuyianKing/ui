@@ -4,13 +4,13 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-}
 
-.mu-pagination-wrapper .info {
-  font-size: 14px;
-  color: #666;
-}
+  .info {
+    font-size: var(--el-font-size-base);
+    color: var(--el-text-color-regular);
 
-.mu-pagination-wrapper .info .num {
-  margin: 0 3px;
+    .num {
+      margin: 0 3px;
+    }
+  }
 }

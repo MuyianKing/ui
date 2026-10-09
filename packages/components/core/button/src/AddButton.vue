@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { GlobalCustomConfig } from '../../types/common'
 import { inject } from 'vue'
 import MuButton from './Index.vue'
 
@@ -14,11 +15,11 @@ const emit = defineEmits<{
   (e: 'click'): void
 }>()
 
-const globalConfig = inject<{ buttonIcon?: boolean }>('GLOBAL_CUSTOM_CONFIG')
+const globalConfig = inject<GlobalCustomConfig>('GLOBAL_CUSTOM_CONFIG')
 </script>
 
 <template>
-  <mu-button type="danger" :show-icon="!!globalConfig?.buttonIcon" icon="icon-park-outline:add-one" @click="emit('click')">
+  <mu-button type="danger" :icon="globalConfig?.buttonIcon ? 'icon-park-outline:add-one' : ''" @click="emit('click')">
     <slot>{{ text }}</slot>
   </mu-button>
 </template>

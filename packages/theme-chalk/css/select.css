@@ -8,16 +8,18 @@
   pointer-events: none;
 }
 
-.mu-select-readonly-item .el-select__wrapper {
-  background-color: #fff;
-  box-shadow: none !important;
-  color: inherit !important;
-}
+.mu-select-readonly-item {
+  .el-select__wrapper {
+    background-color: var(--el-bg-color);
+    box-shadow: none !important;
+    color: inherit !important;
 
-.mu-select-readonly-item .el-select__wrapper .el-select__selected-item {
-  color: inherit !important;
-}
+    .el-select__selected-item {
+      color: inherit !important;
+    }
 
-.mu-select-readonly-item .el-select__wrapper .el-select__suffix {
-  display: none;
+    .el-select__suffix {
+      display: none;
+    }
+  }
 }

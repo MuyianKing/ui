@@ -56,7 +56,7 @@ import { MuDescriptions, MuDescriptionsItem } from '@muyianking/ui'
 - `inject('column', 4)` 读取父容器注入的列数（父级注入的是 `computed`，本组件用 `unref` 解包后再参与计算），脱离 `MuDescriptions` 使用时回退为 `4`。
 - `itemStyle` 计算 `width = (span / columnCount) * 100%`，作为单元格的行内宽度；是否换行由父容器的 `flex-wrap` 决定。`columnCount` 取注入列数，取不到或为 0 时回退 `4`。
 - `labelStyle`：`labelWidth` 非空时作为标签栏行内宽度，否则返回空对象，走 CSS 默认宽度。
-- 结构为 `.mu-descriptions-item`（flex）内嵌 `.mu-descriptions-item-label` 与 `.mu-descriptions-item-content`；label 栏带右侧分隔线、灰底 `#f5f7fa`、加粗、`flex-shrink: 0`，内容区 `flex: 1; min-width: 0`。
+- 结构为 `.mu-descriptions-item`（flex）内嵌 `.mu-descriptions-item-label` 与 `.mu-descriptions-item-content`；label 栏带右侧分隔线、灰底 `var(--el-fill-color-light)`、加粗、`flex-shrink: 0`，内容区 `flex: 1; min-width: 0`。
 
 ## 约束与注意事项
 

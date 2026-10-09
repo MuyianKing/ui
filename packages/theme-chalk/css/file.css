@@ -1,5 +1,5 @@
 .mu-file-item {
-  color: var(--color-primary);
+  color: var(--el-color-primary);
   cursor: pointer;
 }
 
@@ -8,20 +8,20 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--color-primary);
-  border-radius: 5px;
+  border: 1px solid var(--el-color-primary);
+  border-radius: var(--el-border-radius-base);
   cursor: pointer;
   background-color: var(--el-color-primary-light-9);
-}
 
-.mu-file-card-item .card-top {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  .card-top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-.mu-file-card-item .card-file-name {
-  width: 100%;
-  text-align: center;
-  line-height: 26px;
+  .card-file-name {
+    width: 100%;
+    text-align: center;
+    line-height: 26px;
+  }
 }

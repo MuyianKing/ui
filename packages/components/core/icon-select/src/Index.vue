@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { GlobalCustomConfig } from '../../types/common'
 import { useDebounceFn } from '@vueuse/core'
 import { ElButton, ElPopover, vLoading } from 'element-plus'
 import { inject, onMounted, reactive, ref, useTemplateRef } from 'vue'
@@ -23,7 +24,7 @@ withDefaults(defineProps<{
 
 const model = defineModel<any>()
 
-const globalConfig = inject<{ getIcons?: (query: any) => Promise<{ data: any[], count: number }> }>('GLOBAL_CUSTOM_CONFIG')
+const globalConfig = inject<GlobalCustomConfig>('GLOBAL_CUSTOM_CONFIG')
 
 const query = reactive({
   limit: 200,

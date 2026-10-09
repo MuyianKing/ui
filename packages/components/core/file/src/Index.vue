@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { GlobalCustomConfig } from '../../types/common'
 import { computed, inject } from 'vue'
 import { success } from '../../../utils/message'
 import { MuIcon } from '../../icon'
@@ -19,10 +20,7 @@ const props = withDefaults(defineProps<{
   width: '100px',
 })
 
-const globalConfig = inject<{
-  previewFileUrl?: (url: string, prefix?: string) => string
-  downloadFile?: (url: string, name: string) => void
-}>('GLOBAL_CUSTOM_CONFIG')
+const globalConfig = inject<GlobalCustomConfig>('GLOBAL_CUSTOM_CONFIG')
 
 const fileName = computed(() => props.file?.name || props.file?.fileName || '')
 

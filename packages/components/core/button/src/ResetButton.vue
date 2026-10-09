@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { GlobalCustomConfig } from '../../types/common'
 import { ElButton, ElPopconfirm } from 'element-plus'
 import { inject } from 'vue'
 import { MuIcon } from '../../icon'
@@ -21,8 +22,8 @@ const emit = defineEmits<{
   (e: 'confirm'): void
 }>()
 
-const globalConfig = inject<{ tableIcon?: string }>('GLOBAL_CUSTOM_CONFIG')
-const { buttonText, buttonType } = useButton(props, '重置', globalConfig?.tableIcon)
+const globalConfig = inject<GlobalCustomConfig>('GLOBAL_CUSTOM_CONFIG')
+const { buttonText, mode } = useButton(props, '重置', globalConfig?.tableIcon)
 </script>
 
 <template>
@@ -37,10 +38,12 @@ const { buttonText, buttonType } = useButton(props, '重置', globalConfig?.tabl
                  @confirm="emit('confirm')"
   >
     <template #reference>
-      <mu-button :button-type="buttonType"
+      <mu-button :mode="mode"
                  :icon
-                 :text="buttonText"
-      />
+                 :tip="buttonText"
+      >
+        {{ buttonText }}
+      </mu-button>
     </template>
   </el-popconfirm>
 </template>

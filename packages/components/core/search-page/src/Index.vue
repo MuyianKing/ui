@@ -56,7 +56,7 @@ const bottomClasses = computed(() => {
         </div>
         <slot v-else name="button" />
         <template v-if="$slots.advanced && advancedText">
-          <mu-button button-type="text" class="advanced-btn" @click="toggleAdvanced">
+          <mu-button mode="text" class="advanced-btn" @click="toggleAdvanced">
             <mu-icon icon="ep:arrow-down" class="mu-search-page-arrow" :class="{ 'up-arrow': showAdvanced }" />
             {{ advancedText }}
           </mu-button>

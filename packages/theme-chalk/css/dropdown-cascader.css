@@ -1,21 +1,23 @@
-.mu-dropdown-cascader .active {
-  background-color: var(--color-primary);
-  color: white;
-}
+.mu-dropdown-cascader {
+  .active {
+    background-color: var(--el-color-primary);
+    color: var(--el-color-white);
+  }
 
-.mu-dropdown-cascader .dropdown-label {
-  cursor: pointer;
-  line-height: normal;
-}
+  .dropdown-label {
+    cursor: pointer;
+    line-height: normal;
+  }
 
-.mu-dropdown-cascader .active-label {
-  color: var(--color-primary);
-}
+  .active-label {
+    color: var(--el-color-primary);
+  }
 
-.mu-dropdown-cascader .arrow-icon {
-  transition: all ease 0.5s;
-}
+  .arrow-icon {
+    transition: all ease 0.5s;
+  }
 
-.mu-dropdown-cascader .deg-180 {
-  transform: rotate(180deg);
+  .deg-180 {
+    transform: rotate(180deg);
+  }
 }

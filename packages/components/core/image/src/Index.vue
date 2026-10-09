@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { GlobalCustomConfig } from '../../types/common'
 import { ElImage, vLoading } from 'element-plus'
 import { computed, inject } from 'vue'
 
@@ -22,7 +23,7 @@ const props = withDefaults(defineProps<{
   width: '100px',
 })
 
-const globalConfig = inject<{ previewFileUrl?: (url: string, prefix: string) => string }>('GLOBAL_CUSTOM_CONFIG')
+const globalConfig = inject<GlobalCustomConfig>('GLOBAL_CUSTOM_CONFIG')
 
 const prevSrc = computed(() => {
   if (props.src) {

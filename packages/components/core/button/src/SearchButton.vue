@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { GlobalCustomConfig } from '../../types/common'
 import { inject } from 'vue'
 import MuButton from './Index.vue'
 import { useButton } from './useButton'
@@ -17,16 +18,16 @@ defineEmits<{
   (e: 'click'): void
 }>()
 
-const globalConfig = inject<{ tableIcon?: string }>('GLOBAL_CUSTOM_CONFIG')
-const { buttonText, buttonType } = useButton(props, '查询', globalConfig?.tableIcon)
+const globalConfig = inject<GlobalCustomConfig>('GLOBAL_CUSTOM_CONFIG')
+const { buttonText, mode } = useButton(props, '查询', globalConfig?.tableIcon)
 </script>
 
 <template>
-  <mu-button :button-type="buttonType"
+  <mu-button :mode="mode"
              :icon
-             :text="buttonText"
+             :tip="buttonText"
              @click="$emit('click')"
   >
-    <slot>{{ text }}</slot>
+    <slot>{{ buttonText }}</slot>
   </mu-button>
 </template>

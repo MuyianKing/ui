@@ -22,6 +22,14 @@ function handleClick() {
       </mu-button>
     </comp-line-wrapper>
 
+    <comp-line-wrapper label="文本 / 图标按钮">
+      <mu-button mode="text" @click="handleClick">
+        文本按钮
+      </mu-button>
+      <mu-button mode="icon" icon="lucide:search" tip="查询" class="ml-4" @click="handleClick" />
+      <mu-button mode="icon" icon="lucide:search" class="ml-4" @click="handleClick" />
+    </comp-line-wrapper>
+
     <comp-line-wrapper label="预设按钮">
       <mu-search-button />
       <mu-search-button>搜索</mu-search-button>

@@ -76,7 +76,7 @@
 - 技术栈：TypeScript 5.9.3 + Vue 3.5.43 SFC + Vite 8.3.4（Rolldown）+ vite-plugin-dts 5.1.2；包管理 pnpm。
 - 运行期依赖只有 `@iconify/vue`、`@muyianking/utils`、`@vueuse/core`、`element-plus`、`vue`；UI 能力一律基于 Element Plus 二次封装。
 - `vue` 与 `element-plus` 只允许存在于 `peerDependencies`（`script/build.js` 中显式排除），写入 `dependencies` 会导致消费者装出第二份 Element Plus、打断 provide/inject 并使体积翻倍。
-- 项目未引入测试框架，不新增 vitest / jest / @vue/test-utils 及测试配置。
+- 单元测试用 `vitest` + `@vue/test-utils` + `happy-dom`（根 `devDependencies`，配置为仓库根 `vitest.config.ts`，`include` 限定 `packages/**/*.spec.ts`）；不引入 jest 或其它测试运行器，不新增第二套测试配置。
 - 不引入其它 UI 组件库、CSS 预处理器、axios、Vuex；Tailwind 只存在于演示应用 `playground`，不得装进组件库本体。
 
 ## 2. 通用使用规则
@@ -110,7 +110,7 @@ Components({ resolvers: [MuUiResolver()] })
 
 ### 全局配置
 
-上传地址、文件预览、图标库等能力由 `MuConfigProvider` 经 provide 的 `GLOBAL_CUSTOM_CONFIG` 注入，组件用 `inject('GLOBAL_CUSTOM_CONFIG')` 读取（`uploadFile`、`previewFileUrl`、`downloadFile`、`getIcons`、`tableIcon`、`buttonIcon` 等）：
+上传地址、文件预览、图标库等能力由 `MuConfigProvider` 经 provide 的 `GLOBAL_CUSTOM_CONFIG` 注入，组件用 `inject('GLOBAL_CUSTOM_CONFIG')` 读取（`uploadFile`、`previewFileUrl`、`downloadFile`、`getIcons`、`tableIcon`、`buttonIcon`）：
 
 ```vue
 <MuConfigProvider :custom-config="{ uploadFile, previewFileUrl, downloadFile, getIcons }">
@@ -118,13 +118,15 @@ Components({ resolvers: [MuUiResolver()] })
 </MuConfigProvider>
 ```
 
+契约是 `GlobalCustomConfig`（`packages/components/core/types/common.ts`，随其它公共类型一起从入口导出）：键全部可选、每个键都有明确签名，`uploadFile` 必须返回含 `path` / `id` 的结果。业务自定义键要先扩展该接口（`interface AppConfig extends GlobalCustomConfig { ... }`），不要把 `custom-config` 放宽回 `Record<string, any>`。
+
 `MuConfigProvider` 必须把 `$attrs` 透传给 `el-config-provider`，否则 locale / size / zIndex 丢失。不新增全局单例。
 
 ### 表单校验与通用类型
 
 - 校验规则集中在 `packages/components/utils/validator.ts`，并从公共入口导出（`v_tel`、`v_id_num`、`v_phone`、`v_email`、`v_carnum`、`v_int`、`v_ip`、`v_port`、`v_phoneOrTel`、`v_latlong`）。仅被组件内部引用的规则会被 tree-shake，发布包里取不到，所以必须走公共入口导出。
 - 规则中空值一律放行、交由 `required` 处理，避免同一字段报两条错误；`rule.validator` 必须**恰好调用一次 callback**，否则 `validate()` 永久 pending、表单提交静默失效。
-- 跨组件公共类型集中在 `packages/components/core/types/common.ts`：`OptionsType`、`ContentMenuOptionsType`、`ArrayOfFunctions`、`DefaultSlot`、`StrNumBoolean`，同样从公共入口导出类型。
+- 跨组件公共类型集中在 `packages/components/core/types/common.ts`：`OptionsType`、`ContentMenuOptionsType`、`ArrayOfFunctions`、`DefaultSlot`、`StrNumBoolean`，以及 `MuConfigProvider` 的全局配置契约 `GlobalCustomConfig` 与其子类型 `UploadFileOptions`、`UploadedFile`、`UploadFileResult`、`IconQuery`、`IconQueryResult`、`TableIcon`，同样从公共入口导出类型。
 
 ### utils 的导出与生产形态
 
@@ -150,15 +152,24 @@ Components({ resolvers: [MuUiResolver()] })
 
 ## 3. 开发与校验命令
 
-| 命令                          | 作用                                                                        |
-| ----------------------------- | --------------------------------------------------------------------------- |
-| `pnpm dev`                    | 启动演示应用（`playground`，直连源码，改组件无需构建）                      |
-| `pnpm lint` / `pnpm lint:fix` | ESLint 检查 / 自动修复（仓库已关闭 Prettier，格式化由 `eslint --fix` 完成） |
-| `pnpm typecheck`              | `vue-tsc`，仅覆盖 `packages/components`                                     |
-| `pnpm build`                  | 输出 `dist/`                                                                |
-| `pnpm release`                | 发布流程（含提交与打标），非明确要求不得执行                                |
+| 命令                            | 作用                                                                        |
+| ------------------------------- | --------------------------------------------------------------------------- |
+| `pnpm dev`                      | 启动演示应用（`playground`，直连源码，改组件无需构建）                      |
+| `pnpm lint` / `pnpm lint:fix`   | ESLint 检查 / 自动修复（仓库已关闭 Prettier，格式化由 `eslint --fix` 完成） |
+| `pnpm typecheck`                | `vue-tsc`，仅覆盖 `packages/components`                                     |
+| `pnpm test` / `pnpm test:watch` | `vitest run` 跑一遍用例 / `vitest` 监听模式                                 |
+| `pnpm build`                    | 输出 `dist/`                                                                |
+| `pnpm release`                  | 发布流程（含提交与打标），非明确要求不得执行                                |
 
-组件改动后的验证顺序：`pnpm lint` → `pnpm typecheck` → `pnpm build`，再用演示应用在对应页面手动确认。
+组件改动后的验证顺序：`pnpm lint` → `pnpm typecheck` → `pnpm test` → `pnpm build`，再用演示应用在对应页面手动确认。
+
+### 测试约定
+
+- 位置：与被测源码同目录，`packages/components/core/<组件>/__tests__/<组件>.spec.ts`；`utils/validator`、`utils/message` 在 `packages/components/utils/__tests__/`，`resolver` 在 `packages/components/__tests__/`。测试文件不进 `dist/`（构建入口只有 `index.ts` 与 `resolver.ts`）。
+- 环境：`happy-dom` + `@vue/test-utils`；`vitest.config.ts` 把 `@muyianking/ui` 指向 `packages/components/index.ts`、`@muyianking/theme-chalk` 指向 `packages/theme-chalk`，与演示应用一样直连源码。
+- 断言范围：对外契约（props 默认值、渲染分支、emits、校验文案、provide/inject 配置、纯函数边界）。不测内部私有状态，不为了跑通而放宽断言。
+- 两个已知的 element-plus 时序坑，写用例时别踩：`el-form-item` 的错误节点用 `refDebounced` 延迟 100ms 渲染（`is-error` 类却是立刻生效），读文案前要等过防抖窗口；`el-popover` 的受控 `visible` 需要在挂载后过一帧再触发聚焦，否则首次聚焦会被吞掉。
+- 用例必须 hermetic：不依赖网络（需要图标时替换 `@iconify/vue` 或使用无图标断言），不依赖用例执行顺序，涉及 `teleport` 的断言不要把 `document` 当全局唯一节点用。
 
 > 根 `package.json` 的 `dev` / `preview` 已指向 `playground/vite.config.ts`，在仓库根直接执行即可；演示应用 `playground` 是 pnpm workspace 成员，依赖随根目录 `pnpm install` 一起安装，`vite` 的 `root` 已在配置里固定为 `playground`，因此从仓库根启动也能正确找到入口页面。
 

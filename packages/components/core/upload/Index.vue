@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { GlobalCustomConfig } from '../types/common'
 import type { UploadFile } from './types'
 import { AUDIO_SUFFIX, FILE_SUFFIX, guid } from '@muyianking/utils'
 import { computed, inject, nextTick, provide, ref, useSlots } from 'vue'
@@ -109,7 +110,8 @@ const _list_type = computed(() => {
   return 'line'
 })
 
-const { uploadFile } = inject('GLOBAL_CUSTOM_CONFIG', null) as any || {}
+// 默认给空对象而不是 null：未包 MuConfigProvider 时下面照样能安全解构出 undefined
+const { uploadFile } = inject<GlobalCustomConfig>('GLOBAL_CUSTOM_CONFIG', {})
 
 const slots = useSlots()
 

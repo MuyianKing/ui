@@ -14,15 +14,15 @@ defineEmits<{
   (e: 'click'): void
 }>()
 
-const { buttonText, buttonType } = useButton(props, '导入')
+const { buttonText, mode } = useButton(props, '导入')
 </script>
 
 <template>
-  <mu-button :button-type="buttonType"
+  <mu-button :mode="mode"
              icon="ph:import-bold"
-             :text="buttonText"
+             :tip="buttonText"
              @click="$emit('click')"
   >
-    <slot>{{ text }}</slot>
+    <slot>{{ buttonText }}</slot>
   </mu-button>
 </template>

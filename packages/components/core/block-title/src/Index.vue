@@ -13,8 +13,8 @@ const props = withDefaults(defineProps<{
 }>(), {
   type: 'primary',
   title: '',
-  fontSize: 16,
-  color: '#595757',
+  fontSize: 15,
+  color: '#333',
   showBlock: true,
   linearGradient: false,
 })
@@ -28,7 +28,7 @@ const title_style = computed(() => {
 </script>
 
 <template>
-  <div :class="linearGradient ? 'mu-block-title' : 'mu-flat-block-title'" v-bind="$attrs">
+  <div class="mu-block-title" :class="{ 'mu-linear-gradient': linearGradient }" v-bind="$attrs">
     <div class="flex h-full">
       <div v-if="showBlock" class="block" :class="type" />
       <div class="title flex items-center justify-center" :style="title_style">

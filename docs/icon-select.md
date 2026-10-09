@@ -49,7 +49,7 @@ import { MuIconSelect } from '@muyianking/ui'
 ## 业务逻辑
 
 - 数据来源：`inject('GLOBAL_CUSTOM_CONFIG')` 后调用 `getIcons(query)`。若未注入 `MuConfigProvider` 或 `getIcons` 缺失，`getData` 直接返回，弹层内不会渲染任何图标。
-- `getIcons` 契约：入参为 `{ limit, page, query }`，返回 `Promise<{ data: any[], count: number }>`；`data` 中每项是图标名字符串（同时用作列表 `:key` 与 `MuIcon` 的 `icon`），`count` 为总数。
+- `getIcons` 契约：入参为 `IconQuery`（`{ limit, page, query }`），返回 `Promise<IconQueryResult>`（`{ data: string[], count: number }`）；`data` 中每项是图标名字符串（同时用作列表 `:key` 与 `MuIcon` 的 `icon`），`count` 为总数。两个类型与 `GlobalCustomConfig` 同在 `packages/components/core/types/common.ts` 并从公共入口导出。
 - 查询状态：`limit` 固定 `200`，`page` 从 `1` 开始，`query` 为搜索关键字。
 - 搜索：`mu-input` 的输入经 `search`（`useDebounceFn`，300ms 防抖）触发，重置 `page = 1` 后重新拉取。
 - 分页：`.icon-content` 的 `scroll.passive` 事件调用 `handleBottom`，仅在非 loading 且 `hasMore` 为真时 `page++` 并追加数据；`hasMore = count > page * limit`。

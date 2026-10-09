@@ -25,7 +25,7 @@
 
 ### 验证与 Git
 
-- 较大代码修改后运行项目已有的静态检查或测试命令；没有对应脚本时，不假设或自行引入测试框架。
+- 较大代码修改后运行项目已有的静态检查与测试命令（`pnpm lint`、`pnpm typecheck`、`pnpm test`）；已有测试体系时不新增其它测试框架或同类工具。
 - 默认不执行 Git 提交，除非用户明确要求。
 - 用户要求提交时，先检查 `git status`、`git diff` 和近期提交风格。
 - 不泄露、输出或提交密钥、令牌、内部地址及其他敏感配置。
@@ -38,7 +38,7 @@
 - 技术栈：TypeScript 5.9.3 + Vue 3.5.43 SFC + Vite 8.3.4（Rolldown）+ vite-plugin-dts 5.1.2；包管理 pnpm，Node 需满足 ^20.19.0 || >=22.12.0。
 - 运行期依赖只有 @iconify/vue 5.0.3、@muyianking/utils 0.2.1、@vueuse/core 15.0.0、element-plus 2.14.7、vue 3.5.43；UI 能力一律基于 Element Plus 二次封装。
 - vue 与 element-plus 只允许存在于 peerDependencies（build.js 中显式排除），写入 dependencies 会导致消费者装出第二份 Element Plus、打断 provide/inject 并体积翻倍。
-- 项目未引入测试框架，禁止自行引入 vitest / jest / @vue/test-utils 或新增测试配置。
+- 单元测试用 vitest + @vue/test-utils + happy-dom（根 devDependencies，配置为根 `vitest.config.ts`，命令 `pnpm test`）；不引入 jest 或其它测试运行器、不新增第二套测试配置。
 - 禁止引入其它 UI 组件库（ant-design-vue、naive-ui、vant 等）、CSS 预处理器（Sass/Less/Stylus）、axios、Vuex；Tailwind 只存在于演示应用 playground（仅其 devDependencies），不得装进组件库本体。
 
 ## 2. 文件落位
@@ -51,6 +51,7 @@
 - 演示与调试代码只写 `playground/src`（views 页面、components/common 包装组件、layout、router、pinia），不得在 `packages/` 下新增演示代码。
 - 文档落位：`docs/<kebab-case>.md` 与 `packages/components/core/<同名目录>` 一对一（当前 35 个组件 35 份齐全）；索引与跨组件通用业务规则在 `docs/README.md`，样式体系细节在 `docs/theme-chalk.md`。
 - 构建与发布脚本固定在 `script/`（build.js 负责产物与 dist/package.json 生成，publish.js 负责版本、CHANGELOG、提交打标）。
+- 测试与被测源码同目录：`packages/components/core/<组件>/__tests__/<组件>.spec.ts`；utils 与 resolver 放在 `packages/components/utils/__tests__/`、`packages/components/__tests__/`。测试直连源码（相对路径 import），不改动组件目录「三件」的既有约定。
 
 ## 3. 文档与业务逻辑
 
@@ -73,7 +74,7 @@
 - 从 utils/validator.ts 直接向公共入口导出校验函数（v_tel、v_id_num 等）：仅被组件内部引用的规则会被 tree-shake，发布包里取不到。
 - 依赖第三方库时从具名路径导入（如 element-plus、element-plus/es/components/date-picker-panel/src/types、@muyianking/utils 的具体函数），不整包导入。
 - tsconfig.json 开启 strict、noUnusedLocals、noUnusedParameters、isolatedModules，include 仅覆盖 packages/components，因此 `playground/` 不参与 typecheck（它有自己的 playground/tsconfig.json）。
-- 遵循仓库 ESLint（@antfu/eslint-config + @muyianking/config）风格：2 空格缩进、单引号、无分号、注释与文案使用中文；格式化由 `eslint --fix` 完成，仓库无独立 Prettier 配置（Markdown 同样走 eslint 的 format/prettier）。`eslint.config.js` 里自定义规则的 files 白名单为 `**/src/**`、`**/script/**`、`**/packages/**`、`**/*.config.*`，`packages/` 与 `playground/src` 都在覆盖范围内。另外 `eslint.config.js` 有两处针对 @antfu/eslint-config 9 的必要覆盖，不要删除：① 纯 JS 文件改用内置 `no-unused-vars`——该版本的 `unused-imports/no-unused-vars` 在 `.js` 上会把已使用的变量误报为「only used as a type」（`.ts` / `.vue` 不受影响）；② 关闭 `pnpm/yaml-enforce-settings`——它强制要求的 `trustPolicy: no-downgrade` 会让本仓库直接装不上依赖（chokidar@4.0.3 被判为 High-risk trust downgrade）。
+- 遵循仓库 ESLint（@antfu/eslint-config + @muyianking/config）风格：2 空格缩进、单引号、无分号、注释与文案使用中文；格式化由 `eslint --fix` 完成，仓库无独立 Prettier 配置（Markdown 同样走 eslint 的 format/prettier）。`eslint.config.js` 里自定义规则的 files 白名单为 `**/src/**`、`**/script/**`、`**/packages/**`、`**/*.config.*`，`packages/` 与 `playground/src` 都在覆盖范围内。另外 `eslint.config.js` 有两处针对 @antfu/eslint-config 9 的必要覆盖，不要删除：① 纯 JS 文件改用内置 `no-unused-vars`——该版本的 `unused-imports/no-unused-vars` 在 `.js` 上会把已使用的变量误报为「only used as a type」（`.ts` / `.vue` 不受影响）；该覆盖只能限死在 `**/*.js`、`**/*.cjs`、`**/*.mjs`，**不要扩到 `.ts`**：内置 `no-unused-vars` 不认类型位置，套到 `.ts` 会把函数类型签名里的参数名一律判成未使用（`core/types/common.ts` 的 `(...args: any[]) => any`、`utils/validator.ts` 的 `(rule, value, callback) => void`），而这些参数名是给消费者看的类型文档，`.ts` 的未使用变量由 antfu 默认的 typescript-eslint + unused-imports 规则覆盖；② 关闭 `pnpm/yaml-enforce-settings`——它强制要求的 `trustPolicy: no-downgrade` 会让本仓库直接装不上依赖（chokidar@4.0.3 被判为 High-risk trust downgrade）。
 
 ## 5. 样式与 UI
 
@@ -81,7 +82,9 @@
 - 每个组件 style/index.ts 先 import element-plus/es/components/<组件>/style/css，再 import @muyianking/theme-chalk/css/<组件>.css，保持该顺序。
 - style/index.ts 中的 `@muyianking/theme-chalk` 路径由 script/vite-plugins/style.path.alias.js 在构建期改写为 `@muyianking/ui/theme-chalk`，不要手动改成发布路径。
 - 主题样式只写语义类名（.mu-button、.mu-search-page 等 mu- 前缀），不写行内样式；布局间距优先用工具类而非 CSS 普通属性。
+- 主题样式一律用 CSS 原生嵌套（Nesting）：后代 / 伪类 / 伪元素选择器写在祖先规则内部，父选择器显式写 `&`（`&:hover`、`&.is-checked`、`& > *`、`&::-webkit-scrollbar`），不写预处理器语法（`&-suffix`、`@nest`、`@apply`）。只做嵌套改写时必须保持规则的源码先后顺序，同权重选择器的层叠结果依赖该顺序。
 - 全局能力经 MuConfigProvider provide 的 `GLOBAL_CUSTOM_CONFIG` 注入，组件用 `inject('GLOBAL_CUSTOM_CONFIG')` 读取 uploadFile、previewFileUrl、downloadFile、getIcons、tableIcon、buttonIcon 等配置，不新增全局单例。
+- 主题样式里的颜色 / 圆角 / 字号一律取 Element Plus 主题变量（`--el-*`：`--el-text-color-*`、`--el-border-color*`、`--el-bg-color`、`--el-fill-color-light`、`--el-color-<type>`、`--el-overlay-color-lighter`、`--el-color-white`、`--el-border-radius-*`、`--el-font-size-*`），不写死 `#hex` / `rgba()`，也不使用宿主应用私有的 `--color-*` 调色板（库无兜底，缺失时声明失效）。新增样式前先按 `docs/theme-chalk.md` 第 2 节的 token 清单查找。
 - MuConfigProvider 必须把 $attrs 透传给 el-config-provider，否则 locale / size / zIndex 丢失。
 
 ## 6. 依赖与构建
@@ -95,7 +98,8 @@
 
 ## 7. Agent 操作与验证
 
-- 可用命令：pnpm dev（在仓库根启动 playground 演示应用，改组件无需构建）、pnpm lint、pnpm lint:fix、pnpm typecheck（vue-tsc，仅覆盖 packages/components）、pnpm build（输出 dist/）、pnpm release（发布流程，含提交与打标，非用户明确要求不得执行）。
-- 组件改动后的验证顺序：pnpm lint → pnpm typecheck → pnpm build，再用 playground 对应演示页手动确认，并确认 `docs/<组件>.md` 已同步。
+- 可用命令：pnpm dev（在仓库根启动 playground 演示应用，改组件无需构建）、pnpm lint、pnpm lint:fix、pnpm typecheck（vue-tsc，仅覆盖 packages/components）、pnpm test（vitest run，跑 packages 下的 \*.spec.ts）、pnpm test:watch（vitest 监听模式）、pnpm build（输出 dist/）、pnpm release（发布流程，含提交与打标，非用户明确要求不得执行）。
+- 组件改动后的验证顺序：pnpm lint → pnpm typecheck → pnpm test → pnpm build，再用 playground 对应演示页手动确认，并确认 `docs/<组件>.md` 已同步。
+- 测试是回归护栏而非实现快照：断言对外契约（props / emits / 渲染分支 / 校验文案 / inject 配置），不测内部私有状态；发现「实现与文档不一致」时按第 3 章当场对齐，不允许把分歧留在库里。暂不改代码、先锁定现状的用例，必须在用例注释和 `docs/<组件>.md` 里同时写明「已知偏差 + 修法」，改代码时一并去掉标注。
 - 不要直接修改 dist/ 产物或 CHANGELOG.md，二者均由脚本生成（dist 已被 .gitignore 忽略）。
 - 不要改动 package.json 的 version，版本由 script/publish.js 维护。

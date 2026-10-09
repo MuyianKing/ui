@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Placement } from 'element-plus'
+import type { GlobalCustomConfig } from '../../types/common'
 import { ElButton, ElPopover } from 'element-plus'
 import { inject, ref } from 'vue'
 import MuButton from './Index.vue'
@@ -19,14 +20,17 @@ const props = withDefaults(defineProps<{
   noPopover: false,
   placement: 'top',
   icon: 'icon-park-outline:delete',
+  // 必须显式给 undefined：text 类型含 Boolean，Vue 会把未传的布尔型 prop 转成 false，
+  // 那样 useButton 里的 `props.text !== undefined` 恒为真、全局配置 tableIcon 就永远不生效
+  text: undefined,
 })
 
 const emit = defineEmits<{
   (e: 'click'): void
 }>()
 
-const globalConfig = inject<{ tableIcon?: string }>('GLOBAL_CUSTOM_CONFIG')
-const { buttonText, buttonType } = useButton(props, '删除', globalConfig?.tableIcon)
+const globalConfig = inject<GlobalCustomConfig>('GLOBAL_CUSTOM_CONFIG')
+const { buttonText, mode } = useButton(props, '删除', globalConfig?.tableIcon)
 const popoverVisible = ref(false)
 
 function handleConfirm() {
@@ -48,9 +52,13 @@ function handleConfirm() {
     </div>
     <template #reference>
       <div>
-        <mu-button :button-type="buttonType" :icon :text="buttonText" type="danger" @click="popoverVisible = true" />
+        <mu-button :mode="mode" :icon :tip="buttonText" type="danger" @click="popoverVisible = true">
+          {{ buttonText }}
+        </mu-button>
       </div>
     </template>
   </el-popover>
-  <mu-button v-else :button-type="buttonType" :icon :text="buttonText" type="danger" @click="emit('click')" />
+  <mu-button v-else :mode="mode" :icon :tip="buttonText" type="danger" @click="emit('click')">
+    {{ buttonText }}
+  </mu-button>
 </template>

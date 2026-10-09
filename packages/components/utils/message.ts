@@ -1,5 +1,7 @@
 import { ElLoading, ElMessage, ElMessageBox } from 'element-plus'
-import './style/index'
+import 'element-plus/es/components/loading/style/css'
+import 'element-plus/es/components/message/style/css'
+import 'element-plus/es/components/message-box/style/css'
 
 let loadingInstance: ReturnType<typeof ElLoading.service> | null = null
 

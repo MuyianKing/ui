@@ -43,6 +43,13 @@ import '@muyianking/theme-chalk/css/del-button.css'
 
 - 组件样式只写语义类名（`.mu-button`、`.mu-block-title`、`.mu-search-page` 等 `mu-` 前缀），不写行内样式；布局间距优先用 Tailwind 工具类而非 CSS 普通属性。
 - CSS 文件名必须与组件目录名一致（kebab-case），按钮族各变体名与文件一一对应。
+- 样式用 **CSS 原生嵌套（Nesting）** 书写：后代、伪类、伪元素选择器收进祖先规则内部，父选择器一律显式写 `&`（`&:last-child`、`&.is-checked`、`& > div`、`&::-webkit-scrollbar`），不使用预处理器语法（`&-suffix`、`@nest`、`@apply`）。
+- 嵌套只做选择器分层，**不改变规则的源码先后顺序**：同权重选择器的层叠结果依赖顺序，把扁平写法改成嵌套时不得就地调整规则次序；多个祖先共用一个后代选择器时，宁可在各自父规则下重复写，也不要为了少写几行而改变层叠。
+- 仓库既无 PostCSS 嵌套插件也无 CSS 预处理器，`theme-chalk` 的 CSS 不经任何编译直接发布（见第 4 节），因此嵌套必须是浏览器能直接解析的标准写法：实际要求 Chrome/Edge 112+、Safari 16.5+、Firefox 117+。
+- 颜色、圆角、字号一律取 **Element Plus 主题变量**（`--el-*`），不写死值：文字用 `--el-text-color-primary` / `--el-text-color-regular` / `--el-text-color-secondary` / `--el-text-color-placeholder`，边框用 `--el-border-color` / `--el-border-color-light` / `--el-border-color-lighter`，底色用 `--el-bg-color` / `--el-fill-color-light`，强调色用 `--el-color-primary` / `--el-color-success` / `--el-color-danger`，遮罩用 `--el-overlay-color-lighter`，反白用 `--el-color-white`，圆角用 `--el-border-radius-base` / `--el-border-radius-small`，字号用 `--el-font-size-base` / `--el-font-size-medium`；`1px solid` 的默认边框可直接写 `var(--el-border)`。
+- **不再使用宿主应用的私有调色板** `--color-primary` / `--color-success` / `--color-danger`（那组变量由消费方 `:root` 自行定义，库未定义兜底，缺失时整条声明失效）。需要品牌色时由应用覆写 `--el-color-primary` 等 Element Plus 变量。
+- 变量可用性有保证：组件 `style/index.ts` 先引的 `element-plus/es/components/<组件>/style/css` 会先加载 `element-plus/theme-chalk/base.css`，`:root` 里的 `--el-*` 定义就在其中，因此不必额外引入 Element Plus 全量主题。
+- 没有一一对应档位的品牌色按 Element Plus 自身的搭配惯例映射到同色系：浅底用 `-light-9`、其描边用 `-light-8`（与 `.el-tag` 的底/框搭配一致），渐变用 `-light-3` → `-dark-2`。
 
 ## 3. 开发期怎么生效
 
@@ -53,7 +60,7 @@ import '@muyianking/theme-chalk/css/del-button.css'
 3. **生效方式**：CSS 走 Vite 的 HMR，改 `packages/theme-chalk/css/*.css` 立即反映到页面；改 `.vue` / `.ts` 同样即时。
 4. **Tailwind**：只有演示应用装了 Tailwind（`playground/tailwind.config.js`、`tailwindcss` devDependency），组件模板里的 `flex`、`items-center`、`mr-1` 等工具类由消费者应用的 Tailwind 扫描生成。库本体**不提供也不引入 Tailwind 配置**。
 
-> 注意：根 `package.json` 的 `dev` 脚本目前仍指向 `test/vite.config.ts`，而演示应用已迁到 `playground/`。`pnpm dev` 会因找不到配置而失败，需按现行目录调整脚本或在 `playground/` 目录下执行 `vite`。
+> 注意：`pnpm dev` / `pnpm preview` 都从仓库根启动，用 `--config playground/vite.config.ts` 显式指定配置，直接执行即可，不必先 `cd playground`。之所以能这样，是因为该配置把 `root` 固定为 `playground/`（`root: import.meta.dirname`）——Vite 默认以启动目录为 root，从仓库根启动时 root 会落到仓库根、找不到 `playground/index.html`。
 
 ## 4. 打包期怎么处理
 
@@ -76,6 +83,8 @@ import '@muyianking/theme-chalk/css/del-button.css'
 - 源码里样式路径一律写 `@muyianking/theme-chalk`，构建期由 `style.path.alias.js` 改写，不手改发布路径。
 - 新增组件时必须在 `packages/theme-chalk/css/` 建同名 kebab-case CSS，并在该组件 `style/index.ts` 中引入；多组件文件逐个引入。
 - 语义类名统一 `mu-` 前缀；库本体不引入 Tailwind、CSS 预处理器（Sass/Less/Stylus）。
+- 样式一律用 CSS 原生嵌套，父选择器显式 `&`；嵌套改写必须保持规则源码顺序，不得顺手调整层叠次序。改完由 `pnpm lint` 的 format/prettier（`parser: css`）统一校验缩进与行尾。
+- 颜色 / 圆角 / 字号用 Element Plus 主题变量（`--el-*`），不写死颜色值，也不再使用宿主私有的 `--color-*`；新增样式前先按第 2 节的清单找对应 token，找不到可对应的再考虑硬编码并在此说明。
 - 不要直接改 `dist/`，它由 `script/build.js` 生成且已被 `.gitignore` 忽略；改样式后需重新 `pnpm build`。
 
 ## 6. 一处改动的传播路径（速查）
