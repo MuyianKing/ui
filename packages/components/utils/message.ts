@@ -1,4 +1,5 @@
 import { ElLoading, ElMessage, ElMessageBox } from 'element-plus'
+import './style/index'
 
 let loadingInstance: ReturnType<typeof ElLoading.service> | null = null
 

@@ -6,7 +6,7 @@ import { useButton } from './useButton'
 defineOptions({ name: 'MuExportButton' })
 
 const props = withDefaults(defineProps<{
-  text?: string
+  text?: string | boolean
 }>(), {
   text: '导出',
 })
@@ -16,7 +16,7 @@ const emit = defineEmits<{
 }>()
 
 const globalConfig = inject<{ tableIcon?: string }>('GLOBAL_CUSTOM_CONFIG')
-const { buttonText, buttonType } = useButton(props as any, '导出', globalConfig?.tableIcon)
+const { buttonText, buttonType } = useButton(props, '导出', globalConfig?.tableIcon)
 </script>
 
 <template>

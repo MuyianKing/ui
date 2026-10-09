@@ -12,7 +12,8 @@ const props = withDefaults(defineProps<{
   noPopover?: boolean
   placement?: Placement
   icon?: string
-  text?: string
+  // 运行时支持布尔形态（true 走文本样式、取默认文案），与 useButton 的签名一致
+  text?: string | boolean
 }>(), {
   message: '您确定确认删除？',
   noPopover: false,
@@ -25,7 +26,7 @@ const emit = defineEmits<{
 }>()
 
 const globalConfig = inject<{ tableIcon?: string }>('GLOBAL_CUSTOM_CONFIG')
-const { buttonText, buttonType } = useButton(props as any, '删除', globalConfig?.tableIcon)
+const { buttonText, buttonType } = useButton(props, '删除', globalConfig?.tableIcon)
 const popoverVisible = ref(false)
 
 function handleConfirm() {

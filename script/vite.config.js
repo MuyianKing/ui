@@ -17,7 +17,6 @@ export default {
     rolldownOptions: {
       external: [
         /^@muyianking\//,
-        /^@muyianking\/theme-chalk\//,
         'vue',
         /^element-plus/,
         '@vueuse/core',
@@ -35,7 +34,7 @@ export default {
           format: 'es',
           exports: 'named',
           preserveModules: true,
-          dir: './dist',
+          dir: `${root}/dist`,
           entryFileNames(file) {
             if (file.name !== 'resolver') {
               return `es/[name].js`

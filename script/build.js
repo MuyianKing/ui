@@ -20,8 +20,11 @@ function _copy(source, target) {
 // 同时出现在 dependencies 里会在消费者版本不匹配时装出嵌套的第二份 Element Plus，
 // 双实例会打断 provide/inject 并翻倍样式体积。
 const peerDependencies = {
-  'vue': '>=3.0.0',
-  'element-plus': '>=2.0.0',
+  // 组件用 defineModel 实现 v-model（Vue 3.4 才稳定），下限不能低于 3.4；
+  // 与根 package.json 的开发版本（vue ^3.5.43 / element-plus ^2.14.7）保持一致，
+  // 原来写 >=3.0.0 / >=2.0.0 会让明显不兼容的版本静默装上
+  'vue': '^3.4.0',
+  'element-plus': '^2.14.0',
 }
 
 async function buildLib() {

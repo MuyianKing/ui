@@ -9,7 +9,7 @@ defineOptions({ name: 'MuResetButton' })
 
 const props = withDefaults(defineProps<{
   icon?: string
-  text?: string
+  text?: string | boolean
   noConfirm?: boolean
 }>(), {
   icon: 'icon-park-outline:refresh-one',
@@ -22,7 +22,7 @@ const emit = defineEmits<{
 }>()
 
 const globalConfig = inject<{ tableIcon?: string }>('GLOBAL_CUSTOM_CONFIG')
-const { buttonText, buttonType } = useButton(props as any, '重置', globalConfig?.tableIcon)
+const { buttonText, buttonType } = useButton(props, '重置', globalConfig?.tableIcon)
 </script>
 
 <template>

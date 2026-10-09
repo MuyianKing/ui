@@ -74,7 +74,7 @@ const displayLabel = computed(() => {
                trigger="click"
                @visible-change="(val: boolean) => { arrowStatus = val }"
   >
-    <div :class="{ 'active-label': !!model }" class="flex items-center dropdown-label">
+    <div :class="{ 'active-label': multiple ? selectedValues.length > 0 : !!model }" class="flex items-center dropdown-label">
       <span>{{ displayLabel }}</span>
       <mu-icon v-if="!noArrow"
                :class="{ 'deg-180': arrowStatus }"

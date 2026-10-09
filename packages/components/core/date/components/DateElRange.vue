@@ -49,6 +49,9 @@ const dateValueFormat = computed(() => {
   const formatMap: Record<string, string> = {
     date: 'YYYY-MM-DD',
     month: 'YYYY-MM',
+    year: 'YYYY',
+    // 缺 datetime 时 value-format 会退化成 YYYY-MM-DD，选中结果被截掉时分秒
+    datetime: 'YYYY-MM-DD HH:mm:ss',
   }
   return formatMap[props.type] || 'YYYY-MM-DD'
 })

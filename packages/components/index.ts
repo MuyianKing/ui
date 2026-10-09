@@ -30,6 +30,7 @@ export { MuSelect } from './core/select'
 export { MuSelectRemote } from './core/select-remote'
 export { MuTel } from './core/tel'
 export { MuTime } from './core/time'
+// 跨组件公共类型，与文档约定的公共 API 保持一致。
 export type {
   ArrayOfFunctions,
   ContentMenuOptionsType,
@@ -38,13 +39,24 @@ export type {
   StrNumBoolean,
 } from './core/types/common'
 export { MuUpload } from './core/upload'
+export type { UploadFile } from './core/upload'
+
 export { MuVideo } from './core/video'
 
 export { MuWatermark } from './core/watermark'
 
-// 表单校验规则。必须从公共入口导出：只放在 utils/validator 里的话，
-// 没有组件引用的 v_tel / v_latlong / v_phoneOrTel 会被构建摇掉，发布包里取不到。
-export type { RuleValidator, ValidateCallback } from './utils/validator'
+// 消息与交互反馈封装。必须从公共入口导出：只被组件内部引用的函数会被构建摇掉，
+// 这样消费者才能 import { loading, error } from '@muyianking/ui' 使用。
+export {
+  closeLoading,
+  confirm,
+  error,
+  loading,
+  success,
+  warning,
+} from './utils/message'
+// 校验规则同样必须从公共入口导出：只被组件内部引用的规则会被构建摇掉，
+// 消费者需要能 import { v_tel } from '@muyianking/ui'。
 export {
   v_carnum,
   v_email,
@@ -57,3 +69,5 @@ export {
   v_port,
   v_tel,
 } from './utils/validator'
+
+export type { RuleValidator, ValidateCallback } from './utils/validator'

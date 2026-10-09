@@ -5,8 +5,8 @@
 </p>
 
 <p align="center">
-  <a target="_blank" href="https://www.npmjs.com/package/@muyianking/ui" style="text-decoration: none;"><img  src="https://img.shields.io/npm/v/%40muyianking%2Fui"/></a>
-  <a target="_blank" href="https://www.npmjs.com/package/@muyianking/ui" style="text-decoration: none;"><img  src="https://img.shields.io/npm/dm/%40muyianking%2Fui"/></a>
+  <a target="_blank" href="https://www.npmjs.com/package/@muyianking/ui" style="text-decoration: none;"><img alt="npm version" src="https://img.shields.io/npm/v/%40muyianking%2Fui"/></a>
+  <a target="_blank" href="https://www.npmjs.com/package/@muyianking/ui" style="text-decoration: none;"><img alt="npm downloads" src="https://img.shields.io/npm/dm/%40muyianking%2Fui"/></a>
 </p>
 
 ## 安装
@@ -75,7 +75,6 @@ import '@muyianking/ui/theme-chalk/css/button.css'
   <App />
 </MuConfigProvider>
 ```
-
 
 ## 贡献
 

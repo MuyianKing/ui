@@ -1,5 +1,5 @@
 {
   "name": "@muyianking/theme-chalk",
   "version": "0.0.0",
-  "main": "index.css"
+  "description": "纯 CSS 资源包：所有引用都走深路径 @muyianking/theme-chalk/css/xxx.css，没有全量入口，因此不声明 main"
 }

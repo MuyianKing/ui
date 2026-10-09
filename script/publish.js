@@ -1,4 +1,5 @@
 import path from 'node:path'
+import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import { exec, getParams, showLog } from '@muyianking/build'
 import { readJsonSync, writeJsonSync } from 'fs-extra/esm'
@@ -44,8 +45,10 @@ async function build() {
     spinner.succeed('git push && git tag && git push')
     spinner.succeed('publish successful, waiting for GitHub to automatically Release it to npm')
   } catch (error) {
-    spinner.fail('spinner')
-    console.log(error)
+    spinner.fail('release failed')
+    console.error(error)
+    // 发布失败必须让调用方/CI 拿到非零退出码，否则会被当成发布成功
+    process.exitCode = 1
   }
 }
 
@@ -75,6 +78,9 @@ function inquirerPrompt() {
 
 inquirerPrompt().then(({ release }) => {
   if (release === '1') {
-    build()
+    return build()
   }
+}).catch((error) => {
+  console.error(error)
+  process.exitCode = 1
 })

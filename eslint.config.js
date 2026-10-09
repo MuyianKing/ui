@@ -9,5 +9,28 @@ export default antfu({
     ...eslint,
     'vue/custom-event-name-casing': 0,
   },
-  files: ['**/src/**', '**/script/**', '**/packages/**', '**/test/**', '**/*.config.*'],
+  files: ['**/src/**', '**/script/**', '**/packages/**', '**/*.config.*'],
+}, {
+  // @antfu/eslint-config 9 的 unused-imports/no-unused-vars 在纯 JS 文件上会误报
+  // 「is assigned a value but only used as a type」（最小用例可复现，.ts / .vue 不受影响），
+  // 因此 JS 文件退回 ESLint 内置 no-unused-vars，保留未使用变量的检查能力。
+  files: ['**/*.js', '**/*.cjs', '**/*.mjs'],
+  rules: {
+    'no-unused-vars': ['error', {
+      args: 'after-used',
+      argsIgnorePattern: '^_',
+      ignoreRestSiblings: true,
+      vars: 'all',
+      varsIgnorePattern: '^_',
+    }],
+    'unused-imports/no-unused-vars': 'off',
+  },
+}, {
+  // pnpm/yaml-enforce-settings 要求 trustPolicy: no-downgrade，但该策略会让本仓库
+  // 直接装不上依赖（chokidar@4.0.3 被判为 High-risk trust downgrade），
+  // 因此关闭该规则，保留仓库原有的 pnpm 供应链设置。
+  files: ['**/pnpm-workspace.yaml'],
+  rules: {
+    'pnpm/yaml-enforce-settings': 'off',
+  },
 })

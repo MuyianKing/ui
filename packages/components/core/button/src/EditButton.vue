@@ -7,7 +7,7 @@ defineOptions({ name: 'MuEditButton' })
 
 const props = withDefaults(defineProps<{
   icon?: string
-  text?: string
+  text?: string | boolean
 }>(), {
   icon: 'uil:edit',
 })
@@ -17,7 +17,7 @@ const emit = defineEmits<{
 }>()
 
 const globalConfig = inject<{ tableIcon?: string }>('GLOBAL_CUSTOM_CONFIG')
-const { buttonText, buttonType } = useButton(props as any, '编辑', globalConfig?.tableIcon)
+const { buttonText, buttonType } = useButton(props, '编辑', globalConfig?.tableIcon)
 </script>
 
 <template>
@@ -27,6 +27,6 @@ const { buttonText, buttonType } = useButton(props as any, '编辑', globalConfi
              type="primary"
              @click="emit('click')"
   >
-    <slot />
+    <slot>{{ buttonText }}</slot>
   </mu-button>
 </template>

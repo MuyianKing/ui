@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, inject } from 'vue'
+import type { ComputedRef } from 'vue'
+import { computed, inject, unref } from 'vue'
 
 defineOptions({ name: 'MuDescriptionsItem' })
 
@@ -13,10 +14,12 @@ const props = withDefaults(defineProps<{
   labelWidth: '',
 })
 
-const column = inject('column', 4)
+// 父级 provide 的是 computed，这里用 unref 取值才能随 column 变化重算
+const column = inject<number | ComputedRef<number>>('column', 4)
+const columnCount = computed(() => Number(unref(column)) || 4)
 
 const itemStyle = computed(() => {
-  const width = `${(props.span / column) * 100}%`
+  const width = `${(props.span / columnCount.value) * 100}%`
   return { width }
 })
 

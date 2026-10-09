@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import type { UploadFile } from './types'
 import { AUDIO_SUFFIX, FILE_SUFFIX, guid } from '@muyianking/utils'
 import { computed, inject, nextTick, provide, ref, useSlots } from 'vue'
-import { error } from '../../utils/message'
 
+import { error } from '../../utils/message'
 import PreviewComp from './components/Preview.vue'
 import UploadProgress from './components/Progress.vue'
 import TriggerComp from './components/Trigger.vue'
@@ -68,14 +69,13 @@ const props = defineProps({
 
 const emits = defineEmits(['upload-start', 'upload-finish'])
 
-interface UploadFile {
-  id?: string
-  name?: string
-  path?: string
-  loading?: boolean
-  file?: File
-  [key: string]: any
-}
+// 显式声明插槽：不声明时生成的 d.ts 会把插槽作用域参数退化成 unknown，
+// 消费者写 #preview="{ files }" 拿不到类型（demo 里 file 就是 unknown）
+defineSlots<{
+  default?: () => any
+  preview?: (props: { files: UploadFile | UploadFile[] | null }) => any
+  progress?: (props: { percentage: number }) => any
+}>()
 
 interface UploadConfig {
   multiple: boolean
@@ -150,6 +150,11 @@ function handleReupload(row: UploadFile) {
 
 // 选择文件后
 async function handleSelect(file: File) {
+  // 取出后立刻清空：点过「重新上传」又取消选择时，旧值会残留，
+  // 下一次普通添加会误把之前那个文件替换掉而不是追加
+  const target = replace_file
+  replace_file = null
+
   let new_file: UploadFile = {
     id: guid(),
     name: file.name,
@@ -167,9 +172,9 @@ async function handleSelect(file: File) {
     let index = files.length
 
     // 是重新上传
-    if (replace_file) {
+    if (target) {
       // 找到重新上传的文件的索引
-      index = files.findIndex(item => item.id === replace_file!.id)
+      index = files.findIndex(item => item.id === target.id)
 
       if (index > -1) {
         // 找到替换

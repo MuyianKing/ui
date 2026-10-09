@@ -7,7 +7,7 @@ defineOptions({ name: 'MuSearchButton' })
 
 const props = withDefaults(defineProps<{
   icon?: string
-  text?: string
+  text?: string | boolean
 }>(), {
   icon: 'lucide:search',
   text: '查询',
@@ -18,7 +18,7 @@ defineEmits<{
 }>()
 
 const globalConfig = inject<{ tableIcon?: string }>('GLOBAL_CUSTOM_CONFIG')
-const { buttonText, buttonType } = useButton(props as any, '查询', globalConfig?.tableIcon)
+const { buttonText, buttonType } = useButton(props, '查询', globalConfig?.tableIcon)
 </script>
 
 <template>

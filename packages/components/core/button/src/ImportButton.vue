@@ -5,7 +5,7 @@ import { useButton } from './useButton'
 defineOptions({ name: 'MuImportButton' })
 
 const props = withDefaults(defineProps<{
-  text?: string
+  text?: string | boolean
 }>(), {
   text: '导入',
 })
@@ -14,7 +14,7 @@ defineEmits<{
   (e: 'click'): void
 }>()
 
-const { buttonText, buttonType } = useButton(props as any, '导入')
+const { buttonText, buttonType } = useButton(props, '导入')
 </script>
 
 <template>
