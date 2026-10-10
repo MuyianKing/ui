@@ -57,7 +57,8 @@ function inquirerPrompt() {
   return new Promise((resolve, reject) => {
     inquirer.prompt([
       {
-        type: 'list',
+        // inquirer@14 移除了 list 类型，改名 select
+        type: 'select',
         name: 'release',
         message: '您确定切换到主分支并合并了最新的代码？',
         choices: ['是', '否'],

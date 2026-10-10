@@ -1,5 +1,11 @@
+## 0.0.1-beta.7 (2026-10-10)
 
-# [0.0.0-beta.3](https://github.com/MuyianKing/ui/compare/v0.0.1-beta.2...v0.0.0-beta.3) (2025-02-17)
+
+### Bug Fixes
+
+* :bug: 增加文档 ([907fe4d](https://github.com/MuyianKing/ui/commit/907fe4d2f1d6bec5f6d232d7803832cc98685606))
+
+# [0.0.1-beta.3](https://github.com/MuyianKing/ui/compare/v0.0.1-beta.2...v0.0.0-beta.3) (2025-02-17)
 
 
 ### Features

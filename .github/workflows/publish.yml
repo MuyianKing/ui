@@ -8,7 +8,8 @@ on:
       - v*
 
 permissions:
-  contents: write
+  contents: write # 写权限用于创建 GitHub Release
+  id-token: write # OIDC Trusted Publishing 必需，允许 workflow 请求 OIDC 令牌
 
 jobs:
   publish:
@@ -25,7 +26,9 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22.x
+          # npm 11.5.1+ 才支持 OIDC Trusted Publishing，Node 24 自带该版本；
+          # 低版本 npm 会静默退化为匿名发布
+          node-version: 24
           registry-url: https://registry.npmjs.org
 
       - name: pnpm i
@@ -44,11 +47,12 @@ jobs:
             *)   tag=latest ;;
           esac
           echo "publishing $version with dist-tag $tag"
+          # OIDC Trusted Publishing：不带任何静态 token，npm 用 GitHub 签发的 OIDC 令牌换取短期凭证
           npm publish --tag "$tag"
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      # 只在 tag 触发时创建 Release；workflow_dispatch 没有 tag 上下文，自动跳过
       - name: Automatic Releases
+        if: startsWith(github.ref, 'refs/tags/')
         uses: marvinpinto/action-automatic-releases@v1.2.1
         with:
           repo_token: '${{ secrets.GITHUB_TOKEN }}'
