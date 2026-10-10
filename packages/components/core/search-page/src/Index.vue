@@ -2,8 +2,8 @@
 import type { ComponentSize } from 'element-plus'
 import { ElForm, vLoading } from 'element-plus'
 import { computed, ref } from 'vue'
+import IconArrowDown from '~icons/ep/arrow-down'
 import { MuButton } from '../../button'
-import { MuIcon } from '../../icon'
 
 defineOptions({ name: 'MuSearchPage' })
 
@@ -57,7 +57,7 @@ const bottomClasses = computed(() => {
         <slot v-else name="button" />
         <template v-if="$slots.advanced && advancedText">
           <mu-button mode="text" class="advanced-btn" @click="toggleAdvanced">
-            <mu-icon icon="ep:arrow-down" class="mu-search-page-arrow" :class="{ 'up-arrow': showAdvanced }" />
+            <icon-arrow-down class="mu-search-page-arrow" :class="{ 'up-arrow': showAdvanced }" style="font-size: 18px" />
             {{ advancedText }}
           </mu-button>
         </template>

@@ -6,7 +6,7 @@
 - 对外导出：`MuSearchPage`
 - 样式入口：`packages/components/core/search-page/style/index.ts`（类名 `.mu-search-page`、`.search-area`、`.bottom`、`.table-body`、`.fixed-button`）
 - 演示页面：`playground/src/views/search-page/Index.vue`
-- 依赖：element-plus 的 `ElForm`、`vLoading`；本库的 `MuButton`、`MuIcon`
+- 依赖：element-plus 的 `ElForm`、`vLoading`；本库的 `MuButton`；unplugin-icons 编译期图标（高级搜索箭头 `~icons/ep/arrow-down`）
 
 ## 基础用法
 
@@ -89,7 +89,7 @@ import { ElButton, ElFormItem, ElInput } from 'element-plus'
 
 ## 相关
 
-- 关联组件：`MuButton`（`packages/components/core/button/`）、`MuIcon`（`packages/components/core/icon/`）
+- 关联组件：`MuButton`（`packages/components/core/button/`）；高级搜索箭头为编译期图标组件（`~icons/ep/arrow-down`）
 - 公共类型：无
 - 样式：`packages/theme-chalk/css/search-page.css`
 - 演示页面：`playground/src/views/search-page/Index.vue`

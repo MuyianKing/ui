@@ -4,7 +4,7 @@
 
 - 组件目录：`packages/components/core/video/`
 - 对外导出：`MuVideo`（具名导出 + 默认导出）
-- 样式入口：`packages/components/core/video/style/index.ts`（类名 `.mu-video`、`.mu-video-placeholder`）
+- 样式入口：`packages/components/core/video/style/index.ts`（类名 `.mu-video`；模板中的 `.mu-video-placeholder` 在 `video.css` 中无样式定义，仅作占位标记）
 - 演示页面：暂无
 - 依赖：无 element-plus 组件、无本库其它组件、无 utils；使用原生 `<video>`，**不依赖 wavesurfer**。全局能力经 `GLOBAL_CUSTOM_CONFIG.previewFileUrl` 注入
 

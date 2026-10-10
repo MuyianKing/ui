@@ -2,6 +2,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
+import Icons from 'unplugin-icons/vite'
 import dts from 'vite-plugin-dts'
 import StylePathAlias from './vite-plugins/style.path.alias.js'
 
@@ -53,6 +54,8 @@ export default {
     },
   },
   plugins: [
+    // 图标构建期从 @iconify/json 打包（~icons/<集>/<名>），不依赖运行时联网拉取
+    Icons({ compiler: 'vue3' }),
     StylePathAlias(),
     vue(),
     vueJsx(),

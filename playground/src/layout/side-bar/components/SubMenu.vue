@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Icon } from '@iconify/vue'
 import { ElMenuItem, ElSubMenu } from 'element-plus/es'
+import { menuIcons } from '../../menu-icons'
 import 'element-plus/es/components/menu-item/style/css'
 import 'element-plus/es/components/sub-menu/style/css'
 
@@ -26,7 +26,7 @@ function pathResolve(parentPath: string, path: string) {
 <template>
   <el-sub-menu v-if="menu.children && menu.children.length > 0" :key="menu.path" :index="pathResolve(fatherPath, menu.path)">
     <template #title>
-      <icon v-if="menu.meta?.icon" :icon="menu.meta.icon" class="top-item-icon" />
+      <component :is="menuIcons[menu.meta.icon]" v-if="menu.meta?.icon && menuIcons[menu.meta.icon]" class="top-item-icon" />
       <span class="item-title">{{ menu.meta?.title }}</span>
     </template>
 
@@ -35,7 +35,7 @@ function pathResolve(parentPath: string, path: string) {
     </template>
   </el-sub-menu>
   <el-menu-item v-else-if="menu.meta?.title" :index="pathResolve(fatherPath, menu.path)">
-    <icon v-if="menu.meta?.icon" :icon="menu.meta.icon" class="top-item-icon" />
+    <component :is="menuIcons[menu.meta.icon]" v-if="menu.meta?.icon && menuIcons[menu.meta.icon]" class="top-item-icon" />
     <span class="item-title">{{ menu.meta.title }}</span>
   </el-menu-item>
 </template>

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import CompLineWrapper from '@comp/common/CompLineWrapper.vue'
 import CompPageWrapper from '@comp/common/CompPageWrapper.vue'
-import { MuButton, MuIcon, MuUpload } from '@muyianking/ui'
+import { MuButton, MuUpload } from '@muyianking/ui'
 import { ref } from 'vue'
+import IconTrash from '~icons/ph/trash-bold'
 
 const image = ref({
   f1: { id: 'P1723702204773gL', name: '微信图片_20240302181524.jpg', path: '2024/8/15/P1723702204773gL.jpg' },
@@ -73,7 +74,7 @@ function handleFinish() {
         <template #preview="{ files }">
           <div v-for="file in files" :key="file.id" class="flex items-center">
             <span @click="handleReUpload(file)">{{ file.name }}</span>
-            <mu-icon icon="ph:trash-bold" @click="handleDel(file)" />
+            <icon-trash style="font-size: 18px" @click="handleDel(file)" />
           </div>
         </template>
       </mu-upload>

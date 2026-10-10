@@ -15,7 +15,7 @@
         "./packages/*"
       ]
     },
-    "types": ["vite/client", "element-plus/global"],
+    "types": ["vite/client", "element-plus/global", "unplugin-icons/types/vue"],
     "allowImportingTsExtensions": true,
     /* Linting */
     "strict": true,

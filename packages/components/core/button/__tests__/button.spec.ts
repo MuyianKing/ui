@@ -2,10 +2,18 @@ import type { MuButtonMode } from '../src/useButton'
 import { mount } from '@vue/test-utils'
 import { ElTooltip } from 'element-plus'
 import { describe, expect, it, vi } from 'vitest'
-import { MuAddButton, MuButton, MuDelButton, MuDetailButton, MuEditButton, MuExportButton, MuSearchButton } from '../index'
+import IconAddOne from '~icons/icon-park-outline/add-one'
+import IconDelete from '~icons/icon-park-outline/delete'
+import IconRefresh from '~icons/icon-park-outline/refresh-one'
+import IconSearch from '~icons/lucide/search'
+import IconImport from '~icons/ph/download-simple-bold'
+import IconExport from '~icons/ph/export-bold'
+import IconEdit from '~icons/uil/edit'
+import { MuAddButton, MuButton, MuDelButton, MuDetailButton, MuEditButton, MuExportButton, MuImportButton, MuResetButton, MuSearchButton } from '../index'
 
-// 真实 MuIcon 会按图标名向 api.iconify.design 取图标，测试里换成结构等价的 svg 桩：
-// 用例保持 hermetic（不打网络），断言只关注按钮自身的渲染分支。
+// 字符串图标名走真实 Icon（@iconify/vue）会按图标名向 api.iconify.design 取图标，
+// 测试里换成结构等价的 svg 桩保持 hermetic（不打网络）；
+// 编译期图标（~icons/*）不走网络，直接用真实组件并按组件定义 findComponent 断言。
 vi.mock('@iconify/vue', async () => {
   const { defineComponent, h: create } = await import('vue')
   return {
@@ -102,7 +110,7 @@ describe('muButton 的图标显隐与事件', () => {
     expect(mount(MuButton).find('button').text()).toBe('')
   })
 
-  it('$attrs 的落点随形态变化：button 形态落到 el-button，icon 形态落到 MuIcon', () => {
+  it('$attrs 的落点随形态变化：button 形态落到 el-button，icon 形态落到 Icon', () => {
     const asButton = mount(MuButton, { slots: { default: () => '提交' }, attrs: { 'data-test': 'as-button' } })
     expect(asButton.find('button[data-test="as-button"]').exists()).toBe(true)
 
@@ -112,16 +120,61 @@ describe('muButton 的图标显隐与事件', () => {
 })
 
 describe('预设按钮的 useButton 逻辑', () => {
-  it('muSearchButton 的 text 有默认值，默认渲染为文本形态', () => {
+  it('muSearchButton 的 text 有默认值，默认渲染为标准按钮（与添加按钮一致，不带前置图标）', () => {
     const wrapper = mount(MuSearchButton)
 
-    expect(wrapper.find('a').exists()).toBe(true)
+    expect(wrapper.find('button').exists()).toBe(true)
+    expect(wrapper.find('a').exists()).toBe(false)
     expect(wrapper.text()).toBe('查询')
+    expect(wrapper.find('svg.mu-icon').exists()).toBe(false)
   })
 
-  it('预设按钮的 text 传布尔真时取默认文案，而不是渲染出 "true"', () => {
+  it('muSearchButton 的 text 传假值时切换为图标形态', () => {
+    const wrapper = mount(MuSearchButton, { props: { text: false } })
+
+    expect(wrapper.find('button').exists()).toBe(false)
+    expect(wrapper.findComponent(IconSearch).exists()).toBe(true)
+  })
+
+  it('muExportButton / muImportButton / muResetButton 恒为标准按钮，文案取默认插槽回退', () => {
+    const exportBtn = mount(MuExportButton)
+    expect(exportBtn.find('button').exists()).toBe(true)
+    expect(exportBtn.find('a').exists()).toBe(false)
+    expect(exportBtn.text()).toBe('导出')
+    expect(exportBtn.find('svg.mu-icon').exists()).toBe(false)
+
+    const importBtn = mount(MuImportButton)
+    expect(importBtn.find('button').exists()).toBe(true)
+    expect(importBtn.text()).toBe('导入')
+
+    const resetBtn = mount(MuResetButton)
+    expect(resetBtn.find('button').exists()).toBe(true)
+    expect(resetBtn.text()).toBe('重置')
+  })
+
+  it('muAddButton / muExportButton / muImportButton / muResetButton 的文案由默认插槽自定义（无 text prop）', () => {
+    expect(mount(MuAddButton, { slots: { default: () => '创建' } }).text()).toBe('创建')
+    expect(mount(MuExportButton, { slots: { default: () => '点击导出' } }).text()).toBe('点击导出')
+    expect(mount(MuImportButton, { slots: { default: () => '点击导入' } }).text()).toBe('点击导入')
+    expect(mount(MuResetButton, { slots: { default: () => '恢复' } }).text()).toBe('恢复')
+  })
+
+  it('muResetButton 的 noConfirm 分支文案同样走插槽，图标显隐跟随 buttonIcon', () => {
+    const noConfirm = mount(MuResetButton, { props: { noConfirm: true }, slots: { default: () => '恢复' } })
+    expect(noConfirm.find('button').exists()).toBe(true)
+    expect(noConfirm.text()).toBe('恢复')
+    expect(noConfirm.findComponent(IconRefresh).exists()).toBe(false)
+
+    const withConfig = mount(MuResetButton, {
+      props: { noConfirm: true },
+      slots: { default: () => '恢复' },
+      global: { provide: { [CONFIG_KEY]: { buttonIcon: true } } },
+    })
+    expect(withConfig.findComponent(IconRefresh).exists()).toBe(true)
+  })
+
+  it('muSearchButton 的 text 传布尔真时取默认文案，而不是渲染出 "true"', () => {
     expect(mount(MuSearchButton, { props: { text: true } }).text()).toBe('查询')
-    expect(mount(MuExportButton, { props: { text: true } }).text()).toBe('导出')
   })
 
   it('muEditButton 的 text 未传时默认渲染为图标形态', () => {
@@ -129,7 +182,7 @@ describe('预设按钮的 useButton 逻辑', () => {
 
     expect(wrapper.find('a').exists()).toBe(false)
     expect(wrapper.find('button').exists()).toBe(false)
-    expect(wrapper.find('svg.mu-icon').attributes('data-icon')).toBe('uil:edit')
+    expect(wrapper.findComponent(IconEdit).exists()).toBe(true)
   })
 
   it('muEditButton / muDetailButton 未传 text 时由全局配置 tableIcon 决定形态', () => {
@@ -137,7 +190,7 @@ describe('预设按钮的 useButton 逻辑', () => {
     // 跳过 Vue 的布尔转换，否则 props.text 会变成 false、tableIcon 永远不参与判断
     const editIconForm = mount(MuEditButton)
     expect(editIconForm.find('a').exists()).toBe(false)
-    expect(editIconForm.find('svg.mu-icon').attributes('data-icon')).toBe('uil:edit')
+    expect(editIconForm.findComponent(IconEdit).exists()).toBe(true)
 
     const editTextForm = mount(MuEditButton, {
       global: { provide: { [CONFIG_KEY]: { tableIcon: 'text' } } },
@@ -154,7 +207,7 @@ describe('预设按钮的 useButton 逻辑', () => {
 
   it('muDelButton 未传 text 时同样跟随 tableIcon（noPopover 分支）', () => {
     const iconForm = mount(MuDelButton, { props: { noPopover: true } })
-    expect(iconForm.find('svg.mu-icon').attributes('data-icon')).toBe('icon-park-outline:delete')
+    expect(iconForm.findComponent(IconDelete).exists()).toBe(true)
     // MuButton 的图标形态只认 tip，预设按钮必须把 buttonText 传下去，否则悬浮提示丢失
     expect(iconForm.findComponent(ElTooltip).props('content')).toBe('删除')
 
@@ -182,12 +235,29 @@ describe('预设按钮的 useButton 逻辑', () => {
     const withConfig = mount(MuAddButton, {
       global: { provide: { [CONFIG_KEY]: { buttonIcon: true } } },
     })
-    expect(withConfig.find('svg.mu-icon').exists()).toBe(true)
-    expect(withConfig.find('svg.mu-icon').attributes('data-icon')).toBe('icon-park-outline:add-one')
+    expect(withConfig.findComponent(IconAddOne).exists()).toBe(true)
+  })
+
+  it('查询 / 导出 / 导入 / 重置按钮的标准按钮形态前置图标同样由 buttonIcon 决定（图标形态不受影响）', () => {
+    const provide = { [CONFIG_KEY]: { buttonIcon: true } }
+    expect(mount(MuSearchButton, { global: { provide } }).findComponent(IconSearch).exists()).toBe(true)
+    expect(mount(MuExportButton, { global: { provide } }).findComponent(IconExport).exists()).toBe(true)
+    expect(mount(MuImportButton, { global: { provide } }).findComponent(IconImport).exists()).toBe(true)
+    expect(mount(MuResetButton, { global: { provide } }).findComponent(IconRefresh).exists()).toBe(true)
+
+    // 未配置 / 配置为 false 时不渲染前置图标（默认形态用例已覆盖），图标形态的图标不受 buttonIcon 影响
+    expect(mount(MuSearchButton, { props: { text: false }, global: { provide } }).findComponent(IconSearch).exists()).toBe(true)
+  })
+
+  it('icon 传编译期图标组件时直接渲染该组件（字符串名才走运行时 Icon）', () => {
+    const wrapper = mount(MuButton, { props: { mode: 'icon', icon: IconEdit } })
+
+    expect(wrapper.findComponent(IconEdit).exists()).toBe(true)
+    expect(wrapper.find('svg').exists()).toBe(true)
   })
 
   it('预设按钮把 click 冒泡给使用方', async () => {
-    const wrapper = mount(MuAddButton, { props: { text: '创建' } })
+    const wrapper = mount(MuAddButton, { slots: { default: () => '创建' } })
     await wrapper.find('button').trigger('click')
 
     expect(wrapper.text()).toBe('创建')

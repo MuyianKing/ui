@@ -2,7 +2,8 @@
 import { getType } from '@muyianking/utils'
 import { vLoading } from 'element-plus'
 import { computed } from 'vue'
-import IconComp from '../../icon'
+import IconTrash from '~icons/pixelarticons/trash'
+import IconFolderUpload from '~icons/ri/folder-upload-line'
 import PreviewComp from '../../preview'
 
 interface FileItem {
@@ -66,9 +67,9 @@ const _files = computed<FileItem[]>(() => {
   >
     <preview-comp :files="_file" height="100px" width="100px" no-preview :card="listType === 'card'" no-download />
     <div v-if="listType === 'card'" class="delete-wrapper" @click.stop>
-      <icon-comp class="icon-close" icon="pixelarticons:trash" size="24px" @click="handleDel(_file)" />
-      <icon-comp class="ml-2" icon="ri:folder-upload-line" size="24px" @click="handleChange(_file, true)" />
+      <icon-trash class="icon-close" style="font-size: 24px" @click="handleDel(_file)" />
+      <icon-folder-upload class="ml-2" style="font-size: 24px" @click="handleChange(_file, true)" />
     </div>
-    <icon-comp v-else class="icon-close ml-2" icon="pixelarticons:trash" size="18px" @click.stop="handleDel(_file)" />
+    <icon-trash v-else class="icon-close ml-2" style="font-size: 18px" @click.stop="handleDel(_file)" />
   </div>
 </template>

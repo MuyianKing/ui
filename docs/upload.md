@@ -6,7 +6,7 @@
 - 对外导出：`MuUpload` 与类型 `UploadFile`（仅具名导出，`index.ts` 内无 `export default`）
 - 样式入口：`packages/components/core/upload/style/index.ts`（类名 `.mu-upload-wrapper`、`.mu-upload-flex-style`、`.mu-upload-multiple-margin`、`.mu-upload-preview-wrapper`、`.mu-upload-trigger-comp`、`.mu-ui-progress-shadow`；类名 `.mu-upload` 本身未使用）
 - 演示页面：`playground/src/views/upload/Index.vue`
-- 依赖：element-plus 的 `vLoading` 指令、`ElProgress`（子组件 Progress 使用）；本库组件 `MuIcon`、`MuPreview`（内部再经其渲染 `MuImage` / `MuVideo` / `MuFile`）；`utils/message` 的 `error` / `confirm`；`@muyianking/utils` 的 `guid`、`getType`、`getSuffix`、`getMimeType`、`IMAGE_SUFFIX`、`VIDEO_SUFFIX`、`FILE_SUFFIX`、`AUDIO_SUFFIX`；全局 `GLOBAL_CUSTOM_CONFIG.uploadFile`
+- 依赖：element-plus 的 `vLoading` 指令、`ElProgress`（子组件 Progress 使用）；本库组件 `MuPreview`（内部再经其渲染 `MuImage` / `MuVideo` / `MuFile`）；`utils/message` 的 `error` / `confirm`；`@muyianking/utils` 的 `guid`、`getType`、`getSuffix`、`getMimeType`、`IMAGE_SUFFIX`、`VIDEO_SUFFIX`、`FILE_SUFFIX`、`AUDIO_SUFFIX`；全局 `GLOBAL_CUSTOM_CONFIG.uploadFile`
 
 ## 基础用法
 
@@ -117,8 +117,9 @@ function handleFinish(id: string) {
 - `type="all"` 不在 `type_map` 中，`getAllType` 返回空后缀列表，`accept` 退化为 `*/*`；`suffix` 与 `type` 无交集时 `getAllType` 会 `console.warn('type和suffix设置冲突')` 并返回空列表。
 - 类型拦截依赖 `@muyianking/utils` 的 `getMimeType` / `getSuffix`，若后缀无法映射到 MIME，`isAccepted` 会判为不通过并弹「请不要自行选择【所有文件】…」的阻塞式 `ElMessageBox`（无取消、点击遮罩不关闭）。
 - `showTypeWarning` 的 `confirm` 是 `ElMessageBox.confirm`，其文案与关闭策略写死在 `Trigger.vue`，不随 locale 变化。
-- 上传失败仅弹 `ElMessage` 错误，**不会自动回滚已插入的文件项**，列表里会保留该次选择（`loading` 已清除）；如需失败重试由业务处理。
-- 预览区依赖 `MuPreview` / `MuImage` / `MuVideo`，其下载、预览行为受同一份全局配置影响；`MuUpload` 的样式入口已链式引入 `preview` 与 `icon` 的样式，单独引样式时无需重复引入。
+- 上传失败仅弹 `ElMessage` 错误，**不会自动回滚已插入的文件项**，列表里会保留该次选择，且该项的 `loading` 仍为 `true`（catch 分支只弹错误，不清除 `loading`：内置预览会一直转圈，`MuFormItem` 的 `uploadLoading` 校验也会持续拦截），需业务侧自行处理；如需失败重试由业务处理。
+- 预览区依赖 `MuPreview` / `MuImage` / `MuVideo`，其下载、预览行为受同一份全局配置影响；`MuUpload` 的样式入口已链式引入 `preview` 的样式，单独引样式时无需重复引入。
+- 触发区与预览区的图标（添加 `~icons/bitcoin-icons/plus-outline`、上传 `~icons/ic/round-cloud-upload`、删除 `~icons/pixelarticons/trash`、重传 `~icons/ri/folder-upload-line`）为 unplugin-icons 编译期组件，构建期打包、不依赖运行时网络。
 - `readonly` 只隐藏触发区，不隐藏预览，也不禁止通过 `defineExpose` 的方法删除。
 - **重新上传的目标是一次性的**：`handleSelect` 一进入就取出并清空 `replace_file`，因此点过「重新上传」又取消选择（未选文件）后，再点普通「添加」只会追加，不会误替换掉之前那个文件。
 - 传入 `progress` 且自定义 `#progress` 插槽时，须自行渲染进度内容，内置 `ElProgress` 会被完全替换。
@@ -126,7 +127,7 @@ function handleFinish(id: string) {
 ## 相关
 
 - 子组件与工具：`packages/components/core/upload/components/Trigger.vue`、`Progress.vue`、`Preview.vue`、`packages/components/core/upload/hooks/index.ts`、`packages/components/core/upload/types.ts`
-- 关联本库组件：`packages/components/core/preview/src/Index.vue`（依赖 `file` / `image` / `video`）、`packages/components/core/icon/src/Index.vue`
+- 关联本库组件：`packages/components/core/preview/src/Index.vue`（依赖 `file` / `image` / `video`）
 - 表单联动校验：`packages/components/core/form-item/src/Index.vue` 的 `uploadLoading` → `validateUploadLoading`
 - 全局配置：`packages/components/core/config-provider/src/Index.vue`（`uploadFile` / `previewFileUrl` / `downloadFile`）
 - 公共消息封装：`packages/components/utils/message.ts`（`error` / `confirm`）

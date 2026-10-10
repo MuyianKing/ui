@@ -82,14 +82,6 @@ export const menuList = [
     },
   },
   {
-    path: '/icon',
-    component: () => import('@views/icon/Index.vue'),
-    meta: {
-      title: '图标',
-      icon: 'mdi:emoticon-kiss-outline',
-    },
-  },
-  {
     path: '/icon-select',
     component: () => import('@views/icon-select/Index.vue'),
     meta: {

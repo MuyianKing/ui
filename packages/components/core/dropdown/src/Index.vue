@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ElCheckbox, ElCheckboxGroup, ElDropdown, ElDropdownItem, ElDropdownMenu, ElInput, ElScrollbar } from 'element-plus'
 import { computed, ref } from 'vue'
-import { MuIcon } from '../../icon'
+import IconArrowDown from '~icons/iconamoon/arrow-down-2-thin'
 
 defineOptions({ name: 'MuDropdown' })
 
@@ -76,10 +76,10 @@ const displayLabel = computed(() => {
   >
     <div :class="{ 'active-label': multiple ? selectedValues.length > 0 : !!model }" class="flex items-center dropdown-label">
       <span>{{ displayLabel }}</span>
-      <mu-icon v-if="!noArrow"
-               :class="{ 'deg-180': arrowStatus }"
-               class="arrow-icon ml-1"
-               icon="iconamoon:arrow-down-2-thin"
+      <icon-arrow-down v-if="!noArrow"
+                       :class="{ 'deg-180': arrowStatus }"
+                       class="arrow-icon ml-1"
+                       style="font-size: 18px"
       />
     </div>
     <template #dropdown>

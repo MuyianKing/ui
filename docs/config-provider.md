@@ -70,17 +70,17 @@ async function getIcons(query: IconQuery): Promise<IconQueryResult> {
 - 模板把 `$attrs` 透传给 `el-config-provider`，并渲染默认插槽；组件本身不产生额外 DOM 包裹语义。
 - `customConfig` 的类型是 `packages/components/core/types/common.ts` 的 `GlobalCustomConfig`（随其它公共类型一起从公共入口导出），键全部可选，按源码各处 `inject` 统计如下：
 
-| 配置键           | 类型                                                                                        | 消费组件                                                                       | 未配置时行为           |
-| ---------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ---------------------- |
-| `uploadFile`     | `(file: File, options: UploadFileOptions) => UploadFileResult \| Promise<UploadFileResult>` | `core/upload`                                                                  | 抛「未配置上传接口」   |
-| `previewFileUrl` | `(url: string, prefix?: string) => string`                                                  | `core/image`、`core/video`、`core/file`（`file` 只声明、未使用）               | 直接用原始地址         |
-| `downloadFile`   | `(url: string, name: string) => void`                                                       | `core/file`                                                                    | 下载入口无反应、不报错 |
-| `getIcons`       | `(query: IconQuery) => Promise<IconQueryResult>`                                            | `core/icon-select`                                                             | 静默无数据             |
-| `tableIcon`      | `'text' \| 'button' \| 'icon'`                                                              | `core/button` 的 6 个预设按钮（Del / Detail / Edit / Export / Reset / Search） | 图标按钮               |
-| `buttonIcon`     | `boolean`                                                                                   | `MuAddButton`                                                                  | 不显示添加图标         |
+| 配置键           | 类型                                                                                        | 消费组件                                                         | 未配置时行为               |
+| ---------------- | ------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- | -------------------------- |
+| `uploadFile`     | `(file: File, options: UploadFileOptions) => UploadFileResult \| Promise<UploadFileResult>` | `core/upload`                                                    | 抛「未配置上传接口」       |
+| `previewFileUrl` | `(url: string, prefix?: string) => string`                                                  | `core/image`、`core/video`、`core/file`（`file` 只声明、未使用） | 直接用原始地址             |
+| `downloadFile`   | `(url: string, name: string) => void`                                                       | `core/file`                                                      | 下载入口无反应、不报错     |
+| `getIcons`       | `(query: IconQuery) => Promise<IconQueryResult>`                                            | `core/icon-select`                                               | 静默无数据                 |
+| `tableIcon`      | `'text' \| 'button' \| 'icon'`                                                              | `core/button` 的 Del / Detail / Edit 三个表格操作按钮            | 图标按钮                   |
+| `buttonIcon`     | `boolean`                                                                                   | `MuAddButton` 与查询 / 导出 / 导入 / 重置按钮                    | 标准按钮形态不显示前置图标 |
 
 - 上表用到的子类型同在 `common.ts` 导出：`UploadFileOptions = { onProgress: (e: ProgressEvent) => void }`、`UploadedFile = UploadFile & { path: string, id: string }`、`UploadFileResult = UploadedFile | UploadedFile[] | null | undefined`、`IconQuery = { limit: number, page: number, query: string }`、`IconQueryResult = { data: string[], count: number }`、`TableIcon = 'text' | 'button' | 'icon'`。
-- `tableIcon` 的取值语义由 `useButton` 决定：`'button'` 标准按钮、`'text'` 文本按钮、`'icon'` 与未配置同为图标按钮；`MuImportButton` 不读 `tableIcon`，运行时传入其它字符串也只会落回图标按钮。
+- `tableIcon` 的取值语义由 `useButton` 决定：`'button'` 标准按钮、`'text'` 文本按钮、`'icon'` 与未配置同为图标按钮；`MuAddButton` / `MuExportButton` / `MuImportButton` / `MuResetButton` 恒为标准按钮、不读 `tableIcon`，`MuSearchButton` 的 `text` 为真渲染成标准按钮、为假切图标形态。`buttonIcon` 只控制标准按钮形态的前置图标，不影响 `MuSearchButton` 的图标形态。
 - `uploadFile` 返回单条或数组（数组只取第 `0` 项），返回空值视为上传失败；`UploadedFile` 的 `path` / `id` 是必填的：预览与下载依赖 `path`，文件标识与「重新上传」定位依赖 `id`。
 
 ## 约束与注意事项

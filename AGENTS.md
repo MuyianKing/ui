@@ -89,6 +89,7 @@
 
 ## 6. 依赖与构建
 
+- 图标渲染分两层：静态图标一律用 unplugin-icons 的 `~icons/<集>/<名>` 编译期导入（数据源为根 devDependencies 的 @iconify/json，构建期打包、离线可用；Icons 插件在 script/vite.config.js、playground/vite.config.ts、vitest.config.ts 三处接入，tsconfig 的 types 含 unplugin-icons/types/vue）；仅运行时才能确定的图标名（MuButton 的字符串 `icon` prop、MuIconSelect 的 `getIcons` 列表）经 @iconify/vue 的 `Icon` 运行时渲染。新增图标名必须真实存在于 @iconify/json，否则构建期直接报错。
 - 构建外部化清单在 script/vite.config.js 中维护（vue、element-plus、@vueuse/core、echarts、dayjs、lodash-es、validator、js-cookie、nanoid、wavesurfer、@iconify/vue、@muyianking/\*），新增运行期依赖需同步登记。
 - dist/package.json 的 sideEffects 中 `es/**/style/index.js` 不可删除：Rolldown 保留独立 style 入口，缺这条会让消费者静默丢失全部样式。
 - 构建产物为 preserveModules ESM，入口 packages/components/index.ts 与 resolver.ts，样式自 packages/theme-chalk/css 拷贝至 dist/theme-chalk/css。

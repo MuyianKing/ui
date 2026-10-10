@@ -69,7 +69,7 @@ const config = [
 - 注入的是 ref 形态（`number | ComputedRef<number>`），脱离本组件直接 `inject('column')` 的第三方代码需要自行 `unref`。
 - 只提供布局与列数上下文，没有数据源、label 宽度等 props；每个字段必须显式写一个 `MuDescriptionsItem`。
 - 必须与 `MuDescriptionsItem` 搭配使用，单用只会得到一个空的 flex 容器。
-- 视觉依赖 `columns`/`item` 两份 theme-chalk CSS，两端任一缺失都会破坏边框网格。
+- 视觉依赖 `descriptions.css` / `descriptions-item.css` 两份 theme-chalk CSS，两端任一缺失都会破坏边框网格。
 
 ## 相关
 

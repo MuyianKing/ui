@@ -2,6 +2,7 @@ import { resolve } from 'node:path'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import tailwindcss from 'tailwindcss'
+import Icons from 'unplugin-icons/vite'
 import { defineConfig } from 'vite'
 import useAlias from './alias.config.ts'
 
@@ -30,6 +31,7 @@ export default defineConfig({
     include: ['@muyianking/components', '@muyianking/ui'],
   },
   plugins: [
+    Icons({ compiler: 'vue3' }),
     vue(),
     vueJsx(),
   ],

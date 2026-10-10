@@ -13,7 +13,6 @@
 | 组件                                    | 导出                   | 说明                                                                |
 | --------------------------------------- | ---------------------- | ------------------------------------------------------------------- |
 | [config-provider](./config-provider.md) | `MuConfigProvider`     | 全局配置注入（上传、预览、下载、图标等），透传 `el-config-provider` |
-| [icon](./icon.md)                       | `MuIcon`               | Iconify 图标渲染，统一尺寸与颜色                                    |
 | [question-icon](./question-icon.md)     | `MuQuestionIcon`       | 问号图标 + tooltip 说明文案                                         |
 | [button](./button.md)                   | `MuButton` 及 8 个预设 | 基础按钮与新增/删除/查看/编辑/导出/导入/重置/查询按钮               |
 

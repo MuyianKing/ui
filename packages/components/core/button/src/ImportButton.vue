@@ -1,28 +1,22 @@
 <script setup lang="ts">
+import type { GlobalCustomConfig } from '../../types/common'
+import { computed, inject } from 'vue'
+import IconImport from '~icons/ph/download-simple-bold'
 import MuButton from './Index.vue'
-import { useButton } from './useButton'
 
 defineOptions({ name: 'MuImportButton' })
 
-const props = withDefaults(defineProps<{
-  text?: string | boolean
-}>(), {
-  text: '导入',
-})
-
-defineEmits<{
+const emit = defineEmits<{
   (e: 'click'): void
 }>()
 
-const { buttonText, mode } = useButton(props, '导入')
+const globalConfig = inject<GlobalCustomConfig>('GLOBAL_CUSTOM_CONFIG')
+// 标准按钮的前置图标显隐由全局配置 buttonIcon 决定（与 MuAddButton 一致）
+const renderIcon = computed(() => (globalConfig?.buttonIcon ? IconImport : ''))
 </script>
 
 <template>
-  <mu-button :mode="mode"
-             icon="ph:import-bold"
-             :tip="buttonText"
-             @click="$emit('click')"
-  >
-    <slot>{{ buttonText }}</slot>
+  <mu-button :icon="renderIcon" @click="emit('click')">
+    <slot>导入</slot>
   </mu-button>
 </template>

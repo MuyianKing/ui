@@ -102,17 +102,17 @@ const range = reactive({
 | startPlaceholder | `string`                                  | `'开始日期'` | 开始框占位                        |
 | endPlaceholder   | `string`                                  | `'结束日期'` | 结束框占位                        |
 
-`v-model`（`modelValue: boolean` 之外的字符串值）：单日期分支为 `defineModel({ type: String })`，自定义范围分支为 `defineModel<string>('modelValue', { default: '' })`，el-range 分支为 `defineModel<string>({ default: '' })`。
+`v-model`（`modelValue`，字符串值）：单日期分支为 `defineModel({ type: String })`，自定义范围分支为 `defineModel<string>('modelValue', { default: '' })`，el-range 分支为 `defineModel<string>({ default: '' })`。
 
 ## Emits
 
 `MuDate` 自身未声明 `defineEmits`，事件经 `$attrs` 透传给命中的子组件。实际可用事件如下（由子组件声明）：
 
-| 事件         | 参数                                                  | 说明                               |
-| ------------ | ----------------------------------------------------- | ---------------------------------- |
-| update:start | `val: string`                                         | 开始值变化，仅 `type="range"` 分支 |
-| update:end   | `val: string`                                         | 结束值变化，仅 `type="range"` 分支 |
-| change       | 自定义范围分支无参数；el-range 分支为 `model: string` | 值变化通知。两个分支签名不一致     |
+| 事件         | 参数                                                                                     | 说明                               |
+| ------------ | ---------------------------------------------------------------------------------------- | ---------------------------------- |
+| update:start | `val: string`                                                                            | 开始值变化，仅 `type="range"` 分支 |
+| update:end   | `val: string`                                                                            | 结束值变化，仅 `type="range"` 分支 |
+| change       | 自定义范围分支无参数；el-range 分支为 `val: any`（运行时传拼接后的 `modelValue` 字符串） | 值变化通知。两个分支签名不一致     |
 
 单日期 / el-range 分支根元素就是 `el-date-picker`，写在 `MuDate` 上的事件监听会经 `$attrs` 落到 `el-date-picker` 上。
 

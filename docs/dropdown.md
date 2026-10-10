@@ -6,7 +6,7 @@
 - 对外导出：`MuDropdown`
 - 样式入口：`packages/components/core/dropdown/style/index.ts`（模板类名 `.mu-dropdown`、`.dropdown-label`、`.active-label`、`.arrow-icon`、`.deg-180`；主题另定义 `.mu-dropdown-popover`）
 - 演示页面：`playground/src/views/dropdown/Index.vue`
-- 依赖：element-plus 的 `ElDropdown`、`ElDropdownMenu`、`ElDropdownItem`、`ElCheckbox`、`ElCheckboxGroup`、`ElScrollbar`、`ElInput`（对应样式在 style/index.ts 逐条引入）；本库 `MuIcon`（`../../icon`，用于右侧箭头）；utils 无
+- 依赖：element-plus 的 `ElDropdown`、`ElDropdownMenu`、`ElDropdownItem`、`ElCheckbox`、`ElCheckboxGroup`、`ElScrollbar`、`ElInput`（对应样式在 style/index.ts 逐条引入）；unplugin-icons 编译期图标（右侧箭头 `~icons/iconamoon/arrow-down-2-thin`）；utils 无
 
 ## 基础用法
 
@@ -84,11 +84,11 @@ const multiple = ref([])
 - 多选下即使不传 `keepLabel`，label 区也始终显示 `label`，不会汇总已选标签。
 - `trigger="click"`、列表 `max-height` 为源码写死，无法通过 props 调整。
 - 箭头旋转与激活高亮依赖 `packages/theme-chalk/css/dropdown.css`（`.mu-dropdown` / `.deg-180` / `.active-label`）；该文件中的 `.mu-dropdown-popover .active` 等选择器在当前模板中未见对应类名。
-- 组件依赖本库 `MuIcon`，使用方需保证 `icon` 组件样式已随包引入。
+- 右侧箭头由编译期图标组件（`~icons/iconamoon/arrow-down-2-thin`）渲染（类 `arrow-icon ml-1`、18px，展开时加 `deg-180`）。
 - 其余属性经 `$attrs` 透传给 `el-dropdown`。
 
 ## 相关
 
-- 关联组件：`MuIcon`（`packages/components/core/icon/`，箭头图标）、`MuDropdownCascader`（同族下拉级联）。
+- 关联组件：`MuDropdownCascader`（同族下拉级联）。
 - 公共类型：`OptionsType` 定义于 `packages/components/core/types/common.ts`（本组件未直接引用）。
 - 演示页面：`playground/src/views/dropdown/Index.vue`。

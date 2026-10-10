@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { GlobalCustomConfig } from '../../types/common'
+import { Icon } from '@iconify/vue'
 import { useDebounceFn } from '@vueuse/core'
 import { ElButton, ElPopover, vLoading } from 'element-plus'
 import { inject, onMounted, reactive, ref, useTemplateRef } from 'vue'
-import { MuIcon } from '../../icon'
 import { MuInput } from '../../input'
 
 defineOptions({ name: 'MuIconSelect' })
@@ -103,7 +103,7 @@ onMounted(() => getData())
       <template #reference>
         <div class="flex items-center cursor-pointer">
           <span v-if="!model" class="placeholder-item">{{ placeholder }}</span>
-          <mu-icon class="ml-2" :icon="model" style="font-size: 26px" />
+          <icon class="ml-2" :icon="model" style="font-size: 26px" />
         </div>
       </template>
       <div class="mu-icons-wrapper">
@@ -113,7 +113,7 @@ onMounted(() => getData())
                :key="item"
                class="icon-item"
           >
-            <mu-icon :icon="item" size="22px" @click="handleClick(item)" />
+            <icon :icon="item" style="font-size: 22px" @click="handleClick(item)" />
           </div>
         </div>
         <div class="btn-wrapper">

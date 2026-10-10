@@ -6,7 +6,7 @@
 - 对外导出：`MuNumber`
 - 样式入口：`packages/components/core/number/style/index.ts`（模板根节点为无类名的 `<span>`，`theme-chalk/css/number.css` 中的 `.mu-data-num` 当前未被使用）
 - 演示页面：`playground/src/views/number/Index.vue`
-- 依赖：无（无 Element Plus 组件、无本库其它组件，纯 Vue computed/watchEffect）
+- 依赖：无（无 Element Plus 组件、无本库其它组件，纯 Vue watchEffect）
 
 ## 基础用法
 

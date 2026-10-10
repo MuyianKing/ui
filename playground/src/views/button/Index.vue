@@ -47,33 +47,30 @@ function handleClick() {
 
     <comp-line-wrapper label="导出按钮">
       <mu-export-button />
-      <mu-export-button text class="ml-4">
+      <mu-export-button class="ml-4">
         点击导出
       </mu-export-button>
     </comp-line-wrapper>
 
     <comp-line-wrapper label="导入按钮">
       <mu-import-button />
-      <mu-import-button text class="ml-4">
+      <mu-import-button class="ml-4">
         点击导入
       </mu-import-button>
     </comp-line-wrapper>
 
     <comp-line-wrapper label="表格按钮">
       <mu-del-button />
-      <mu-del-button text class="ml-4" />
       <mu-del-button text="自定义文字" class="ml-4" />
     </comp-line-wrapper>
 
     <comp-line-wrapper label="编辑按钮">
       <mu-edit-button @click="handleClick" />
-      <mu-edit-button text class="ml-4" />
       <mu-edit-button text="自定义文字" class="ml-4" />
     </comp-line-wrapper>
 
     <comp-line-wrapper label="查看按钮">
       <mu-detail-button @click="handleClick" />
-      <mu-detail-button text class="ml-4" />
       <mu-detail-button text="自定义文字" class="ml-4" />
     </comp-line-wrapper>
   </comp-page-wrapper>

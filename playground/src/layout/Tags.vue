@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { Icon } from '@iconify/vue'
 import useTagsStore from '@pinia/useTagsStore'
 import { ElScrollbar } from 'element-plus'
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import IconDelete from '~icons/typcn/delete-outline'
 import 'element-plus/es/components/scrollbar/style/css'
 
 const tags = useTagsStore()
@@ -47,7 +47,7 @@ function iconCloseTags(item: any) {
       <div class="flex h-full">
         <router-link v-for="item in tagsList" :key="item.path" :class="{ active: isActive(item.path) }" :title="item.title" :to="item.path" class="tags-li">
           <span class="tags-li-title">{{ item.title }}</span>
-          <icon v-if="tagsList.length > 1" class="tags-close-box" icon="typcn:delete-outline" @click.stop.prevent="iconCloseTags(item)" />
+          <icon-delete v-if="tagsList.length > 1" class="tags-close-box" @click.stop.prevent="iconCloseTags(item)" />
         </router-link>
       </div>
     </el-scrollbar>

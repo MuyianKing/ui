@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { getMimeType, getSuffix } from '@muyianking/utils'
 import { computed, ref, useSlots } from 'vue'
+import IconPlus from '~icons/bitcoin-icons/plus-outline'
+import IconCloudUpload from '~icons/ic/round-cloud-upload'
 import { confirm } from '../../../utils/message'
-import IconComp from '../../icon'
 import { getAcceptType } from '../hooks/index'
 
 interface UploadConfig {
@@ -133,10 +134,10 @@ defineExpose({
 
     <template v-if="!slots.trigger">
       <div v-if="triggerType === 'card'">
-        <icon-comp icon="bitcoin-icons:plus-outline" style="font-size: 28px;" />
+        <icon-plus style="font-size: 28px;" />
       </div>
       <div v-else class="upload-icon">
-        <icon-comp icon="ic:round-cloud-upload" style="font-size: 20px;" />
+        <icon-cloud-upload style="font-size: 20px;" />
         <span class="ml-1 ">点击上传附件</span>
       </div>
     </template>

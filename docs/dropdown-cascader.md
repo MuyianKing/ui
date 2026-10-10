@@ -6,7 +6,7 @@
 - 对外导出：`MuDropdownCascader`
 - 样式入口：`packages/components/core/dropdown-cascader/style/index.ts`（类名 `.mu-dropdown-cascader`）
 - 演示页面：`playground/src/views/dropdown-cascader/Index.vue`
-- 依赖：element-plus 的 `ElDropdown`、`ElCascaderPanel`、`ElInput`；本库 `MuIcon`；未使用 utils
+- 依赖：element-plus 的 `ElDropdown`、`ElCascaderPanel`、`ElInput`；unplugin-icons 编译期图标（右侧箭头 `~icons/iconamoon/arrow-down-2-thin`）；未使用 utils
 
 ## 基础用法
 
@@ -66,7 +66,7 @@ const options = [
 
 - `cascaderPropsConfig` 是 `computed`：在内部默认配置（`multiple`、`checkStrictly: false`、`emitPath: false`、`label` / `value` / `children` 键名）之上展开 `props.cascaderProps`。必须保持 `computed`，写成 setup 期一次性快照会导致 `multiple` / `cascaderProps` 变化不响应。
 - `filteredOptions`：`noAll` 为 `false` 时在数据源头部插入一项 `{ [labelKey]: '全部', [valueKey]: '' }`，随后按 `searchKey` 过滤。过滤走纯函数 `filterTree`，返回新数组、不改写 `props.options` 的子节点；父节点命中关键字时保留完整子树，仅子节点命中时以 `{ ...item, [childrenKey]: matched }` 浅拷贝保留匹配分支。
-- `handleChange`：`nextTick` 后读取 `cascaderPanelRef.getCheckedNodes(false)`（只取叶子节点）。多选下若 `model` 含内置「全部」的值 `''`，则清空选中节点、`model = []` 并 `emit('change', [])`；否则 `emit('change', 节点 data 数组)`。单选下 `emit('change', getCheckedNodes(false)[0]?.data)`。
+- `handleChange`：`nextTick` 后读取 `cascaderPanelRef.getCheckedNodes(false)`（参数 `false` 表示不限定叶子节点；默认 `checkStrictly: false` 下选中项本就只有叶子，经 `cascaderProps` 开启 `checkStrictly` 后父节点也会进入结果）。多选下若 `model` 含内置「全部」的值 `''`，则清空选中节点、`model = []` 并 `emit('change', [])`；否则 `emit('change', 节点 data 数组)`。单选下 `emit('change', getCheckedNodes(false)[0]?.data)`。
 - `activeStatus` 决定标签是否加 `active-label` 类：单选要求 `model` 不为 `''` / `null` / `undefined`，多选要求为非空数组。
 - `displayLabel`：多选直接返回 `props.label`；单选在**完整** `props.options` 中递归查找 `model` 对应标签（避免搜索过滤后选中项无法回显），查不到时回退 `props.label`。
 - `arrowStatus` 由 `el-dropdown` 的 `visible-change` 事件驱动，控制箭头 180 度旋转。
@@ -80,7 +80,7 @@ const options = [
 
 ## 相关
 
-- 关联组件：`MuIcon`（箭头图标）
+- 图标：右侧箭头为编译期图标组件（`~icons/iconamoon/arrow-down-2-thin`）
 - utils：无
 - 公共类型：无（节点结构未收敛到公共类型）
 - 演示页面：`playground/src/views/dropdown-cascader/Index.vue`

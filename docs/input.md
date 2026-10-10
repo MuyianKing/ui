@@ -83,7 +83,7 @@ const model = reactive({ name: '' })
 - `tip` / `tipLabel` 通过 `v-html` 注入浮层，内容直接来自使用方；不要把用户可控字符串传入，存在 XSS 风险。
 - placeholder 自动回退依赖「直接父组件」的 `label` prop（如 `MuFormItem`、`el-form-item`）。在 `mu-input` 与表单之间再套一层包装组件，或父组件没有 `label`，都会退化为「请输入」。
 - `type === 'number'` 时不做任何字符清洗，输入中间态原样保留；非 number 类型会删除所有单引号（防止粘贴带入）。
-- 自有的 `type` prop 会覆盖经 `$attrs` 透传的同名 `type`，无需重复传。
+- `type` 是本组件声明的 prop，传入后经模板 `:type` 下发给 `el-input`；因已声明为 prop，它不会落入 `$attrs`，不存在与透传属性同名的覆盖问题。
 - 样式依赖 Element Plus 的 input 与 popover 样式，已由 `style/index.ts` 引入；`input.css` 无内容，不要期待本库提供输入框自定义样式。
 - 浮层事件不透传，`el-popover` 的能力无法经本组件控制。
 

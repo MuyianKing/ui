@@ -3,7 +3,7 @@ import { MuConfigProvider } from '@muyianking/components'
 </script>
 
 <template>
-  <mu-config-provider :custom-config="{}">
+  <mu-config-provider :custom-config="{ buttonIcon: true }">
     <router-view />
   </mu-config-provider>
 </template>

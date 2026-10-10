@@ -1,13 +1,14 @@
 import { resolve } from 'node:path'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
+import Icons from 'unplugin-icons/vite'
 import { defineConfig } from 'vitest/config'
 
 // 与 playground/vite.config.ts 同样的思路：测试直连源码，不走 dist 构建产物
 const root = import.meta.dirname
 
 export default defineConfig({
-  plugins: [vue(), vueJsx()],
+  plugins: [Icons({ compiler: 'vue3' }), vue(), vueJsx()],
   resolve: {
     alias: {
       '@muyianking/ui': resolve(root, 'packages/components/index.ts'),

@@ -6,15 +6,18 @@
 - 对外导出：`MuIconSelect`
 - 样式入口：`packages/components/core/icon-select/style/index.ts`（类名 `.mu-icon-select`，另含 `.mu-icons-wrapper`、`.icon-content`、`.icon-item`、`.btn-wrapper`）
 - 演示页面：`playground/src/views/icon-select/Index.vue`
-- 依赖：element-plus 的 `ElPopover`、`ElButton`、`vLoading`（loading 指令）；本库 `MuIcon`、`MuInput`；`@vueuse/core` 的 `useDebounceFn`；运行时需通过 `MuConfigProvider` 注入 `GLOBAL_CUSTOM_CONFIG.getIcons`。
+- 依赖：element-plus 的 `ElPopover`、`ElButton`、`vLoading`（loading 指令）；运行时 `Icon`（`@iconify/vue`；图标名来自 `getIcons`，无法编译期确定）、本库 `MuInput`；`@vueuse/core` 的 `useDebounceFn`；运行时需通过 `MuConfigProvider` 注入 `GLOBAL_CUSTOM_CONFIG.getIcons`。
 
 ## 基础用法
 
-取自演示页 `playground/src/views/icon-select/Index.vue`。
+演示页仅渲染组件本体、未绑定值，以下据源码 `defineModel` 补充 `v-model` 用法。
 
 ```vue
 <script setup lang="ts">
 import { MuIconSelect } from '@muyianking/ui'
+import { ref } from 'vue'
+
+const icon = ref('')
 </script>
 
 <template>
@@ -49,7 +52,7 @@ import { MuIconSelect } from '@muyianking/ui'
 ## 业务逻辑
 
 - 数据来源：`inject('GLOBAL_CUSTOM_CONFIG')` 后调用 `getIcons(query)`。若未注入 `MuConfigProvider` 或 `getIcons` 缺失，`getData` 直接返回，弹层内不会渲染任何图标。
-- `getIcons` 契约：入参为 `IconQuery`（`{ limit, page, query }`），返回 `Promise<IconQueryResult>`（`{ data: string[], count: number }`）；`data` 中每项是图标名字符串（同时用作列表 `:key` 与 `MuIcon` 的 `icon`），`count` 为总数。两个类型与 `GlobalCustomConfig` 同在 `packages/components/core/types/common.ts` 并从公共入口导出。
+- `getIcons` 契约：入参为 `IconQuery`（`{ limit, page, query }`），返回 `Promise<IconQueryResult>`（`{ data: string[], count: number }`）；`data` 中每项是图标名字符串（同时用作列表 `:key` 与 `Icon` 的 `icon`），`count` 为总数。两个类型与 `GlobalCustomConfig` 同在 `packages/components/core/types/common.ts` 并从公共入口导出。
 - 查询状态：`limit` 固定 `200`，`page` 从 `1` 开始，`query` 为搜索关键字。
 - 搜索：`mu-input` 的输入经 `search`（`useDebounceFn`，300ms 防抖）触发，重置 `page = 1` 后重新拉取。
 - 分页：`.icon-content` 的 `scroll.passive` 事件调用 `handleBottom`，仅在非 loading 且 `hasMore` 为真时 `page++` 并追加数据；`hasMore = count > page * limit`。
@@ -67,7 +70,7 @@ import { MuIconSelect } from '@muyianking/ui'
 
 ## 相关
 
-- 渲染依赖：[`packages/components/core/icon/`](packages/components/core/icon/)（`MuIcon`）、[`packages/components/core/input/`](packages/components/core/input/)（`MuInput`）
+- 图标渲染：运行时 `Icon`（`@iconify/vue`，图标名来自 `getIcons`）；渲染依赖 [`packages/components/core/input/`](packages/components/core/input/)（`MuInput`）
 - 全局配置：[`packages/components/core/config-provider/src/Index.vue`](packages/components/core/config-provider/src/Index.vue) 提供的 `GLOBAL_CUSTOM_CONFIG.getIcons`
 - 样式文件：[`packages/theme-chalk/css/icon-select.css`](packages/theme-chalk/css/icon-select.css)
 - 演示页面：[`playground/src/views/icon-select/Index.vue`](playground/src/views/icon-select/Index.vue)

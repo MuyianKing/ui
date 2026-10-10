@@ -45,7 +45,7 @@ export interface IconQuery {
   query: string
 }
 
-/** `getIcons` 的返回结构；`data` 每项是图标名，同时用作列表 `:key` 与 `MuIcon` 的 `icon` */
+/** `getIcons` 的返回结构；`data` 每项是图标名，同时用作列表 `:key` 与 `Icon`（`@iconify/vue`）的 `icon` */
 export interface IconQueryResult {
   data: string[]
   count: number
@@ -70,6 +70,6 @@ export interface GlobalCustomConfig {
   getIcons?: (query: IconQuery) => Promise<IconQueryResult>
   /** 表格预设操作按钮形态：`'text'` 文本、`'button'` 标准、其余（含未配置）为图标 */
   tableIcon?: TableIcon
-  /** `MuAddButton` 是否显示添加图标（`core/button`） */
+  /** 标准按钮形态是否显示前置图标：`MuAddButton` 与查询 / 导出 / 导入 / 重置按钮（`core/button`） */
   buttonIcon?: boolean
 }

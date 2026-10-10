@@ -1,8 +1,15 @@
 <script setup lang="ts">
+import type { Component } from 'vue'
 import type { GlobalCustomConfig } from '../../types/common'
 import { computed, inject } from 'vue'
+import IconDownload from '~icons/ep/download'
+import IconFileAudio from '~icons/vscode-icons/file-type-audio'
+import IconFileExcel from '~icons/vscode-icons/file-type-excel'
+import IconFilePdf from '~icons/vscode-icons/file-type-pdf'
+import IconFilePowerpoint from '~icons/vscode-icons/file-type-powerpoint'
+import IconFileText from '~icons/vscode-icons/file-type-text'
+import IconFileWord from '~icons/vscode-icons/file-type-word'
 import { success } from '../../../utils/message'
-import { MuIcon } from '../../icon'
 
 defineOptions({ name: 'MuFile' })
 
@@ -32,19 +39,19 @@ const fileSuffix = computed(() => {
   return name?.split('.').pop()?.toLowerCase() || ''
 })
 
-const fileIcon = computed(() => {
-  const suffixMap: Record<string, string> = {
-    xls: 'vscode-icons:file-type-excel',
-    xlsx: 'vscode-icons:file-type-excel',
-    doc: 'vscode-icons:file-type-word',
-    docx: 'vscode-icons:file-type-word',
-    ppt: 'vscode-icons:file-type-powerpoint',
-    pptx: 'vscode-icons:file-type-powerpoint',
-    pdf: 'vscode-icons:file-type-pdf',
-    mp3: 'vscode-icons:file-type-audio',
-    wav: 'vscode-icons:file-type-audio',
+const fileIcon = computed<Component>(() => {
+  const suffixMap: Record<string, Component> = {
+    xls: IconFileExcel,
+    xlsx: IconFileExcel,
+    doc: IconFileWord,
+    docx: IconFileWord,
+    ppt: IconFilePowerpoint,
+    pptx: IconFilePowerpoint,
+    pdf: IconFilePdf,
+    mp3: IconFileAudio,
+    wav: IconFileAudio,
   }
-  return suffixMap[fileSuffix.value] || 'vscode-icons:file-type-default'
+  return suffixMap[fileSuffix.value] || IconFileText
 })
 
 function handleDownload() {
@@ -59,15 +66,15 @@ function handleDownload() {
 
 <template>
   <div v-if="card" class="mu-file-card" :style="{ height, width }">
-    <mu-icon :icon="fileIcon" size="36px" />
+    <component :is="fileIcon" style="font-size: 36px" />
     <span class="file-name">{{ fileName }}</span>
     <div v-if="!noDownload" class="file-actions">
-      <mu-icon icon="ep:download" size="16px" class="cursor-pointer" @click="handleDownload" />
+      <icon-download class="cursor-pointer" style="font-size: 16px" @click="handleDownload" />
     </div>
   </div>
   <div v-else class="mu-file-line">
     <span class="file-link cursor-pointer" @click="handleDownload">
-      <mu-icon :icon="fileIcon" class="mr-1" />
+      <component :is="fileIcon" class="mr-1" style="font-size: 18px" />
       {{ fileName }}
     </span>
   </div>

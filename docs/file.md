@@ -6,7 +6,7 @@
 - 对外导出：`MuFile`
 - 样式入口：`packages/components/core/file/style/index.ts`（类名 `.mu-file-card` / `.mu-file-line`）
 - 演示页面：暂无
-- 依赖：本库 `MuIcon`、`utils/message` 的 `success`、`GLOBAL_CUSTOM_CONFIG` 全局配置；未直接使用 element-plus 组件
+- 依赖：unplugin-icons 编译期图标（`~icons/vscode-icons/*`、`~icons/ep/download`）、`utils/message` 的 `success`、`GLOBAL_CUSTOM_CONFIG` 全局配置；未直接使用 element-plus 组件
 
 ## 基础用法
 
@@ -52,7 +52,7 @@ const file = { name: '合同.pdf', url: 'https://example.com/contract.pdf' }
 - `fileName`：依次取 `file.name`、`file.fileName`，都没有则为 `''`。
 - `fileUrl`：依次取 `file.url`、`file.path`。上传链路里存的是 `path`，只读 `url` 会拿到 `undefined`，故两者都要兼容。
 - `fileSuffix`：取文件名最后一个 `.` 之后的小写字符串。
-- `fileIcon`：按后缀映射图标（`xls` / `xlsx` → Excel，`doc` / `docx` → Word，`ppt` / `pptx` → PowerPoint，`pdf` → PDF，`mp3` / `wav` → 音频），未命中回退 `vscode-icons:file-type-default`。
+- `fileIcon`：按后缀映射图标（`xls` / `xlsx` → Excel，`doc` / `docx` → Word，`ppt` / `pptx` → PowerPoint，`pdf` → PDF，`mp3` / `wav` → 音频），未命中回退 `vscode-icons:file-type-text`（原 `file-type-default` 图标名在 @iconify/json 中不存在，属历史坏引用）。
 - `handleDownload`：`noDownload` 为 `true`、未注入 `downloadFile`、或地址为空时直接返回；否则调用 `GLOBAL_CUSTOM_CONFIG.downloadFile(fileUrl, fileName)` 并 `success('开始下载')`。
 - 单行态点击的范围是 `.file-link`（含图标与文件名），卡片态为右侧 `.file-actions` 内的下载图标。
 
@@ -65,7 +65,7 @@ const file = { name: '合同.pdf', url: 'https://example.com/contract.pdf' }
 
 ## 相关
 
-- 关联组件：`MuIcon`、`MuConfigProvider`（提供 `downloadFile`）
+- 关联组件：`MuConfigProvider`（提供 `downloadFile`）；图标经 unplugin-icons 编译期组件渲染
 - utils：`packages/components/utils/message.ts` 的 `success`
 - 公共类型：无
 - 演示页面：暂无

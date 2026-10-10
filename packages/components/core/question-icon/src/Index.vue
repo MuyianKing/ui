@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Placement } from 'element-plus'
 import { ElTooltip } from 'element-plus'
-import { MuIcon } from '../../icon'
+import IconQuestion from '~icons/mingcute/question-fill'
 
 defineOptions({ name: 'MuQuestionIcon' })
 
@@ -17,6 +17,6 @@ withDefaults(defineProps<{
     <template #content>
       <slot />
     </template>
-    <mu-icon icon="mingcute:question-fill" size="16px" class="mu-question-icon" />
+    <icon-question class="mu-question-icon" style="font-size: 16px" />
   </el-tooltip>
 </template>
