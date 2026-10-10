@@ -19,10 +19,13 @@ async function build() {
   let version = `v${_config.version}`
   const params = getParams()
 
+  // getParams 按 '=' 切分 argv，键保留原始写法（'-v' / '--v'），三种形态都兼容
+  const nextVersion = params.v ?? params['-v'] ?? params['--v']
+
   // 如果外部传入版本号则以外部为准
-  if (params.v) {
-    version = `v${params.v}`
-    _config.version = params.v
+  if (nextVersion) {
+    version = `v${nextVersion}`
+    _config.version = nextVersion
     writeJsonSync(package_path, _config, {
       spaces: 2,
     })
