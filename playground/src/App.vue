@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { MuConfigProvider } from '@muyianking/components'
+import { mockUploadFile } from './utils'
 </script>
 
 <template>
-  <mu-config-provider :custom-config="{ buttonIcon: true }">
+  <mu-config-provider :custom-config="{ buttonIcon: true, uploadFile: mockUploadFile }">
     <router-view />
   </mu-config-provider>
 </template>
