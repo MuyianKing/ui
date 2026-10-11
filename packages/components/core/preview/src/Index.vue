@@ -54,7 +54,7 @@ const fileList = computed(() => {
 </script>
 
 <template>
-  <div class="mu-preview" :style="{ height, width }">
+  <div class="mu-preview">
     <template v-for="(file, index) in fileList" :key="index">
       <mu-image v-if="getFileType(file) === 'image'" :src="getFileUrl(file)" :height :width :no-preview="noPreview" />
       <mu-video v-else-if="getFileType(file) === 'video'" :src="getFileUrl(file)" :height :width />

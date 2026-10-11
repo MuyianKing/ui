@@ -61,7 +61,7 @@ const file = { name: '合同.pdf', url: 'https://example.com/contract.pdf' }
 - 下载能力依赖 `MuConfigProvider` 经 `GLOBAL_CUSTOM_CONFIG` 注入的 `downloadFile`；未注入时点击不会报错，但也不会有任何反应。
 - 组件 `inject` 的类型声明里包含 `previewFileUrl`，但当前实现并未使用它——本组件只有下载，没有预览。
 - `noDownload` 为 `true` 时卡片态不渲染 `.file-actions`，单行态仍渲染可点击样式但 `handleDownload` 会提前返回。
-- `packages/theme-chalk/css/file.css` 中的类名（`.mu-file-item`、`.mu-file-card-item`、`.card-top`、`.card-file-name`）与当前模板使用的类名（`.mu-file-card`、`.mu-file-line`、`.file-name`、`.file-actions`、`.file-link`）不一致，这些样式对当前模板不生效（历史遗留，待确认）。
+- 卡片态 `.mu-file-card`：主色描边 + `--el-color-primary-light-9` 底色、内容居中；`.file-name` 占满整行、单行超出省略号截断（固定 100px 高的 flex 列装不下多行文件名）；文件类型图标带 `shrink-0`——SVG 无最小高度下限，不加会在内容超高时被 flex 压缩成 0 高度而「消失」。单行态 `.file-link` 文字为主色。
 
 ## 相关
 

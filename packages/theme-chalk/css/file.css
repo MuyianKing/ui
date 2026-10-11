@@ -1,9 +1,4 @@
-.mu-file-item {
-  color: var(--el-color-primary);
-  cursor: pointer;
-}
-
-.mu-file-card-item {
+.mu-file-card {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -13,15 +8,18 @@
   cursor: pointer;
   background-color: var(--el-color-primary-light-9);
 
-  .card-top {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .card-file-name {
+  .file-name {
     width: 100%;
     text-align: center;
     line-height: 26px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.mu-file-line {
+  .file-link {
+    color: var(--el-color-primary);
   }
 }

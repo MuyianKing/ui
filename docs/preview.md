@@ -4,9 +4,9 @@
 
 - 组件目录：`packages/components/core/preview/`
 - 对外导出：`MuPreview`
-- 样式入口：`packages/components/core/preview/style/index.ts`（模板根类名 `.mu-preview`；`theme-chalk/css/preview.css` 现有选择器为 `.mu-preview-wrapper`，与模板不一致，属历史遗留）
+- 样式入口：`packages/components/core/preview/style/index.ts`（根类名 `.mu-preview`，flex 换行容器；内部渲染 `mu-file`，已链式引入 file 的样式）
 - 演示页面：暂无
-- 依赖：本库 `MuImage`、`MuVideo`、`MuFile`（其中 `MuImage` 用 ElImage，`MuFile` 的图标用 `@iconify/vue` 的 `Icon` 渲染）；经子组件间接依赖 `GLOBAL_CUSTOM_CONFIG` 的 `previewFileUrl` / `downloadFile`
+- 依赖：本库 `MuImage`、`MuVideo`、`MuFile`（其中 `MuImage` 用 ElImage，`MuFile` 的图标用 unplugin-icons 编译期组件渲染）；经子组件间接依赖 `GLOBAL_CUSTOM_CONFIG` 的 `previewFileUrl` / `downloadFile`
 
 ## 基础用法
 
@@ -77,6 +77,7 @@ const files = [
 - 图片大图预览与视频真实地址依赖 `GLOBAL_CUSTOM_CONFIG.previewFileUrl`，需要外层 `MuConfigProvider` 提供；未提供时按原始地址直连，可能因鉴权或前缀缺失而加载失败（普通文件不经 `previewFileUrl`，其下载依赖 `downloadFile`）。
 - `files` 为数组时不校验元素类型；元素为字符串 URL，或带 `path`（或 `url`）的对象时，都能正确分派图片 / 视频 / 普通文件。
 - 无 emits、无插槽、无 `defineExpose`；`MuImage` / `MuVideo` / `MuFile` 自身支持的插槽不由此组件转发。
+- 样式入口已链式引入 `file` 的样式（预览普通文件时渲染 `mu-file`），单独引样式时无需重复引入；条目间距由外层容器（如 `MuUpload` 的 `.mu-upload-multiple-margin`）控制，本组件不做间距。
 
 ## 相关
 
