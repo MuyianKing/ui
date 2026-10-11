@@ -90,7 +90,7 @@ const model = reactive({
   4. 兜底返回 `请选择`。
 - **禁用项**：`disabledOptionsList` 把 `disabledOptions` 归一化为数组（非数组真值包成单元素数组，假值得到 `[]`），模板对分组子项与普通项都用 `includes(value)` 判断 `:disabled`。
 - **全部项**：`all` 为真时在列表最前插入 `el-option value=""`，文案「全部」。
-- **loading**：`:loading` 透传给 `el-select`；同时通过 `#loading` 插槽渲染一个 `v-loading` 容器，文案「加载中...」，类 `.mu-select-loading-item`（100px 高、`pointer-events: none`）。
+- **loading**：`:loading` 透传给 `el-select`；同时通过 `#loading` 插槽渲染一个 `v-loading` 容器，文案「加载中...」，类 `.mu-select-loading-item`（高度由工具类 `h-[100px]` 提供，CSS 提供 `pointer-events: none`）。
 - **只读**：`:disabled="readonly || disabled"`，并追加类 `mu-select-readonly-item`，由 CSS 去掉 `.el-select__wrapper` 的底色与阴影、隐藏后缀图标、文字颜色继承。
 - 组件固定开启 `filterable`，始终可输入过滤。
 - `getCurrentInstance()` 在 `setup` 同步执行期被取出并缓存，供 placeholder 推导读取父组件 props（放进 computed 内部会拿到 `null`，源码注释已标注）。

@@ -2,6 +2,7 @@ import type { MuButtonMode } from '../src/useButton'
 import { mount } from '@vue/test-utils'
 import { ElTooltip } from 'element-plus'
 import { describe, expect, it, vi } from 'vitest'
+import { nextTick } from 'vue'
 import IconAddOne from '~icons/icon-park-outline/add-one'
 import IconDelete from '~icons/icon-park-outline/delete'
 import IconRefresh from '~icons/icon-park-outline/refresh-one'
@@ -217,6 +218,34 @@ describe('预设按钮的 useButton 逻辑', () => {
     })
     expect(textForm.find('a').exists()).toBe(true)
     expect(textForm.text()).toBe('删除')
+  })
+
+  it('muDelButton 点击弹出 ElMessageBox 确认框，确认后 emit click', async () => {
+    const wrapper = mount(MuDelButton, { props: { text: '删除' } })
+    await wrapper.find('a').trigger('click')
+    await nextTick()
+    await nextTick()
+
+    const box = document.querySelector('.el-message-box')
+    expect(box?.textContent).toContain('您确定确认删除？')
+    expect(box?.textContent).toContain('警告')
+
+    // 点「确定」(主按钮)关闭弹窗并触发 click
+    box?.querySelector<HTMLButtonElement>('.el-message-box__btns .el-button--primary')?.click()
+    await nextTick()
+    await nextTick()
+    expect(wrapper.emitted('click')).toHaveLength(1)
+  })
+
+  it('muDelButton noPopover 时点击直接 emit，不弹确认框', async () => {
+    // 前一个用例的 MessageBox 在 happy-dom 里因过渡未结束可能残留，断言用「点击前后数量不变」
+    const before = document.querySelectorAll('.el-message-box').length
+    const wrapper = mount(MuDelButton, { props: { noPopover: true, text: '删除' } })
+    await wrapper.find('a').trigger('click')
+    await nextTick()
+
+    expect(wrapper.emitted('click')).toHaveLength(1)
+    expect(document.querySelectorAll('.el-message-box').length).toBe(before)
   })
 
   it('muEditButton 显式传 text 才切换为文本形态', () => {

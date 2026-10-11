@@ -132,8 +132,7 @@ function findLabel(options: any[], value: any, config: Record<string, any>): str
       <span>{{ displayLabel }}</span>
       <icon-arrow-down v-if="!noArrow"
                        :class="{ 'deg-180': arrowStatus }"
-                       class="arrow-icon ml-1"
-                       style="font-size: 18px"
+                       class="arrow-icon ml-1 text-[18px]"
       />
     </div>
     <template #dropdown>

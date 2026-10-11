@@ -61,7 +61,7 @@ const disabledOptionsList = computed(() =>
 <template>
   <el-select v-model="model" class="mu-select" :class="[{ 'mu-select-readonly-item': readonly }]" :disabled="readonly || disabled" :loading :placeholder="placeholderText" :clearable filterable @change="handleChange">
     <template #loading>
-      <div v-loading="loading" element-loading-text="加载中..." class="mu-select-loading-item" />
+      <div v-loading="loading" element-loading-text="加载中..." class="mu-select-loading-item h-[100px]" />
     </template>
     <template #default>
       <div class="mu-select-options">

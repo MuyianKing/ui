@@ -6,7 +6,7 @@
 - 对外导出：`MuFormDialog`
 - 样式入口：`packages/components/core/form-dialog/style/index.ts`（类名 `.mu-form-dialog-inline-form`）
 - 演示页面：暂无（`playground/src/views/form/Index.vue` 只演示 `MuFormItem`）
-- 依赖：element-plus 的 `ElForm`、`ElButton`；本库 `MuDialog`（并引入其 `style/index`）；`utils/message` 的 `error` / `success` / `warning`
+- 依赖：element-plus 的 `ElForm`、`ElButton`；本库 `MuDialog`（并引入其 `style/index`）；`utils/message` 的 `success` / `warning`
 
 ## 基础用法
 
@@ -55,12 +55,12 @@ async function server(data: any) {
 
 ## Emits
 
-| 事件    | 参数         | 说明                                      |
-| ------- | ------------ | ----------------------------------------- |
-| error   | 无           | `server` 请求失败时触发                   |
-| success | `data: any`  | `server` 请求成功时触发，参数为请求返回值 |
-| refresh | `model: any` | 请求成功后触发，参数为当前 `model`        |
-| submit  | 无           | 未提供 `server` 且校验通过时触发          |
+| 事件    | 参数         | 说明                                                                  |
+| ------- | ------------ | --------------------------------------------------------------------- |
+| error   | `error: any` | `server` 请求失败时触发，参数为异常对象；组件不弹错误提示，由外部处理 |
+| success | `data: any`  | `server` 请求成功时触发，参数为请求返回值                             |
+| refresh | `model: any` | 请求成功后触发，参数为当前 `model`                                    |
+| submit  | 无           | 未提供 `server` 且校验通过时触发                                      |
 
 ## Slots
 
@@ -78,7 +78,7 @@ async function server(data: any) {
 ## 业务逻辑
 
 - `submit()`：`model` 为空时 `warning('MuFormDialog 组件未设置 model 属性')` 并返回，不触发校验。否则调用 `formRef.validate(callback)`；`valid` 为真时：
-  - 存在 `server` 函数：置 `loading = true`，调用 `server(props.model)`；成功回调里 `success('保存成功')`、`emit('success', data)`、`emit('refresh', props.model)`、`close()`；失败回调里 `error(e, '保存失败')` 并 `emit('error')`；`finally` 复位 `loading = false`。
+  - 存在 `server` 函数：置 `loading = true`，调用 `server(props.model)`；成功回调里 `success('保存成功')`、`emit('success', data)`、`emit('refresh', props.model)`、`close()`；失败回调里 `emit('error', e)` 把异常交给外部处理，组件自身不弹错误提示；`finally` 复位 `loading = false`。
   - 不存在 `server`：直接 `emit('submit')`，不做请求、不自动关闭。
 - `close()`：先 `formRef.clearValidate()` 清除校验态，再 `show = false`；同时通过 `mu-dialog` 的关闭事件触发，保证手动关闭也复位校验。
 - 默认底部按钮为 `el-button type="primary"`，`:loading` 绑定内部 loading，点击调 `submit`。
@@ -89,7 +89,7 @@ async function server(data: any) {
 - 必须传 `model`，否则提交只会提示且不校验、不请求。
 - 校验能否生效取决于子 `MuFormItem` / `el-form-item` 是否设置了 `prop`；`rules` 键名需与 `prop` 对应。
 - `server` 成功 resolve 后组件会自动 `close()` 并 `success('保存成功')`；若业务不希望自动关闭，应改用 `submit`（即不传 `server`）自行处理。
-- `server` 抛错时错误提示由 `utils/message` 的 `error(e, '保存失败')` 统一输出，失败详情取 `e.message`。
+- `server` 抛错时组件不弹错误提示，仅通过 `error` 事件把异常抛给外部（参数为异常对象），由外部决定如何提示与处理；组件仍会复位 loading、弹窗保持打开。
 - 组件未监听 `submit` 事件的原生表单提交，需点击按钮或作用域 `submit` 手动触发。
 - 默认提交按钮只在未使用 `footer` 插槽时渲染；使用 `footer` 插槽后需自行绑定 `submit`。
 

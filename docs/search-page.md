@@ -71,10 +71,10 @@ import { ElButton, ElFormItem, ElInput } from 'element-plus'
 
 ## 业务逻辑
 
-- 布局为纵向 flex：搜索表单区在上、底部内容区在下；根节点类名 `flex flex-col h-full mu-search-page`，高度撑满容器并在自身纵向滚动。
-- `noSearch` 为真时整个 `el-form` 不渲染，此时底部区域额外加 `mt-0` 去掉上边距。
+- 布局为纵向 flex：搜索表单区在上、底部内容区在下；根节点类名 `flex flex-col h-full p-2.5 mu-search-page`，四周内边距由工具类 `p-2.5`（10px）提供，高度撑满容器并在自身纵向滚动。
+- `noSearch` 为真时整个 `el-form` 不渲染，此时底部区域不添加 `mt-2.5`（无上边距）；为假时添加 `mt-2.5`（10px）。
 - 高级搜索默认收起：内部状态 `showAdvanced = ref(false)`；`toggleAdvanced` 取反。展开按钮仅在「存在 `advanced` 插槽且 `advancedText` 非空」时渲染，图标为 `ep:arrow-down`，展开时通过 `.up-arrow` 旋转 180 度。
-- `fixedButton` 为真时，`button` 插槽被包进 `.fixed-button`（高度 32px、`flex-grow: 1`、右对齐），用于按钮吸右；否则 `button` 插槽直接平铺在搜索区。
+- `fixedButton` 为真时，`button` 插槽被包进 `.fixed-button`（高度由工具类 `h-8` 提供、`flex-grow: 1`、右对齐），用于按钮吸右；否则 `button` 插槽直接平铺在搜索区。
 - `loading` 透传给内容区的 `v-loading`，遮罩只覆盖 `table` 插槽区域，不影响底部。
 - `bottomClass` 被 `split(' ')` 拆成类名对象逐项添加，空串会被跳过。
 - 组件自身不发起请求、不持有查询参数，也没有内置的查询/重置按钮与事件；查询与重置逻辑由使用方通过 `button` 插槽自行放置按钮并绑定事件。

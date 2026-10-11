@@ -23,8 +23,6 @@
 }
 
 .mu-icons-wrapper {
-  font-size: 24px;
-  max-height: 400px;
   display: flex;
   flex-direction: column;
 
@@ -35,16 +33,9 @@
   }
 
   .icon-item {
-    width: 40px;
-    height: 40px;
     display: inline-flex;
     justify-content: center;
     align-items: center;
-  }
-
-  svg {
-    margin: 8px;
-    cursor: pointer;
   }
 
   .btn-wrapper {

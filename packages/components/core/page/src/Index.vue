@@ -50,12 +50,12 @@ const layout = computed(() => {
 </script>
 
 <template>
-  <div v-if="count" class="mu-pagination-wrapper">
+  <div v-if="count" class="mu-pagination-wrapper mt-2.5">
     <div v-if="lastNum" class="info">
       <span>共</span>
-      <span class="num">{{ count }}</span>
+      <span class="num mx-[3px]">{{ count }}</span>
       <span>条，当前第</span>
-      <span class="num">{{ firstNum }}<template v-if="firstNum !== lastNum">~{{ lastNum }}</template></span>
+      <span class="num mx-[3px]">{{ firstNum }}<template v-if="firstNum !== lastNum">~{{ lastNum }}</template></span>
       <span>条</span>
     </div>
     <el-pagination :current-page="modelValue"

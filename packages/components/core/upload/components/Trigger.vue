@@ -134,10 +134,10 @@ defineExpose({
 
     <template v-if="!slots.trigger">
       <div v-if="triggerType === 'card'">
-        <icon-plus style="font-size: 28px;" />
+        <icon-plus class="text-[28px]" />
       </div>
       <div v-else class="upload-icon">
-        <icon-cloud-upload style="font-size: 20px;" />
+        <icon-cloud-upload class="text-[20px]" />
         <span class="ml-1 ">点击上传附件</span>
       </div>
     </template>

@@ -60,7 +60,7 @@ const submitEdit = useDebounceFn(() => {
 </script>
 
 <template>
-  <div class="mu-edit-info" :style="{ width, textAlign: align }">
+  <div class="mu-edit-info min-h-5" :style="{ width, textAlign: align }">
     <template v-if="isEditing">
       <el-input v-model="editValue"
                 :placeholder

@@ -3,10 +3,7 @@
 
   .block {
     border-radius: var(--el-border-radius-base);
-    width: 5px;
     height: auto;
-    margin-right: 8px;
-    padding: 5px 0;
   }
 
   .title {

@@ -31,8 +31,8 @@ const { iconComp, iconName } = useIconProp(() => renderIcon.value)
 <template>
   <template v-if="noConfirm">
     <el-button @click="emit('confirm')">
-      <component :is="iconComp" v-if="iconComp" style="font-size: 18px" />
-      <icon v-else-if="iconName" :icon="iconName" style="font-size: 18px" />
+      <component :is="iconComp" v-if="iconComp" class="text-[18px]" />
+      <icon v-else-if="iconName" :icon="iconName" class="text-[18px]" />
       <span><slot>重置</slot></span>
     </el-button>
   </template>

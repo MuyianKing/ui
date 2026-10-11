@@ -4,13 +4,8 @@
   border-right: 1px solid var(--el-border-color-lighter);
   width: 25%;
 
-  > div {
-    padding: 8px 11px;
-  }
-
   .mu-descriptions-item-label {
     border-right: 1px solid var(--el-border-color-lighter);
-    width: 80px;
     flex-shrink: 0;
     background-color: var(--el-fill-color-light);
     color: var(--el-text-color-regular);

@@ -30,7 +30,7 @@ const title_style = computed(() => {
 <template>
   <div class="mu-block-title" :class="{ 'mu-linear-gradient': linearGradient }" v-bind="$attrs">
     <div class="flex h-full">
-      <div v-if="showBlock" class="block" :class="type" />
+      <div v-if="showBlock" class="block w-[5px] mr-2 py-[5px]" :class="type" />
       <div class="title flex items-center justify-center" :style="title_style">
         <slot>{{ title }}</slot>
       </div>

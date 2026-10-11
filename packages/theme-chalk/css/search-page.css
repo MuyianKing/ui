@@ -1,6 +1,4 @@
 .mu-search-page {
-  padding: 10px;
-  padding-top: 10px;
   height: 100%;
   overflow-y: auto;
 
@@ -9,7 +7,6 @@
     display: flex;
     flex-wrap: wrap;
     background-color: var(--el-bg-color);
-    padding: 5px;
     position: relative;
 
     > * {
@@ -27,7 +24,6 @@
 
   .bottom {
     width: 100%;
-    margin-top: 10px;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -37,13 +33,11 @@
       width: 100%;
       flex: 1;
       overflow: auto;
-      padding: 10px;
       background-color: var(--el-bg-color);
     }
   }
 
   .fixed-button {
-    height: 32px;
     flex-grow: 1;
     text-align: right;
   }

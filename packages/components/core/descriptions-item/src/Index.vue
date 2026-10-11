@@ -32,10 +32,10 @@ const labelStyle = computed(() => {
 
 <template>
   <div class="mu-descriptions-item" :style="itemStyle">
-    <div class="mu-descriptions-item-label" :style="labelStyle">
+    <div class="mu-descriptions-item-label w-20 px-[11px] py-2" :style="labelStyle">
       {{ label }}
     </div>
-    <div class="mu-descriptions-item-content">
+    <div class="mu-descriptions-item-content px-[11px] py-2">
       <slot />
     </div>
   </div>

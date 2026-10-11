@@ -74,7 +74,7 @@ function handleFinish() {
         <template #preview="{ files }">
           <div v-for="file in files" :key="file.id" class="flex items-center">
             <span @click="handleReUpload(file)">{{ file.name }}</span>
-            <icon-trash style="font-size: 18px" @click="handleDel(file)" />
+            <icon-trash class="text-[18px]" @click="handleDel(file)" />
           </div>
         </template>
       </mu-upload>

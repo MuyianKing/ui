@@ -103,17 +103,17 @@ onMounted(() => getData())
       <template #reference>
         <div class="flex items-center cursor-pointer">
           <span v-if="!model" class="placeholder-item">{{ placeholder }}</span>
-          <icon class="ml-2" :icon="model" style="font-size: 26px" />
+          <icon class="ml-2 text-[26px]" :icon="model" />
         </div>
       </template>
-      <div class="mu-icons-wrapper">
+      <div class="mu-icons-wrapper text-[24px] max-h-[400px]">
         <mu-input v-model="query.query" placeholder="请输入名称搜索，仅支持英文" @input="search" />
         <div v-loading="loading" class="icon-content" @scroll.passive="handleBottom">
           <div v-for="item in tableData.data"
                :key="item"
                class="icon-item"
           >
-            <icon :icon="item" style="font-size: 22px" @click="handleClick(item)" />
+            <icon class="m-2 cursor-pointer text-[22px]" :icon="item" @click="handleClick(item)" />
           </div>
         </div>
         <div class="btn-wrapper">

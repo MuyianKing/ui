@@ -46,25 +46,25 @@ const bottomClasses = computed(() => {
 </script>
 
 <template>
-  <div class="flex flex-col h-full mu-search-page">
+  <div class="flex flex-col h-full p-2.5 mu-search-page">
     <el-form v-if="!noSearch" :size="formSize" :label-width="labelWidth">
-      <div class="search-area">
+      <div class="search-area p-[5px]">
         <slot name="header" />
         <slot v-if="showAdvanced" name="advanced" />
-        <div v-if="fixedButton" class="fixed-button">
+        <div v-if="fixedButton" class="fixed-button h-8">
           <slot name="button" />
         </div>
         <slot v-else name="button" />
         <template v-if="$slots.advanced && advancedText">
           <mu-button mode="text" class="advanced-btn" @click="toggleAdvanced">
-            <icon-arrow-down class="mu-search-page-arrow" :class="{ 'up-arrow': showAdvanced }" style="font-size: 18px" />
+            <icon-arrow-down class="mu-search-page-arrow text-[18px]" :class="{ 'up-arrow': showAdvanced }" />
             {{ advancedText }}
           </mu-button>
         </template>
       </div>
     </el-form>
-    <div class="flex-1 bottom" :class="{ 'mt-0': noSearch, ...bottomClasses }">
-      <div v-loading="loading" class="table-body" :style="tableStyle" :class="tableClass">
+    <div class="flex-1 bottom" :class="[noSearch ? '' : 'mt-2.5', bottomClasses]">
+      <div v-loading="loading" class="table-body p-2.5" :style="tableStyle" :class="tableClass">
         <slot name="table" />
       </div>
       <div class="flex-shrink-0">

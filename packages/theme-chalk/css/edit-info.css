@@ -1,6 +1,5 @@
 .mu-edit-info {
   position: relative;
-  min-height: 20px;
 
   .mu-value-item {
     color: var(--el-text-color-regular);

@@ -17,6 +17,6 @@ withDefaults(defineProps<{
     <template #content>
       <slot />
     </template>
-    <icon-question class="mu-question-icon" style="font-size: 16px" />
+    <icon-question class="mu-question-icon text-[16px]" />
   </el-tooltip>
 </template>

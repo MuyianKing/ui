@@ -6,7 +6,7 @@
 - 对外导出：`MuButton`（默认导出同）、`MuAddButton`、`MuDelButton`、`MuDetailButton`、`MuEditButton`、`MuExportButton`、`MuImportButton`、`MuResetButton`、`MuSearchButton`
 - 样式入口：`packages/components/core/button/style/index.ts`（类名 `.mu-button`、`.mu-del-button`）
 - 演示页面：`playground/src/views/button/Index.vue`
-- 依赖：element-plus 的 `ElButton`、`ElLink`、`ElTooltip`、`ElPopover`、`ElPopconfirm`；预设固定图标经 unplugin-icons 编译期打包（`~icons/*`），字符串图标名经 `@iconify/vue` 的 `Icon` 运行时渲染；内部 hook `./useButton`；`inject('GLOBAL_CUSTOM_CONFIG')`
+- 依赖：element-plus 的 `ElButton`、`ElLink`、`ElMessageBox`、`ElPopconfirm`、`ElTooltip`；预设固定图标经 unplugin-icons 编译期打包（`~icons/*`），字符串图标名经 `@iconify/vue` 的 `Icon` 运行时渲染；内部 hook `./useButton`；`inject('GLOBAL_CUSTOM_CONFIG')`
 
 ## 基础用法
 
@@ -63,13 +63,12 @@ function handleClick() {
 
 ### MuDelButton
 
-| 属性      | 类型                        | 默认值                              | 说明                                              |
-| --------- | --------------------------- | ----------------------------------- | ------------------------------------------------- |
-| message   | string                      | `'您确定确认删除？'`                | Popover 内的二次确认文案                          |
-| noPopover | boolean                     | `false`                             | 为 `true` 时跳过二次确认，点击直接触发 `click`    |
-| placement | `Placement`（element-plus） | `'top'`                             | Popover 出现位置                                  |
-| icon      | `string \| Component`       | `'~icons/icon-park-outline/delete'` | 默认删除图标（编译期组件），也可传 Iconify 图标名 |
-| text      | `string \| boolean`         | 无默认（`undefined`）               | 有值渲染为文本按钮，无值 / 空值渲染为图标按钮     |
+| 属性      | 类型                  | 默认值                              | 说明                                              |
+| --------- | --------------------- | ----------------------------------- | ------------------------------------------------- |
+| message   | string                | `'您确定确认删除？'`                | 确认弹窗的提示文案                                |
+| noPopover | boolean               | `false`                             | 为 `true` 时不弹确认弹窗，点击直接触发 `click`    |
+| icon      | `string \| Component` | `'~icons/icon-park-outline/delete'` | 默认删除图标（编译期组件），也可传 Iconify 图标名 |
+| text      | `string \| boolean`   | 无默认（`undefined`）               | 有值渲染为文本按钮，无值 / 空值渲染为图标按钮     |
 
 ### MuDetailButton
 
@@ -144,7 +143,7 @@ function handleClick() {
 - 预设按钮的默认插槽回退文案取 `useButton` 的 `buttonText`（存在调用方插槽时为空串、由插槽内容接管；否则为 `text` 属性或默认文案），并把同一个 `buttonText` 传给 `MuButton` 的 `tip` 以保留图标形态的悬浮提示：`MuDelButton` / `MuDetailButton` / `MuEditButton` / `MuSearchButton` 走该逻辑；`MuAddButton` / `MuExportButton` / `MuImportButton` / `MuResetButton` 已删除 `text` prop、不取 `useButton`，文案由默认插槽直接回退（添加 / 导出 / 导入 / 重置）。`MuEditButton` / `MuDetailButton` 此前无条件透传了一个空插槽，导致只传 `text`、不传插槽时文本形态渲染为空，现已改为带 `buttonText` 回退的 `<slot>{{ buttonText }}</slot>`。
 - 预设按钮的图标形态（`icon` 与 `mode="icon"`）与文本形态（`mode="text"`）由全局配置 `tableIcon` 经 `useButton` 决定（`text` 未传时）；`MuAddButton` 与导出 / 导入 / 重置按钮恒为标准按钮、查询按钮的标准按钮形态，其前置图标显隐由 `buttonIcon` 决定 —— 为真时传入各自编译期图标组件（`~icons/icon-park-outline/add-one`、`~icons/lucide/search` 等）、否则传空字符串让 `MuButton` 不渲染图标；`MuAddButton` 的 `type="danger"` 固定。
 - `MuExportButton` / `MuImportButton` / `MuResetButton` 与 `MuAddButton` 一样恒为标准按钮，不走 `tableIcon` 也没有图标形态；`MuSearchButton` 不走 `tableIcon`（`text` 有默认值）：`text` 为真渲染成标准按钮、传 `false` / `''` 切换为图标形态（`~icons/lucide/search` + Tooltip）。
-- `MuDelButton` 默认用 `el-popover`（`trigger="click"`、`width=180`）做二次确认：点击只展开 Popover，点“确定”后关闭并 `emit('click')`，点“取消”只关闭；`noPopover` 为 `true` 时直接渲染 `MuButton` 并 `emit('click')`。
+- `MuDelButton` 点击弹出 `ElMessageBox.confirm` 模态确认框（`type: 'warning'`、标题「警告」，文案取 `message`）：确认后 `emit('click')`，取消 / 关闭只关弹窗；`noPopover` 为 `true` 时不弹确认，点击直接 `emit('click')`。
 - `MuResetButton` 默认用 `el-popconfirm`（标题“确定要重置吗？”）确认后 `emit('confirm')`；`noConfirm` 为 `true` 时改用原生 `el-button`，点击直接 `emit('confirm')`。
 - 各预设按钮固定的 `type` 与 `icon`：`MuAddButton` 为 `danger` + `icon-park-outline:add-one`；`MuDetailButton` / `MuEditButton` 为 `primary`；`MuExportButton` 为 `success` + `ph:export-bold`；`MuImportButton` 为 `ph:download-simple-bold`（原 `ph:import-bold` 在 @iconify/json 中不存在，属历史坏引用，运行时原本就渲染不出来）、`MuResetButton` 为 `icon-park-outline:refresh-one`（`type` 均用默认 `primary`）；`MuSearchButton` 为 `lucide:search`（默认 `primary`）；`MuExportButton` / `MuImportButton` / `MuResetButton` 的图标显隐只看 `buttonIcon`（`noConfirm` 分支一致），`MuSearchButton` 的图标出现在图标形态与 `buttonIcon` 为真的按钮形态；`MuDelButton` 为 `danger` + `icon-park-outline:delete`。
 
@@ -162,7 +161,8 @@ function handleClick() {
 - `MuAddButton` / `MuExportButton` / `MuImportButton` / `MuResetButton` 的默认形态曾是文本链接（`el-link`）、文案靠 `text` prop，现统一为标准按钮 + 默认插槽（回退默认文案）；`MuExportButton` / `MuImportButton` / `MuResetButton` 随之恒为标准按钮、不再有图标形态，此前靠 `text` 传假值切图标形态的调用方需改用 `MuButton mode="icon"`，依赖文本链接外观的调用方需改用 `MuButton mode="text"`。
 - 按钮族依赖 `GLOBAL_CUSTOM_CONFIG`：`tableIcon` 未配置时，`text` 未传的预设按钮（`MuDelButton` / `MuDetailButton` / `MuEditButton`）渲染为图标按钮；配置为 `'text'` / `'button'` 时分别渲染为文本 / 标准按钮，其余值按图标按钮处理（类型层面 `tableIcon` 已收窄为 `TableIcon = 'text' | 'button' | 'icon'`，见 `GlobalCustomConfig`）。`buttonIcon` 未配置时 `MuAddButton` 与导出 / 导入 / 重置 / 查询按钮不显示前置图标（查询按钮的图标形态不受影响）。
 - `MuDelButton` / `MuDetailButton` / `MuEditButton` 的 `withDefaults` 里那句 `text: undefined` 是必需的，不要删：`text` 类型含 `Boolean`，Vue 对未传的布尔型 prop 会转成 `false`，靠显式的 `undefined` 默认值才能跳过布尔转换，否则 `tableIcon` 会静默失效（回归护栏见 `packages/components/core/button/__tests__/button.spec.ts`）。
-- `style/index.ts` 需依次引入 Element Plus 的 `button`、`tooltip`、`link`、`popover`、`popconfirm` 样式，再引本库 CSS；顺序由 `docs/theme-chalk.md` 约定。
+- `style/index.ts` 需依次引入 Element Plus 的 `button`、`tooltip`、`link`、`popconfirm`、`message-box` 样式，再引本库 CSS；顺序由 `docs/theme-chalk.md` 约定。
+- `MuDelButton` 的二次确认先后经历两个形态：自绘 `el-popover`（内嵌取消 / 确定按钮）→ `el-popconfirm` 气泡 → 现为 `ElMessageBox.confirm` 模态确认框（标题「警告」、warning 图标），并覆盖文本 / 图标两种形态；`placement` prop 随气泡一并删除，`noPopover` 保留为「跳过确认」开关。
 - theme-chalk 中多数按钮变体 CSS 为空文件（`add-button`、`detail-button`、`edit-button`、`export-button`、`import-button`、`reset-button`、`search-button` 均为 0 字节），仅 `del-button.css` 有 `.mu-del-button { vertical-align: bottom }`。
 
 ## 相关

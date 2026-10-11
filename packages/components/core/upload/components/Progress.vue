@@ -22,7 +22,7 @@ const slots = useSlots()
 <template>
   <teleport to="body">
     <div v-show="show" class="mu-ui-progress-shadow">
-      <div class="progress-body">
+      <div class="progress-body p-5">
         <div class="title mb-2">
           正在上传...
         </div>

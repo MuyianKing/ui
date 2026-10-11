@@ -1,5 +1,4 @@
 .mu-pagination-wrapper {
-  margin-top: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -8,9 +7,5 @@
   .info {
     font-size: var(--el-font-size-base);
     color: var(--el-text-color-regular);
-
-    .num {
-      margin: 0 3px;
-    }
   }
 }

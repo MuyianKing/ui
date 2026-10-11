@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ElButton, ElForm } from 'element-plus'
 import { ref, useTemplateRef } from 'vue'
-import { error, success, warning } from '../../../utils/message'
+import { success, warning } from '../../../utils/message'
 import { MuDialog } from '../../dialog'
 
 defineOptions({ name: 'MuFormDialog' })
@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<{
 })
 
 const emit = defineEmits<{
-  (e: 'error'): void
+  (e: 'error', error: any): void
   (e: 'success', data: any): void
   (e: 'refresh', model: any): void
   (e: 'submit'): void
@@ -60,8 +60,7 @@ function submit() {
           emit('refresh', props.model)
           close()
         }).catch((e) => {
-          error(e, '保存失败')
-          emit('error')
+          emit('error', e)
         }).finally(() => {
           loading.value = false
         })

@@ -67,9 +67,9 @@ const _files = computed<FileItem[]>(() => {
   >
     <preview-comp :files="_file" height="100px" width="100px" no-preview :card="listType === 'card'" no-download />
     <div v-if="listType === 'card'" class="delete-wrapper" @click.stop>
-      <icon-trash class="icon-close" style="font-size: 24px" @click="handleDel(_file)" />
-      <icon-folder-upload class="ml-2" style="font-size: 24px" @click="handleChange(_file, true)" />
+      <icon-trash class="icon-close text-[24px]" @click="handleDel(_file)" />
+      <icon-folder-upload class="ml-2 text-[24px]" @click="handleChange(_file, true)" />
     </div>
-    <icon-trash v-else class="icon-close ml-2" style="font-size: 18px" @click.stop="handleDel(_file)" />
+    <icon-trash v-else class="icon-close ml-2 text-[18px]" @click.stop="handleDel(_file)" />
   </div>
 </template>

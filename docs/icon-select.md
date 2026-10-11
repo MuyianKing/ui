@@ -64,7 +64,7 @@ const icon = ref('')
 
 - 强依赖 `MuConfigProvider` 的 `getIcons`；未配置时组件静默无数据，不会报错。`getIcons` 由使用方注入 `customConfig` 提供。
 - 搜索框提示为“请输入名称搜索，仅支持英文”，搜索关键字按原样传给 `getIcons`，匹配规则由使用方实现。
-- 弹层内的 `.icon-content` 由 `max-height: 400px`（`.mu-icons-wrapper`）约束产生滚动区域，滚动到底触发分页。
+- 弹层内的 `.icon-content` 由 `.mu-icons-wrapper` 上的 `max-h-[400px]` 工具类约束产生滚动区域，滚动到底触发分页。
 - 样式文件中选择器写作 `.mu-icon-select .placholder-item`（拼写为 `placholder`），而模板使用的类名是 `placeholder-item`，二者不一致，占位文字的灰色样式实际不生效。以源码为准，这里按现状记录。
 - 弹层内容使用 Tailwind 工具类（如 `flex items-center cursor-pointer`），需消费方应用启用 Tailwind 才会得到预期排版。
 
